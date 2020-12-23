@@ -2,7 +2,7 @@
 # ditching svg; canvas uses vectors; may not be as pretty but will do job
 # add in ttk with clam style later
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage
 from tkinter.ttk import Style, Frame, Label, Button, Entry
 
 
@@ -82,6 +82,7 @@ root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
 root.minsize(800, 600)
 root.title("www.gantt.page")
 # root.iconbitmap(default="favicon.ico")
+# root.iconphoto(False, PhotoImage(file="favicon.ico"))
 root.style = Style()
 root.style.configure("Blue.TFrame", background="blue")
 root.style.configure("Red.TFrame", background="red")
