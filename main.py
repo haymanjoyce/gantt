@@ -2,7 +2,7 @@
 # ditching svg; canvas uses vectors; may not be as pretty but will do job
 # add in ttk with clam style
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar
 from tkinter.ttk import Style, Frame, Label, Button, Entry
 
 
@@ -38,13 +38,24 @@ class TopFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.ent_filename = Entry(self)
-        self.btn_select = Button(self, text="Select")
-        self.btn_run = Button(self, text="Run")
+        self.lbl_filename = Label(self, style="White.TLabel")
+        self.btn_select = Button(self, text="Select", command=self.select_file)
+        self.btn_run = Button(self, text="Run", state=DISABLED)
 
-        self.ent_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
+        self.lbl_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
         self.btn_select.pack(side=LEFT, padx=(0, 2))
         self.btn_run.pack(side=LEFT)
+
+        self.filename = None
+
+    def select_file(self):
+
+        self.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files", "*.xls*"), ))
+
+        self.lbl_filename.configure(text=self.filename)
+
+        if len(self.lbl_filename.cget("text")) != 0:
+            self.btn_run.config(state="normal")
 
 
 class MiddleFrame(Frame):
@@ -102,7 +113,8 @@ print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
 root.minsize(800, 600)
 root.title("www.gantt.page")
-root.iconbitmap(default="favicon.ico")
+root.wm_iconbitmap("favicon.ico")
+# root.iconbitmap(default="favicon.ico")
 # root.iconphoto(False, PhotoImage(file="favicon.ico"))
 root.style = Style()
 root.style.theme_use('clam')
@@ -111,21 +123,7 @@ root.style.configure("Blue.TFrame", background="blue")
 root.style.configure("Red.TFrame", background="red")
 root.style.configure("Green.TFrame", background="green")
 root.style.configure("Yellow.TFrame", background="yellow")
+root.style.configure("White.TLabel", background="gray98")
 app = MainFrame(root)
 root.mainloop()
-
-
-
-# def select_file():
-#     root.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file",
-#                                                filetypes=(("text files", "*.txt"), ("all files", "*.*")))
-#     ent_source_file.insert(END, root.filename)
-#
-#     if len(ent_source_file.get()) != 0:
-#         btn_import.config(state="normal")
-#
-#
-# def update_canvas():
-#     pass
-
 
