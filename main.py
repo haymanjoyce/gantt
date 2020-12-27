@@ -1,6 +1,6 @@
 # plan: tkinter, canvas , postscript, convert postscript to other formats
 # ditching svg; canvas uses vectors; may not be as pretty but will do job
-# add in ttk with clam style later
+# add in ttk with clam style
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage
 from tkinter.ttk import Style, Frame, Label, Button, Entry
@@ -28,10 +28,23 @@ class Chart(Frame):
         self.canvas = Canvas(self, bg="grey")
         self.canvas.pack(fill=BOTH, expand=True)
 
+        line_a = self.canvas.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
+        line_b = self.canvas.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
+
+        self.canvas.itemconfigure(line_b, fill="red", smooth=True)
+
 
 class TopFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent)
+
+        self.ent_filename = Entry(self)
+        self.btn_select = Button(self, text="Select")
+        self.btn_run = Button(self, text="Run")
+
+        self.ent_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
+        self.btn_select.pack(side=LEFT, padx=(0, 2))
+        self.btn_run.pack(side=LEFT)
 
 
 class MiddleFrame(Frame):
@@ -52,6 +65,14 @@ class BottomFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
+        self.ent_filename = Entry(self)
+        self.btn_select = Button(self, text="Select")
+        self.btn_export = Button(self, text="Export")
+
+        self.ent_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
+        self.btn_select.pack(side=LEFT, padx=(0, 2))
+        self.btn_export.pack(side=LEFT)
+
 
 class MainFrame(Frame):
     def __init__(self, parent):
@@ -62,9 +83,9 @@ class MainFrame(Frame):
         self.bottom_frame = BottomFrame(self)
 
         self.configure(style="Red.TFrame")
-        self.top_frame.configure(style="Green.TFrame", height=100)
+        self.top_frame.configure(style="Green.TFrame")
         self.middle_frame.configure(style="Red.TFrame")
-        self.bottom_frame.configure(style="Green.TFrame", height=100)
+        self.bottom_frame.configure(style="Green.TFrame")
 
         self.pack(fill=BOTH, expand=True)
         self.top_frame.pack(side=TOP, fill=X, padx=2, pady=(2, 0))
@@ -81,18 +102,19 @@ print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
 root.minsize(800, 600)
 root.title("www.gantt.page")
-# root.iconbitmap(default="favicon.ico")
+root.iconbitmap(default="favicon.ico")
 # root.iconphoto(False, PhotoImage(file="favicon.ico"))
 root.style = Style()
+root.style.theme_use('clam')
+print(f'Theme: {root.style.theme_use()}')
 root.style.configure("Blue.TFrame", background="blue")
 root.style.configure("Red.TFrame", background="red")
 root.style.configure("Green.TFrame", background="green")
 root.style.configure("Yellow.TFrame", background="yellow")
-print(f'Theme: {root.style.theme_use()}')
 app = MainFrame(root)
 root.mainloop()
 
-# test commit
+
 
 # def select_file():
 #     root.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file",
@@ -107,55 +129,3 @@ root.mainloop()
 #     pass
 
 
-
-# TOP FRAME
-
-# frm_top = tk.Frame(master=root, bg="red")
-# ent_source_file = tk.Entry(frm_top)
-# btn_select_source = ttk.Button(frm_top, text="Select", command=select_file)
-# btn_import = ttk.Button(frm_top, text="Import", command=update_canvas)
-#
-# if len(ent_source_file.get()) == 0:
-#     btn_import.config(state="disabled")
-#
-# frm_top.pack(fill=tk.X, pady=2, padx=2)
-# ent_source_file.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-# btn_select_source.pack(side=tk.LEFT)
-# btn_import.pack(side=tk.LEFT)
-
-# # MIDDLE FRAMES
-#
-# frm_middle = tk.Frame(master=root, bg="blue")
-# frm_left = tk.Frame(master=frm_middle, bg="red")
-# frm_right = tk.Frame(master=frm_middle, bg="green")
-#
-# frm_middle.pack(fill=tk.BOTH, expand=True, padx=2)
-# frm_left.pack(side=tk.LEFT, fill=tk.Y)
-# frm_right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(2, 0))
-#
-# # SETTINGS
-#
-
-#
-# # CANVAS
-#
-# canvas = tk.Canvas(master=frm_right, bg="grey")
-# canvas.pack(fill=tk.BOTH, expand=True)
-#
-# # DRAWING
-#
-# line_a = canvas.create_line(20, 20, 20, 100, width=1, smooth=True)
-# line_b = canvas.create_line(10, 10, 200, 50, 90, 150, 50, 80)
-# canvas.itemconfigure(line_b, fill="red", smooth=True)
-#
-# # BOTTOM FRAME
-#
-# frm_bottom = tk.Frame(master=root)
-# ent_destination_file = tk.Entry(frm_bottom)
-# btn_select_destination = tk.Button(frm_bottom, text="Select", command=select_file)
-# btn_export = tk.Button(frm_bottom, text="Export", command=update_canvas)
-#
-# frm_bottom.pack(side=tk.BOTTOM, fill=tk.X, pady=2, padx=2)
-# ent_destination_file.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-# btn_select_destination.pack(side=tk.LEFT, padx=(2, 0))
-# btn_export.pack(side=tk.LEFT, padx=(2, 0))
