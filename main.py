@@ -1,40 +1,51 @@
 # plan: tkinter, canvas , postscript, convert postscript to other formats
-# ditching svg; canvas uses vectors; may not be as pretty but will do job
-# add in ttk with clam style
+# TODO sketch out on_run and on_save
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED
 from tkinter.ttk import Style, Button
+
 
 class Toolbar(Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.btn_open = Button(self, text="Open", command=self.on_open)
-        self.btn_save_as = Button(self, text="Save As", command=self.on_save_as)
-        self.btn_settings = Button(self, text="Settings", command=self.on_settings)
-        self.btn_refresh = Button(self, text="Refresh", command=self.on_refresh)
+        self.btn_select = Button(self, text="Select...", command=self.on_select)
+        self.btn_save = Button(self, text="Save...", command=self.on_save, state=DISABLED)
+        self.btn_settings = Button(self, text="Settings...", command=self.on_settings)
+        self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
+        self.lbl_filename = Label(self, text="Select Excel file")
 
-        self.btn_open.pack(side=LEFT, padx=(0, 2))
-        self.btn_save_as.pack(side=LEFT, padx=(0, 2))
-        self.btn_settings.pack(side=LEFT, padx=(0, 2))
-        self.btn_refresh.pack(side=RIGHT)
+        self.lbl_filename.pack(side=LEFT, fill=X)
 
-    def on_open(self):
-        user_file = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files", "*.xls*"), ))
-        print(user_file)
+        self.btn_settings.pack(side=RIGHT, padx=(0, 0))
+        self.btn_save.pack(side=RIGHT, padx=(0, 2))
+        self.btn_run.pack(side=RIGHT, padx=(0, 2))
+        self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
-    def on_save_as(self):
+    def on_select(self):
+        # we store filename with root because it's needed by other classes
+        root.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"), ))
+
+        self.lbl_filename.configure(text=root.filename)
+
+        if len(self.lbl_filename.cget("text")) != 0:
+            self.btn_run.config(state="normal")
+            self.btn_save.config(state="normal")
+
+    def on_run(self):
+        pass
+
+    def on_save(self):
         pass
 
     def on_settings(self):
-        settings = Settings()
-        config_file = open("config.txt", "r")
-        config_data = config_file.readline()
-        config_file.close()
-        settings.ent_width.insert(0, config_data)
 
-    def on_refresh(self):
-        print("Refresh!")
+        settings = Settings()
+
+        with open("config.txt", "r") as file:
+            data = file.readline()
+
+        settings.ent_width.insert(0, data)
 
 
 class Chart(Canvas):
@@ -87,8 +98,7 @@ root.minsize(800, 600)
 root.title("www.gantt.page")
 root.wm_iconbitmap("favicon.ico")
 
-root.style = Style()
-root.style.theme_use('clam')
+root.filename = None
 
 toolbar = Toolbar(root)
 toolbar.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
