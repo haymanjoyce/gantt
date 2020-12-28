@@ -2,128 +2,100 @@
 # ditching svg; canvas uses vectors; may not be as pretty but will do job
 # add in ttk with clam style
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel
 from tkinter.ttk import Style, Frame, Label, Button, Entry
 
 
-class Settings(Frame):
+class Menubar(Menu):
     def __init__(self, parent):
         super().__init__(parent)
+
+        self.file = Menu(self, tearoff=0)
+        self.help = Menu(self, tearoff=0)
+
+        self.file.add_command(label="New...", command=None)
+        self.file.add_command(label="Open...", command=self.on_open)
+        self.file.add_command(label="Save As...", command=None)
+        self.file.add_separator()
+        self.file.add_command(label="Settings...", command=self.on_settings)
+        self.file.add_separator()
+        self.file.add_command(label="Exit", command=None)
+
+        self.help.add_command(label="Help", command=None)
+        self.help.add_command(label="About", command=None)
+
+        self.add_cascade(label="File", menu=self.file)
+        self.add_cascade(label="Help", menu=self.help)
+
+    def on_open(self):
+        user_file = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files", "*.xls*"), ))
+        print(user_file)
+
+
+    def on_settings(self):
+        settings = Settings()
+        config_file = open("config.txt", "r")
+        config_data = config_file.readline()
+        config_file.close()
+        settings.ent_width.insert(0, config_data)
+
+
+class Chart(Canvas):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.configure(bg="blue")
+
+        line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
+        line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
+
+        self.itemconfigure(line_b, fill="red", smooth=True)
+
+
+class Settings(Toplevel):
+    def __init__(self):
+        super().__init__()
 
         self.lbl_width = Label(self, text="Page width:")
         self.ent_width = Entry(self, width=10)
         self.lbl_height = Label(self, text="Page height:")
         self.ent_height = Entry(self, width=10)
+        self.btn_save = Button(self, text="Save", command=self.on_save)
+        self.btn_close = Button(self, text="Close")
 
-        self.lbl_width.grid(row=0, column=0, sticky="nsew", pady=(0, 2))
-        self.ent_width.grid(row=0, column=1, sticky="nsew", pady=(0, 2))
-        self.lbl_height.grid(row=1, column=0, sticky="nsew")
-        self.ent_height.grid(row=1, column=1, sticky="nsew")
+        self.configure(padx=10, pady=10)
+        self.lbl_width.grid(row=0, column=0, sticky="nsew", pady=(0, 5))
+        self.ent_width.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
+        self.lbl_height.grid(row=1, column=0, sticky="nsew", pady=(0, 5))
+        self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5))
+        self.btn_save.grid(row=2, column=0, sticky="nsew", pady=(5, 0))
+        self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
 
-
-class Chart(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.canvas = Canvas(self, bg="grey")
-        self.canvas.pack(fill=BOTH, expand=True)
-
-        line_a = self.canvas.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
-        line_b = self.canvas.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
-
-        self.canvas.itemconfigure(line_b, fill="red", smooth=True)
-
-
-class TopFrame(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.lbl_filename = Label(self, style="White.TLabel")
-        self.btn_select = Button(self, text="Select", command=self.select_file)
-        self.btn_run = Button(self, text="Run", state=DISABLED)
-
-        self.lbl_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
-        self.btn_select.pack(side=LEFT, padx=(0, 2))
-        self.btn_run.pack(side=LEFT)
-
-        self.filename = None
-
-    def select_file(self):
-
-        self.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files", "*.xls*"), ))
-
-        self.lbl_filename.configure(text=self.filename)
-
-        if len(self.lbl_filename.cget("text")) != 0:
-            self.btn_run.config(state="normal")
-
-
-class MiddleFrame(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.settings = Settings(self)
-        self.chart = Chart(self)
-
-        self.settings.configure(style="Blue.TFrame")
-        self.chart.configure(style="Yellow.TFrame")
-
-        self.settings.pack(side=LEFT, fill=Y, padx=2, pady=2)
-        self.chart.pack(side=LEFT, fill=BOTH, expand=True, padx=(0, 2), pady=2)
-
-
-class BottomFrame(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.ent_filename = Entry(self)
-        self.btn_select = Button(self, text="Select")
-        self.btn_export = Button(self, text="Export")
-
-        self.ent_filename.pack(expand=1, side=LEFT, fill=BOTH, padx=(0, 2))
-        self.btn_select.pack(side=LEFT, padx=(0, 2))
-        self.btn_export.pack(side=LEFT)
-
-
-class MainFrame(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.top_frame = TopFrame(self)
-        self.middle_frame = MiddleFrame(self)
-        self.bottom_frame = BottomFrame(self)
-
-        self.configure(style="Red.TFrame")
-        self.top_frame.configure(style="Green.TFrame")
-        self.middle_frame.configure(style="Red.TFrame")
-        self.bottom_frame.configure(style="Green.TFrame")
-
-        self.pack(fill=BOTH, expand=True)
-        self.top_frame.pack(side=TOP, fill=X, padx=2, pady=(2, 0))
-        self.middle_frame.pack(fill=BOTH, expand=True)
-        self.bottom_frame.pack(side=BOTTOM, fill=X, padx=2, pady=(0, 2))
-
-    def greet(self):
-        print("Greetings!")
+    def on_save(self):
+        print("Save stuff")
+        config_file = open("config.txt", "w")
+        config_data = self.ent_width.get()
+        config_file.write(config_data)
+        config_file.close()
 
 
 root = Tk()
+
 print(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
 print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
 root.minsize(800, 600)
+
 root.title("www.gantt.page")
 root.wm_iconbitmap("favicon.ico")
 # root.iconbitmap(default="favicon.ico")
 # root.iconphoto(False, PhotoImage(file="favicon.ico"))
-root.style = Style()
-root.style.theme_use('clam')
-print(f'Theme: {root.style.theme_use()}')
-root.style.configure("Blue.TFrame", background="blue")
-root.style.configure("Red.TFrame", background="red")
-root.style.configure("Green.TFrame", background="green")
-root.style.configure("Yellow.TFrame", background="yellow")
-root.style.configure("White.TLabel", background="gray98")
-app = MainFrame(root)
+
+menu = Menubar(root)
+root.configure(menu=menu)
+
+chart = Chart(root)
+chart.pack(fill=BOTH, expand=True)
+
 root.mainloop()
 
