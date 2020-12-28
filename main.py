@@ -2,35 +2,29 @@
 # ditching svg; canvas uses vectors; may not be as pretty but will do job
 # add in ttk with clam style
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel
-from tkinter.ttk import Style, Frame, Label, Button, Entry
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED
+from tkinter.ttk import Style, Button
 
-
-class Menubar(Menu):
+class Toolbar(Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.file = Menu(self, tearoff=0)
-        self.help = Menu(self, tearoff=0)
+        self.btn_open = Button(self, text="Open", command=self.on_open)
+        self.btn_save_as = Button(self, text="Save As", command=self.on_save_as)
+        self.btn_settings = Button(self, text="Settings", command=self.on_settings)
+        self.btn_refresh = Button(self, text="Refresh", command=self.on_refresh)
 
-        self.file.add_command(label="New...", command=None)
-        self.file.add_command(label="Open...", command=self.on_open)
-        self.file.add_command(label="Save As...", command=None)
-        self.file.add_separator()
-        self.file.add_command(label="Settings...", command=self.on_settings)
-        self.file.add_separator()
-        self.file.add_command(label="Exit", command=None)
-
-        self.help.add_command(label="Help", command=None)
-        self.help.add_command(label="About", command=None)
-
-        self.add_cascade(label="File", menu=self.file)
-        self.add_cascade(label="Help", menu=self.help)
+        self.btn_open.pack(side=LEFT, padx=(0, 2))
+        self.btn_save_as.pack(side=LEFT, padx=(0, 2))
+        self.btn_settings.pack(side=LEFT, padx=(0, 2))
+        self.btn_refresh.pack(side=RIGHT)
 
     def on_open(self):
         user_file = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files", "*.xls*"), ))
         print(user_file)
 
+    def on_save_as(self):
+        pass
 
     def on_settings(self):
         settings = Settings()
@@ -38,6 +32,9 @@ class Menubar(Menu):
         config_data = config_file.readline()
         config_file.close()
         settings.ent_width.insert(0, config_data)
+
+    def on_refresh(self):
+        print("Refresh!")
 
 
 class Chart(Canvas):
@@ -83,16 +80,18 @@ root = Tk()
 
 print(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
 print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
+
 root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
 root.minsize(800, 600)
 
 root.title("www.gantt.page")
 root.wm_iconbitmap("favicon.ico")
-# root.iconbitmap(default="favicon.ico")
-# root.iconphoto(False, PhotoImage(file="favicon.ico"))
 
-menu = Menubar(root)
-root.configure(menu=menu)
+root.style = Style()
+root.style.theme_use('clam')
+
+toolbar = Toolbar(root)
+toolbar.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
 
 chart = Chart(root)
 chart.pack(fill=BOTH, expand=True)
