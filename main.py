@@ -3,6 +3,8 @@
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED
 from tkinter.ttk import Style, Button
+import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
+import os
 
 
 class Toolbar(Frame):
@@ -33,7 +35,8 @@ class Toolbar(Frame):
             self.btn_save.config(state="normal")
 
     def on_run(self):
-        pass
+        df = pd.read_excel(root.filename)
+        print(df)
 
     def on_save(self):
         pass
@@ -52,7 +55,7 @@ class Chart(Canvas):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.configure(bg="blue")
+        self.configure(bg="#dddddd")
 
         line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
         line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
