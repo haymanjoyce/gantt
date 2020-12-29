@@ -1,5 +1,6 @@
 # plan: tkinter, canvas , postscript, convert postscript to other formats
 # TODO sketch out on_run and on_save
+# TODO explore dynamically creating and amending objects
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED
 from tkinter.ttk import Style, Button
@@ -9,12 +10,12 @@ import os
 
 class Toolbar(Frame):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(Toolbar, self).__init__(parent)
 
         self.btn_select = Button(self, text="Select...", command=self.on_select)
         self.btn_save = Button(self, text="Save...", command=self.on_save, state=DISABLED)
         self.btn_settings = Button(self, text="Settings...", command=self.on_settings)
-        self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
+        self.btn_run = Button(self, text="Run...", command=self.on_run, state=DISABLED)
         self.lbl_filename = Label(self, text="Select Excel file")
 
         self.lbl_filename.pack(side=LEFT, fill=X)
@@ -37,6 +38,11 @@ class Toolbar(Frame):
     def on_run(self):
         df = pd.read_excel(root.filename)
         print(df)
+        # then check it - logging issues - another toplevel
+        # then interpret it - adding to df
+        # then parse it
+        # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
+        chart.itemconfigure(chart.line_a, width=4)
 
     def on_save(self):
         pass
@@ -53,11 +59,11 @@ class Toolbar(Frame):
 
 class Chart(Canvas):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(Chart, self).__init__(parent)
 
         self.configure(bg="#dddddd")
 
-        line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
+        self.line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
         line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
 
         self.itemconfigure(line_b, fill="red", smooth=True)
@@ -65,7 +71,7 @@ class Chart(Canvas):
 
 class Settings(Toplevel):
     def __init__(self):
-        super().__init__()
+        super(Settings, self).__init__()
 
         self.lbl_width = Label(self, text="Page width:")
         self.ent_width = Entry(self, width=10)
@@ -88,6 +94,12 @@ class Settings(Toplevel):
         config_data = self.ent_width.get()
         config_file.write(config_data)
         config_file.close()
+        # and make any changes to chart object
+
+
+class Log(Toplevel):
+    def __init__(self, parent):
+        super(Log, self).__init__(parent)
 
 
 root = Tk()
