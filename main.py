@@ -1,11 +1,14 @@
+#!/usr/bin/env python3
+
 # plan: tkinter, canvas , postscript, convert postscript to other formats
 # TODO sketch out on_run and on_save
-# TODO explore dynamically creating and amending objects
+# TODO reading multiple tabs in pandas
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext
 from tkinter.ttk import Style, Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
+import logging
 
 
 class Toolbar(Frame):
@@ -15,7 +18,7 @@ class Toolbar(Frame):
         self.btn_select = Button(self, text="Select...", command=self.on_select)
         self.btn_save = Button(self, text="Save...", command=self.on_save, state=DISABLED)
         self.btn_settings = Button(self, text="Settings...", command=self.on_settings)
-        self.btn_run = Button(self, text="Run...", command=self.on_run, state=DISABLED)
+        self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
         self.lbl_filename = Label(self, text="Select Excel file")
 
         self.lbl_filename.pack(side=LEFT, fill=X)
@@ -43,6 +46,7 @@ class Toolbar(Frame):
         # then parse it
         # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
         chart.itemconfigure(chart.line_a, width=4)
+        chart.create_line(90, 20, 90, 100, width=2)  # x1, y1, x2, y2
 
     def on_save(self):
         pass
@@ -97,29 +101,74 @@ class Settings(Toplevel):
         # and make any changes to chart object
 
 
-class Log(Toplevel):
+class Handler(logging.Handler):
+
+    def __init__(self, gui):
+        super(Handler, self).__init__()
+        self.gui = gui
+
+    def emit(self, record):
+        msg = self.format(record)
+        self.gui.append(msg)
+
+
+class Scroller(scrolledtext.ScrolledText):
+
     def __init__(self, parent):
-        super(Log, self).__init__(parent)
+        super(Scroller, self).__init__(parent)
+
+    def append(self, msg):
+        self.configure(state='normal')
+        self.insert(END, msg + '\n')
+        self.configure(state='disabled')
+        self.yview(END)
 
 
-root = Tk()
+class Log(Toplevel):
+    def __init__(self):
+        super(Log, self).__init__()
 
-print(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
-print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 
-root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
-root.minsize(800, 600)
+if __name__ == '__main__':
 
-root.title("www.gantt.page")
-root.wm_iconbitmap("favicon.ico")
+    root = Tk()
 
-root.filename = None
+    print(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
+    print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 
-toolbar = Toolbar(root)
-toolbar.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
+    root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
+    root.minsize(800, 600)
+    root.title("Main")
+    root.wm_iconbitmap("favicon.ico")
+    root.filename = None
 
-chart = Chart(root)
-chart.pack(fill=BOTH, expand=True)
+    toolbar = Toolbar(root)
+    toolbar.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
 
-root.mainloop()
+    chart = Chart(root)
+    chart.pack(fill=BOTH, expand=True)
+
+    log = Log()
+    log.geometry(f'{290}x{600}+{260}+{200}')  # w, h, x, y
+    log.minsize(200, 200)
+    log.title("Log")
+    log.wm_iconbitmap("favicon.ico")
+
+    scroller = Scroller(log)
+    scroller.pack(fill=BOTH, expand=True)
+
+    handler = Handler(scroller)  # custom handler
+
+    logger = logging.getLogger()  # custom logger
+    logger.setLevel(20)  # level 10 includes debug
+    logger.addHandler(handler)
+
+    for i in range(100):
+        logger.debug('debug message')
+        logger.info('info message')
+        logger.warning('warn message')
+        logger.error('error message')
+        logger.critical('critical message')
+
+    root.mainloop()
 
