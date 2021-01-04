@@ -4,6 +4,8 @@
 # TODO set window sizes based on screen size
 # TODO reading multiple tabs in pandas
 # TODO stop log button creating more than one dialogue and put working into method
+# TODO apply multiple window solution to settings
+# TODO set geometry of Settings without killing grid
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -114,6 +116,10 @@ class Settings(Toplevel):
     def __init__(self, parent):
         super(Settings, self).__init__(parent)
 
+        self.title("Settings")
+        self.wm_iconbitmap("favicon.ico")
+        self.configure(padx=10, pady=10)
+
         self.lbl_width = Label(self, text="Page width:")
         self.ent_width = Entry(self, width=10)
         self.lbl_height = Label(self, text="Page height:")
@@ -121,7 +127,6 @@ class Settings(Toplevel):
         self.btn_save = Button(self, text="Save", command=self.on_save)
         self.btn_close = Button(self, text="Close")
 
-        self.configure(padx=10, pady=10)
         self.lbl_width.grid(row=0, column=0, sticky="nsew", pady=(0, 5))
         self.ent_width.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
         self.lbl_height.grid(row=1, column=0, sticky="nsew", pady=(0, 5))
@@ -129,13 +134,15 @@ class Settings(Toplevel):
         self.btn_save.grid(row=2, column=0, sticky="nsew", pady=(5, 0))
         self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
 
+        # you need to set geometry after grid established
+        self.geometry(f'{500}x{500}+{710}+{250}')  # w, h, x, y
+        self.minsize(200, 400)
+
     def on_save(self):
-        print("Save stuff")
-        config_file = open("config.txt", "w")
-        config_data = self.ent_width.get()
-        config_file.write(config_data)
-        config_file.close()
-        # and make any changes to chart object
+        with open('config.txt', 'w') as config_file:
+            config_data = self.ent_width.get()
+            config_file.write(config_data)
+        # and then make any changes to chart object
 
 
 class Log(Toplevel):
