@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-# plan: tkinter, canvas , postscript, convert postscript to other formats
-# TODO sketch out on_run and on_save
+# TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in pandas
-# TODO logging from different modules
+# TODO create log button
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
@@ -18,15 +17,17 @@ class Toolbar(Frame):
     def __init__(self, parent):
         super(Toolbar, self).__init__(parent)
 
-        self.btn_select = Button(self, text="Select...", command=self.on_select)
-        self.btn_save = Button(self, text="Save...", command=self.on_save, state=DISABLED)
-        self.btn_settings = Button(self, text="Settings...", command=self.on_settings)
+        self.btn_select = Button(self, text="Select File", command=self.on_select)
+        self.btn_save = Button(self, text="Save As", command=self.on_save, state=DISABLED)
+        self.btn_settings = Button(self, text="Settings", command=self.on_settings)
         self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
-        self.lbl_filename = Label(self, text="Select Excel file")
+        self.btn_log = Button(self, text="View Log", command=self.on_log)
+        self.lbl_filename = Label(self, text="Select your Excel file")
 
         self.lbl_filename.pack(side=LEFT, fill=X)
 
-        self.btn_settings.pack(side=RIGHT, padx=(0, 0))
+        self.btn_log.pack(side=RIGHT, padx=(0, 0))
+        self.btn_settings.pack(side=RIGHT, padx=(0, 2))
         self.btn_save.pack(side=RIGHT, padx=(0, 2))
         self.btn_run.pack(side=RIGHT, padx=(0, 2))
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
@@ -62,6 +63,10 @@ class Toolbar(Frame):
             data = file.readline()
 
         settings.ent_width.insert(0, data)
+
+    def on_log(self):
+        log = Log()
+        log.focus()
 
 
 class Chart(Canvas):
@@ -115,21 +120,23 @@ class Handler(logging.Handler):
         self.gui.append(msg)
 
 
-class Scroller(scrolledtext.ScrolledText):
-
-    def __init__(self, parent):
-        super(Scroller, self).__init__(parent)
-
-    def append(self, msg):
-        self.configure(state='normal')
-        self.insert(END, msg + '\n')
-        self.configure(state='disabled')
-        self.yview(END)
-
-
 class Log(Toplevel):
     def __init__(self):
         super(Log, self).__init__()
+
+        viewer = scrolledtext.ScrolledText(self)
+        self.geometry(f'{400}x{500}+{760}+{250}')  # w, h, x, y
+        self.minsize(200, 400)
+        self.title("Log")
+        self.wm_iconbitmap("favicon.ico")
+
+        with open('app.log', "r") as app_log:
+            text = str(app_log.read())
+
+        viewer.configure(state='normal')
+        viewer.insert(END, text)
+        viewer.configure(state='disabled')
+        viewer.pack(expand=True, fill=BOTH)
 
 
 if __name__ == '__main__':
