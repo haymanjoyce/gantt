@@ -1,0 +1,6 @@
+INFO | main | Logging started.
+INFO | main | W: 1920px H: 1080px
+INFO | main | W: 508mm H: 286mm
+WARNING | main | Oh my god!
+ERROR | main | Bugger.
+INFO | test | This is test module.

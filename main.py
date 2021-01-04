@@ -3,12 +3,15 @@
 # plan: tkinter, canvas , postscript, convert postscript to other formats
 # TODO sketch out on_run and on_save
 # TODO reading multiple tabs in pandas
+# TODO logging from different modules
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext
 from tkinter.ttk import Style, Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
 import logging
+import logging.config
+import test
 
 
 class Toolbar(Frame):
@@ -131,10 +134,12 @@ class Log(Toplevel):
 
 if __name__ == '__main__':
 
-    root = Tk()
+    logging.basicConfig(filename='app.log', level=10, filemode='w', format='%(levelname)s | %(module)s | %(message)s')  # 10 is debug, 20 is info
+    logging.info('Logging started.')
 
-    print(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
-    print(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
+    root = Tk()
+    logging.info(f'W: {root.winfo_screenwidth()}px H: {root.winfo_screenheight()}px')
+    logging.info(f'W: {root.winfo_screenmmwidth()}mm H: {root.winfo_screenmmheight()}mm')
 
     root.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
     root.minsize(800, 600)
@@ -147,27 +152,5 @@ if __name__ == '__main__':
 
     chart = Chart(root)
     chart.pack(fill=BOTH, expand=True)
-
-    log = Log()
-    log.geometry(f'{290}x{600}+{260}+{200}')  # w, h, x, y
-    log.minsize(200, 200)
-    log.title("Log")
-    log.wm_iconbitmap("favicon.ico")
-
-    scroller = Scroller(log)
-    scroller.pack(fill=BOTH, expand=True)
-
-    handler = Handler(scroller)  # custom handler
-
-    logger = logging.getLogger()  # custom logger
-    logger.setLevel(20)  # level 10 includes debug
-    logger.addHandler(handler)
-
-    for i in range(100):
-        logger.debug('debug message')
-        logger.info('info message')
-        logger.warning('warn message')
-        logger.error('error message')
-        logger.critical('critical message')
 
     root.mainloop()
