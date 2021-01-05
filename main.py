@@ -2,10 +2,9 @@
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO set window sizes based on screen size
-# TODO reading multiple tabs in pandas
-# TODO stop log button creating more than one dialogue and put working into method
-# TODO apply multiple window solution to settings
-# TODO switch to internal padding
+# TODO reading multiple tabs in panda
+# TODO close button call back
+# TODO store config data using json
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -119,6 +118,8 @@ class Settings(Toplevel):
     def __init__(self, parent):
         super(Settings, self).__init__(parent)
 
+        self.parent = parent
+
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
         self.configure(padx=10, pady=10)
@@ -130,7 +131,7 @@ class Settings(Toplevel):
         self.lbl_height = Label(self, text="Page height:")
         self.ent_height = Entry(self, width=10)
         self.btn_save = Button(self, text="Save", command=self.on_save)
-        self.btn_close = Button(self, text="Close")
+        self.btn_close = Button(self, text="Close", command=self.on_close)
 
         self.lbl_width.grid(row=0, column=0, sticky="nsew", pady=(0, 5))
         self.ent_width.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
@@ -148,6 +149,9 @@ class Settings(Toplevel):
             config_data = self.ent_width.get()
             config_file.write(config_data)
         # and then make any changes to chart object
+
+    def on_close(self):
+        self.destroy()
 
 
 class Log(Toplevel):
