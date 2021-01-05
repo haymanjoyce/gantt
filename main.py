@@ -4,6 +4,7 @@
 # TODO set window sizes based on screen size
 # TODO reading multiple tabs in panda
 # TODO create separate logger - so one goes to stdout and other goes to GUI
+# TODO create logging class or way to easily achieve your logging goals
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -12,6 +13,7 @@ import os
 import logging
 import logging.config
 import json
+import test
 
 
 class App(Tk):
@@ -21,7 +23,7 @@ class App(Tk):
         print(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
         print(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
 
-        logging.info(f'Logging initialised.')
+        logger.info(f'Logging initialised.')
 
         self.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
         self.minsize(800, 600)
@@ -151,22 +153,22 @@ class Settings(Toplevel):
             with open("config.json", "r") as file:
                 self.json_settings = file.readline()
         except FileNotFoundError:
-            logging.debug("Configuration file not found.")
+            logger.debug("Configuration file not found.")
             with open("config.json", "w") as file:
-                logging.info("Configuration file created.")
+                logger.info("Configuration file created.")
         # populating file
         if self.json_settings:
             self.dict_settings = json.loads(self.json_settings)
             self.ent_width.insert(0, self.dict_settings["width"])
         else:
-            logging.debug("Blank configuration file.")
+            logger.debug("Blank configuration file.")
 
     def on_save(self):
         self.dict_settings["width"] = self.ent_width.get()
         self.json_settings = json.dumps(self.dict_settings)
         with open('config.json', 'w') as file:
             file.write(self.json_settings)
-        logging.info("Settings saved.")
+        logger.info("Settings saved.")
         # and then make any changes to chart object
 
     def on_close(self):
@@ -182,20 +184,38 @@ class Log(Toplevel):
         self.title("Log")
         self.wm_iconbitmap("favicon.ico")
 
-        self.viewer = scrolledtext.ScrolledText(self)
-        self.viewer.configure(state='disabled')
-        self.viewer.pack(expand=True, fill=BOTH)
+        self.scroller = scrolledtext.ScrolledText(self)
+        self.scroller.configure(state='disabled')
+        self.scroller.pack(expand=True, fill=BOTH)
 
     def populate(self):
-        with open('app.log', "r") as app_log:
-            text = str(app_log.read())
-        self.viewer.configure(state='normal')  # writable
-        self.viewer.insert(END, text)
-        self.viewer.configure(state='disabled')  # readable
+        with open('app.log', "r") as log:
+            text = str(log.read())
+        self.scroller.configure(state='normal')  # writable
+        self.scroller.insert(END, text)
+        self.scroller.configure(state='disabled')  # readable
 
 
 if __name__ == '__main__':
 
-    logging.basicConfig(filename='app.log', level=10, filemode='w', format='%(levelname)s - %(message)s')  # 10 is debug, 20 is info
+    logger = logging.getLogger('Main')
+    logger.setLevel(logging.DEBUG)
+
+    fh = logging.FileHandler('app.log')
+    fh.setLevel(logging.INFO)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+
+    fh_format = logging.Formatter('%(levelname)s - %(message)s')
+    ch_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    fh.setFormatter(fh_format)
+    ch.setFormatter(ch_format)
+
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+    test.testing()
 
     app = App()
