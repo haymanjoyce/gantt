@@ -3,8 +3,6 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO set window sizes based on screen size
 # TODO reading multiple tabs in panda
-# TODO store config data using json
-# TODO debug case where config file blank
 # TODO create separate logger - so one goes to stdout and other goes to GUI
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
