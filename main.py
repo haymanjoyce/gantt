@@ -4,7 +4,8 @@
 # TODO set window sizes based on screen size
 # TODO reading multiple tabs in panda
 # TODO store config data using json
-# TODo debug case where config file blank
+# TODO debug case where config file blank
+# TODO create separate logger - so one goes to stdout and other goes to GUI
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -147,19 +148,27 @@ class Settings(Toplevel):
         self.minsize(200, 100)
 
     def populate(self):
-        with open("config.txt", "r") as file:
-            self.json_settings = file.readline()
+        # opening file
+        try:
+            with open("config.json", "r") as file:
+                self.json_settings = file.readline()
+        except FileNotFoundError:
+            logging.debug("Configuration file not found.")
+            with open("config.json", "w") as file:
+                logging.info("Configuration file created.")
+        # populating file
         if self.json_settings:
             self.dict_settings = json.loads(self.json_settings)
             self.ent_width.insert(0, self.dict_settings["width"])
         else:
-            logging.debug("No default settings.")
+            logging.debug("Blank configuration file.")
 
     def on_save(self):
         self.dict_settings["width"] = self.ent_width.get()
         self.json_settings = json.dumps(self.dict_settings)
-        with open('config.txt', 'w') as file:
+        with open('config.json', 'w') as file:
             file.write(self.json_settings)
+        logging.info("Settings saved.")
         # and then make any changes to chart object
 
     def on_close(self):
