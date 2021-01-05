@@ -6,6 +6,7 @@
 # TODO stop log button creating more than one dialogue and put working into method
 # TODO apply multiple window solution to settings
 # TODO set geometry of Settings without killing grid
+# TODO switch to internal padding
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -119,6 +120,8 @@ class Settings(Toplevel):
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
         self.configure(padx=10, pady=10)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
 
         self.lbl_width = Label(self, text="Page width:")
         self.ent_width = Entry(self, width=10)
@@ -135,8 +138,8 @@ class Settings(Toplevel):
         self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
 
         # you need to set geometry after grid established
-        self.geometry(f'{500}x{500}+{710}+{250}')  # w, h, x, y
-        self.minsize(200, 400)
+        self.geometry(f'+{860}+{250}')  # w, h, x, y
+        self.minsize(200, 100)
 
     def on_save(self):
         with open('config.txt', 'w') as config_file:
