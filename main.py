@@ -3,8 +3,8 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO set window sizes based on screen size
 # TODO reading multiple tabs in panda
-# TODO close button call back
 # TODO store config data using json
+# TODo debug case where config file blank
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -12,6 +12,7 @@ import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
 import logging
 import logging.config
+import json
 
 
 class App(Tk):
@@ -89,9 +90,7 @@ class Toolbar(Frame):
         if isinstance(self.parent.settings, Settings):
             self.parent.settings.destroy()
         self.parent.settings = Settings(self.parent)
-        with open("config.txt", "r") as file:
-            data = file.readline()
-        self.parent.settings.ent_width.insert(0, data)
+        self.parent.settings.populate()
 
     def on_log(self):
         # kill any old instances if this class
@@ -120,6 +119,9 @@ class Settings(Toplevel):
 
         self.parent = parent
 
+        self.dict_settings = dict()
+        self.json_settings = None
+
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
         self.configure(padx=10, pady=10)
@@ -144,10 +146,20 @@ class Settings(Toplevel):
         self.geometry(f'+{860}+{250}')  # w, h, x, y
         self.minsize(200, 100)
 
+    def populate(self):
+        with open("config.txt", "r") as file:
+            self.json_settings = file.readline()
+        if self.json_settings:
+            self.dict_settings = json.loads(self.json_settings)
+            self.ent_width.insert(0, self.dict_settings["width"])
+        else:
+            logging.debug("No default settings.")
+
     def on_save(self):
-        with open('config.txt', 'w') as config_file:
-            config_data = self.ent_width.get()
-            config_file.write(config_data)
+        self.dict_settings["width"] = self.ent_width.get()
+        self.json_settings = json.dumps(self.dict_settings)
+        with open('config.txt', 'w') as file:
+            file.write(self.json_settings)
         # and then make any changes to chart object
 
     def on_close(self):
