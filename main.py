@@ -5,7 +5,6 @@
 # TODO reading multiple tabs in pandas
 # TODO stop log button creating more than one dialogue and put working into method
 # TODO apply multiple window solution to settings
-# TODO set geometry of Settings without killing grid
 # TODO switch to internal padding
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
@@ -87,10 +86,13 @@ class Toolbar(Frame):
         pass
 
     def on_settings(self):
-        settings = Settings(self.parent)
+        # kill any old instances if this class
+        if isinstance(self.parent.settings, Settings):
+            self.parent.settings.destroy()
+        self.parent.settings = Settings(self.parent)
         with open("config.txt", "r") as file:
             data = file.readline()
-        settings.ent_width.insert(0, data)
+        self.parent.settings.ent_width.insert(0, data)
 
     def on_log(self):
         # kill any old instances if this class
