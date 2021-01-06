@@ -10,20 +10,17 @@ from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BO
 from tkinter.ttk import Style, Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
-import logging
-import logging.config
 import json
 import test
+import loggers
 
 
 class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
-        print(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
-        print(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
-
-        logger.info(f'Logging initialised.')
+        # print(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
+        # print(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
 
         self.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
         self.minsize(800, 600)
@@ -38,6 +35,10 @@ class App(Tk):
         self.log = None
 
         self.mainloop()
+
+        # erase log file
+        log = open('app.log', 'r+')
+        log.truncate(0)
 
 
 class Toolbar(Frame):
@@ -153,22 +154,22 @@ class Settings(Toplevel):
             with open("config.json", "r") as file:
                 self.json_settings = file.readline()
         except FileNotFoundError:
-            logger.debug("Configuration file not found.")
+            cli.info("Configuration file not found.")
             with open("config.json", "w") as file:
-                logger.info("Configuration file created.")
+                cli.info("Configuration file created.")
         # populating file
         if self.json_settings:
             self.dict_settings = json.loads(self.json_settings)
             self.ent_width.insert(0, self.dict_settings["width"])
         else:
-            logger.debug("Blank configuration file.")
+            cli.info("Blank configuration file.")
 
     def on_save(self):
         self.dict_settings["width"] = self.ent_width.get()
         self.json_settings = json.dumps(self.dict_settings)
         with open('config.json', 'w') as file:
             file.write(self.json_settings)
-        logger.info("Settings saved.")
+        gui.info("Settings saved.")
         # and then make any changes to chart object
 
     def on_close(self):
@@ -198,24 +199,10 @@ class Log(Toplevel):
 
 if __name__ == '__main__':
 
-    logger = logging.getLogger('Main')
-    logger.setLevel(logging.DEBUG)
+    cli = loggers.Stream()
+    cli.info(f"Logger initialised in main module.")
 
-    fh = logging.FileHandler('app.log')
-    fh.setLevel(logging.INFO)
-
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-
-    fh_format = logging.Formatter('%(levelname)s - %(message)s')
-    ch_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    fh.setFormatter(fh_format)
-    ch.setFormatter(ch_format)
-
-    logger.addHandler(fh)
-    logger.addHandler(ch)
-
-    test.testing()
+    gui = loggers.File()
+    gui.info("Logger initialised.")
 
     app = App()
