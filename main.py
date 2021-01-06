@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
-# TODO set window sizes based on screen size
 # TODO reading multiple tabs in panda
-# TODO create separate logger - so one goes to stdout and other goes to GUI
-# TODO create logging class or way to easily achieve your logging goals
+# TODO set window sizes based on screen size
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -157,20 +155,29 @@ class Settings(Toplevel):
             cli.info("Configuration file not found.")
             with open("config.json", "w") as file:
                 cli.info("Configuration file created.")
-        # populating file
+                # you could load file with default content here
+
+        # if file contains data
         if self.json_settings:
             self.dict_settings = json.loads(self.json_settings)
+            # populate fields
             self.ent_width.insert(0, self.dict_settings["width"])
+            self.ent_height.insert(0, self.dict_settings["height"])
         else:
             cli.info("Blank configuration file.")
 
     def on_save(self):
+        # get settings
         self.dict_settings["width"] = self.ent_width.get()
+        self.dict_settings["height"] = self.ent_height.get()
+
+        # save settings
         self.json_settings = json.dumps(self.dict_settings)
         with open('config.json', 'w') as file:
             file.write(self.json_settings)
         gui.info("Settings saved.")
-        # and then make any changes to chart object
+
+        # make changes to chart object (if any)
 
     def on_close(self):
         self.destroy()
