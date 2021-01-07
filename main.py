@@ -3,6 +3,8 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO set window sizes based on screen size
+# TODO add normal app menu so only select file and run showing at top
+# TODO auto screens size for log
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -11,17 +13,30 @@ import os
 import json
 import test
 import loggers
+from math import floor
 
 
 class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
-        # print(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
-        # print(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
+        cli.info(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
+        cli.info(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
 
-        self.geometry(f'{800}x{600}+{560}+{200}')  # w, h, x, y
-        self.minsize(800, 600)
+        self.width = floor(0.7 * self.winfo_screenwidth())
+        self.height = floor(0.7 * self.winfo_screenheight())
+
+        if self.height < 600 or self.width < 800:
+            self.width = 800
+            self.height = 600
+
+        self.minsize(400, 300)
+
+        self.x = floor((self.winfo_screenwidth() - self.width) * 0.5)
+        self.y = floor((self.winfo_screenheight() - self.height) * 0.5)
+
+        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
+
         self.title("Main")
         self.wm_iconbitmap("favicon.ico")
 
@@ -119,6 +134,12 @@ class Settings(Toplevel):
 
         self.parent = parent
 
+        self.width = 200
+        self.height = 100
+        self.minsize(200, 100)
+        self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
+        self.y = floor(self.parent.y + (self.parent.height * 0.2))
+
         self.dict_settings = dict()
         self.json_settings = None
 
@@ -142,9 +163,8 @@ class Settings(Toplevel):
         self.btn_save.grid(row=2, column=0, sticky="nsew", pady=(5, 0))
         self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
 
-        # you need to set geometry after grid established
-        self.geometry(f'+{860}+{250}')  # w, h, x, y
-        self.minsize(200, 100)
+        # you need to set geometry after grid established (for some reason)
+        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
 
     def populate(self):
         # opening file
