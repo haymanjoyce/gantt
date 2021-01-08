@@ -4,7 +4,6 @@
 # TODO reading multiple tabs in panda
 # TODO set window sizes based on screen size
 # TODO add normal app menu so only select file and run showing at top
-# TODO auto screens size for log
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -207,8 +206,15 @@ class Log(Toplevel):
     def __init__(self, parent):
         super(Log, self).__init__(parent)
 
-        self.geometry(f'{500}x{500}+{710}+{250}')  # w, h, x, y
-        self.minsize(200, 400)
+        self.parent = parent
+
+        self.width = 400
+        self.height = 400
+        self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 200))
+        self.y = floor(self.parent.y + (self.parent.height * 0.2))
+        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
+        self.minsize(300, 300)
+
         self.title("Log")
         self.wm_iconbitmap("favicon.ico")
 
