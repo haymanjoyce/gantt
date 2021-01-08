@@ -2,7 +2,6 @@
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
-# TODO set window sizes based on screen size
 # TODO add normal app menu so only select file and run showing at top
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
@@ -41,6 +40,12 @@ class App(Tk):
 
         self.filename = None
 
+        self.menubar = Menubar(self)
+        self["menu"] = self.menubar
+        # YES: self.config(menu=self.menubar)
+        # YES: self.configure(menu=self.menubar)
+        # NO: self.menu = self.menubar
+
         self.toolbar = Toolbar(self)
         self.chart = Chart(self)
         self.settings = None
@@ -51,6 +56,47 @@ class App(Tk):
         # erase log file
         log = open('app.log', 'r+')
         log.truncate(0)
+
+
+class Menubar(Menu):
+    def __init__(self, parent):
+        super(Menubar, self).__init__(parent)
+
+        self.parent = parent
+
+        self.file_menu = Menu(self, tearoff=0)
+        self.help_menu = Menu(self, tearoff=0)
+
+        self.file_menu.add_command(label="Save As...", command=self.on_save)
+        self.file_menu.add_command(label="Settings...", command=self.on_settings)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Exit", command=self.on_exit)
+
+        self.help_menu.add_command(label="View Log", command=self.on_log)
+        self.help_menu.add_separator()
+        self.help_menu.add_command(label="Help", command=self.on_help)
+        self.help_menu.add_command(label="About", command=self.on_about)
+
+        self.add_cascade(label="File", menu=self.file_menu)
+        self.add_cascade(label="Help", menu=self.help_menu)
+
+    def on_save(self):
+        print("Menu item working!")
+
+    def on_settings(self):
+        print("Menu item working!")
+
+    def on_exit(self):
+        self.parent.quit()
+
+    def on_log(self):
+        print("Menu item working!")
+
+    def on_help(self):
+        print("Menu item working!")
+
+    def on_about(self):
+        print("Menu item working!")
 
 
 class Toolbar(Frame):
