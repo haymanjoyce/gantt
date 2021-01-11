@@ -2,8 +2,8 @@
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
-# TODO add normal app menu so only select file and run showing at top
-# TODO disable menu items as necessary
+# TODO convert canvas to Excel
+# TODO save canvas as postscript file
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -82,7 +82,9 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        print("Menu item working!")
+        chart = self.parent.chart
+        if chart:
+            print(chart.postscript())
 
     def on_settings(self):
         # kill any old instances if this class
@@ -137,7 +139,7 @@ class Toolbar(Frame):
     def on_run(self):
         df = pd.read_excel(self.parent.filename)
         print(df)
-        # then check it - logging issues - another toplevel
+        # then check it - logging issues
         # then interpret it - adding to df
         # then parse it
         # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
