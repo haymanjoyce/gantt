@@ -3,6 +3,7 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO add normal app menu so only select file and run showing at top
+# TODO disable menu items as necessary
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -84,13 +85,21 @@ class Menubar(Menu):
         print("Menu item working!")
 
     def on_settings(self):
-        print("Menu item working!")
+        # kill any old instances if this class
+        if isinstance(self.parent.settings, Settings):
+            self.parent.settings.quit()
+        self.parent.settings = Settings(self.parent)
+        self.parent.settings.populate()
 
     def on_exit(self):
         self.parent.quit()
 
     def on_log(self):
-        print("Menu item working!")
+        # kill any old instances if this class
+        if isinstance(self.parent.log, Log):
+            self.parent.log.destroy()
+        self.parent.log = Log(self.parent)
+        self.parent.log.populate()
 
     def on_help(self):
         print("Menu item working!")
@@ -108,18 +117,12 @@ class Toolbar(Frame):
         self.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
 
         self.lbl_filename = Label(self, text="Select your Excel file")
-        self.btn_log = Button(self, text="View Log", command=self.on_log)
-        self.btn_settings = Button(self, text="Settings", command=self.on_settings)
-        self.btn_save = Button(self, text="Save As", command=self.on_save, state=DISABLED)
         self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
         self.btn_select = Button(self, text="Select File", command=self.on_select)
 
         # order matters
         self.lbl_filename.pack(side=LEFT, fill=X)
-        self.btn_log.pack(side=RIGHT, padx=(0, 0))
-        self.btn_settings.pack(side=RIGHT, padx=(0, 2))
-        self.btn_save.pack(side=RIGHT, padx=(0, 2))
-        self.btn_run.pack(side=RIGHT, padx=(0, 2))
+        self.btn_run.pack(side=RIGHT, padx=(0, 0))
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
     def on_select(self):
@@ -130,7 +133,6 @@ class Toolbar(Frame):
 
         if len(self.lbl_filename.cget("text")) != 0:
             self.btn_run.config(state="normal")
-            self.btn_save.config(state="normal")
 
     def on_run(self):
         df = pd.read_excel(self.parent.filename)
@@ -139,25 +141,9 @@ class Toolbar(Frame):
         # then interpret it - adding to df
         # then parse it
         # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
-        self.parent.chart.itemconfigure(app.chart.line_a, width=4)
-        self.parent.chart.create_line(90, 20, 90, 100, width=2)  # x1, y1, x2, y2
-
-    def on_save(self):
-        pass
-
-    def on_settings(self):
-        # kill any old instances if this class
-        if isinstance(self.parent.settings, Settings):
-            self.parent.settings.destroy()
-        self.parent.settings = Settings(self.parent)
-        self.parent.settings.populate()
-
-    def on_log(self):
-        # kill any old instances if this class
-        if isinstance(self.parent.log, Log):
-            self.parent.log.destroy()
-        self.parent.log = Log(self.parent)
-        self.parent.log.populate()
+        chart = self.parent.chart
+        chart.itemconfigure(chart.line_a, width=4)
+        chart.create_line(90, 20, 90, 100, width=2)  # x1, y1, x2, y2
 
 
 class Chart(Canvas):
