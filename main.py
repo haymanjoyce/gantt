@@ -83,8 +83,25 @@ class Menubar(Menu):
 
     def on_save(self):
         chart = self.parent.chart
-        if chart:
-            print(chart.postscript())
+        chart = chart.postscript()
+
+        files = [('All Files', '*.*'),
+                 ('Python Files', '*.py'),
+                 ('Text Document', '*.txt')]
+        file = filedialog.asksaveasfile(
+            filetypes=files,
+            defaultextension=files)
+
+        # filename = tkinter.filedialog.asksaveasfilename(
+        #     title=_("Choose log file for RSS Watch"),
+        #     initialdir=self.options.get("rssWatchLogFileDir", "."),
+        #     filetypes=[] if self.mainWin.isMac else [(_("Log files"), "*.*")],
+        #     defaultextension=".txt",
+        #     parent=self.parent)
+        # if filename:
+        #     self.options["rssWatchLogFileDir"] = os.path.dirname(filename)
+        #     self.cellLogFile.setValue(filename)
+
 
     def on_settings(self):
         # kill any old instances if this class
@@ -139,10 +156,18 @@ class Toolbar(Frame):
     def on_run(self):
         df = pd.read_excel(self.parent.filename)
         print(df)
+
+        # FileProcessor
         # then check it - logging issues
         # then interpret it - adding to df
+        # export
+
+        # ImageProcessor
         # then parse it
         # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
+        # export
+
+        # this should be in canvas temporarily
         chart = self.parent.chart
         chart.itemconfigure(chart.line_a, width=4)
         chart.create_line(90, 20, 90, 100, width=2)  # x1, y1, x2, y2
