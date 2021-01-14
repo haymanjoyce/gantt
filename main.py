@@ -91,17 +91,11 @@ class Menubar(Menu):
         file = filedialog.asksaveasfile(
             filetypes=files,
             defaultextension=files)
-
-        # filename = tkinter.filedialog.asksaveasfilename(
-        #     title=_("Choose log file for RSS Watch"),
-        #     initialdir=self.options.get("rssWatchLogFileDir", "."),
-        #     filetypes=[] if self.mainWin.isMac else [(_("Log files"), "*.*")],
-        #     defaultextension=".txt",
-        #     parent=self.parent)
-        # if filename:
-        #     self.options["rssWatchLogFileDir"] = os.path.dirname(filename)
-        #     self.cellLogFile.setValue(filename)
-
+        filename = file.name.lower()
+        if filename.endswith('.txt'):
+            print("Do this if text file.")
+        file.write(str(chart))
+        file.close()
 
     def on_settings(self):
         # kill any old instances if this class
