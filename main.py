@@ -3,7 +3,9 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO save canvas as postscript file
+# TODO save canvas as postscript file and view in ps reader
+# TODO see if canvas supports any other formats
+# TODO change source_file usage from name to file object
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -39,7 +41,7 @@ class App(Tk):
         self.title("Main")
         self.wm_iconbitmap("favicon.ico")
 
-        self.filename = None
+        self.source_file = None
 
         self.menubar = Menubar(self)
         self["menu"] = self.menubar
@@ -85,17 +87,19 @@ class Menubar(Menu):
         chart = self.parent.chart
         chart = chart.postscript()
 
-        files = [('All Files', '*.*'),
-                 ('Python Files', '*.py'),
-                 ('Text Document', '*.txt')]
+        files = [('All files', '*.*'),
+                 ('PostScript files', '*.ps'),
+                 ('Excel files', '*.xlsx')]
         file = filedialog.asksaveasfile(
             filetypes=files,
             defaultextension=files)
-        filename = file.name.lower()
-        if filename.endswith('.txt'):
-            print("Do this if text file.")
-        file.write(str(chart))
-        file.close()
+        try:
+            filename = file.name.lower()
+            if filename.endswith('.ps'):
+                file.write(chart)
+                file.close()
+        except FileNotFoundError:
+            print("File not found.")
 
     def on_settings(self):
         # kill any old instances if this class
@@ -140,15 +144,15 @@ class Toolbar(Frame):
 
     def on_select(self):
         # we store filename at root level because it's needed by other classes
-        self.parent.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"), ))
+        self.parent.source_file = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"),))
 
-        self.lbl_filename.configure(text=self.parent.filename)
+        self.lbl_filename.configure(text=self.parent.source_file)
 
         if len(self.lbl_filename.cget("text")) != 0:
             self.btn_run.config(state="normal")
 
     def on_run(self):
-        df = pd.read_excel(self.parent.filename)
+        df = pd.read_excel(self.parent.source_file)
         print(df)
 
         # FileProcessor
