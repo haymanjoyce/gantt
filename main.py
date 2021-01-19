@@ -144,15 +144,15 @@ class Toolbar(Frame):
 
     def on_select(self):
         # we store filename at root level because it's needed by other classes
-        self.parent.source_file = filedialog.askopenfilename(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"),))
+        self.parent.source_file = filedialog.askopenfile(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"),))
 
-        self.lbl_filename.configure(text=self.parent.source_file)
+        self.lbl_filename.configure(text=self.parent.source_file.name)
 
         if len(self.lbl_filename.cget("text")) != 0:
             self.btn_run.config(state="normal")
 
     def on_run(self):
-        df = pd.read_excel(self.parent.source_file)
+        df = pd.read_excel(self.parent.source_file.name)
         print(df)
 
         # FileProcessor
