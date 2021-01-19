@@ -5,7 +5,6 @@
 # TODO convert canvas to Excel
 # TODO save canvas as postscript file and view in ps reader
 # TODO see if canvas supports any other formats
-# TODO change source_file usage from name to file object
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -84,22 +83,24 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        chart = self.parent.chart
-        chart = chart.postscript()
-
-        files = [('All files', '*.*'),
-                 ('PostScript files', '*.ps'),
-                 ('Excel files', '*.xlsx')]
-        file = filedialog.asksaveasfile(
-            filetypes=files,
-            defaultextension=files)
-        try:
-            filename = file.name.lower()
-            if filename.endswith('.ps'):
-                file.write(chart)
-                file.close()
-        except FileNotFoundError:
-            print("File not found.")
+        chart = self.parent.chart.postscript(colormode="color", width=800, height=800, pageheight=800, pagewidth=800)
+        with open("test.ps", "w") as file:
+            file.write(chart)
+        # chart = chart.postscript(colormode='color')
+        #
+        # files = [('All files', '*.*'),
+        #          ('PostScript files', '*.ps'),
+        #          ('Excel files', '*.xlsx')]
+        # file = filedialog.asksaveasfile(
+        #     filetypes=files,
+        #     defaultextension=files)
+        # try:
+        #     filename = file.name.lower()
+        #     if filename.endswith('.ps'):
+        #         file.write(chart)
+        #         file.close()
+        # except FileNotFoundError:
+        #     print("File not found.")
 
     def on_settings(self):
         # kill any old instances if this class
@@ -179,9 +180,15 @@ class Chart(Canvas):
         self.pack(fill=BOTH, expand=True)
 
         self.line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
-        line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
+        self.line_c = self.create_line(20, 200, 800, 200, width=5)
+        self.oval_a = self.create_oval(20, 20, 100, 100, width=3, outline="green")
 
+        line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
         self.itemconfigure(line_b, fill="red", smooth=True)
+
+        self.update()
+
+        self.postscript(file="test2.ps")
 
 
 class Settings(Toplevel):
