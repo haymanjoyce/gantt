@@ -3,7 +3,8 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO figure out how to find and adjust to output page
+# TODO figure out all variables for controlling canvas placement and size
+# TODO create square with 0, 0 coordinates
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -186,8 +187,34 @@ class Chart(Canvas):
 
         # self.update()
 
+        att = [self.winfo_screenwidth(),
+               self.winfo_screenheight(),
+               self.winfo_geometry(),
+               self.winfo_depth(),
+               self.winfo_exists(),
+               self.winfo_width(),
+               self.winfo_height(),
+               self.winfo_rootx(),
+               self.winfo_rooty(),
+               self.winfo_x(),
+               self.winfo_y(),
+               ]
+
+        for i in att:
+            print(i)
+
     def as_postscript(self):
-        return self.postscript()
+        # width - default is canvas width
+        # height - default is canvas height
+        # pagewidth - sets width of printed page; canvas image scaled to fit
+        # pageheight - sets height of printed page; canvas image scaled to fit
+        # pagex - positioning point
+        # pagey - positioning point
+        # pageanchor - sets where page placed relative pagex and pagey ("n" | "e" | "s" | "w" | "center")
+        # rotate - 0 is portrait; 1 is landscape
+        # x - sets left edge of area to be printed (default is left edge of window)
+        # y - sets the top edge of area to be printed (default is top edge of window)
+        return self.postscript(file='test.ps', rotate=1)
 
     def as_pdf(self):
         pass
