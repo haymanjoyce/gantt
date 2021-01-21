@@ -4,7 +4,7 @@
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
 # TODO figure out all variables for controlling canvas placement and size
-# TODO create square with 0, 0 coordinates
+# TODO add try statement to on_save
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -178,14 +178,10 @@ class Chart(Canvas):
         self.configure(bg="#dddddd")
         self.pack(fill=BOTH, expand=True)
 
-        self.line_a = self.create_line(20, 20, 20, 100, width=1)  # x1, y1, x2, y2
-        self.line_c = self.create_line(20, 200, 800, 200, width=5)
-        self.oval_a = self.create_oval(600, 20, 500, 100, width=3, outline="green")
-
-        line_b = self.create_line(20, 20, 80, 20, 80, 100, 140, 100)  # series of x, y points
-        self.itemconfigure(line_b, fill="red", smooth=True)
-
-        # self.update()
+        self.create_rectangle(0, 0, 1600, 1600, fill="#ff0000")
+        self.create_rectangle(0, 0, 800, 800, fill="#0000ff")
+        self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
+        self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
 
         att = [self.winfo_screenwidth(),
                self.winfo_screenheight(),
@@ -203,7 +199,25 @@ class Chart(Canvas):
         for i in att:
             print(i)
 
+        self.update()
+
+        self.postscript(file='test.ps',
+                        # pagewidth=500,
+                        # pageheight=500,
+                        pagex=0,
+                        pagey=0,
+                        pageanchor='nw',
+                        rotate=1,
+                        # width=50,
+                        # height=50,
+                        x=0,
+                        y=0,
+                        )
+
     def as_postscript(self):
+
+        # POSTSCRIPT
+
         # width - default is canvas width
         # height - default is canvas height
         # pagewidth - sets width of printed page; canvas image scaled to fit
@@ -214,6 +228,12 @@ class Chart(Canvas):
         # rotate - 0 is portrait; 1 is landscape
         # x - sets left edge of area to be printed (default is left edge of window)
         # y - sets the top edge of area to be printed (default is top edge of window)
+
+        # 'nw' puts page in bottom right quadrant (so n and w edges touching x and y scales)
+        # pagex=100 means 'move 100 to the right along page edge' (it will create a margin)
+        # x=100 means 'move 100 to the right along image edge' (it will chop off left part of image)
+        # default page height (portrait) is 793
+
         return self.postscript(file='test.ps', rotate=1)
 
     def as_pdf(self):
