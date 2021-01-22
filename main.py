@@ -183,41 +183,29 @@ class Chart(Canvas):
         self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
         self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
 
-        att = [self.winfo_screenwidth(),
-               self.winfo_screenheight(),
-               self.winfo_geometry(),
-               self.winfo_depth(),
-               self.winfo_exists(),
-               self.winfo_width(),
-               self.winfo_height(),
-               self.winfo_rootx(),
-               self.winfo_rooty(),
-               self.winfo_x(),
-               self.winfo_y(),
-               ]
+        # att = [self.winfo_screenwidth(),
+        #        self.winfo_screenheight(),
+        #        self.winfo_geometry(),
+        #        self.winfo_depth(),
+        #        self.winfo_exists(),
+        #        self.winfo_width(),
+        #        self.winfo_height(),
+        #        self.winfo_rootx(),
+        #        self.winfo_rooty(),
+        #        self.winfo_x(),
+        #        self.winfo_y(),
+        #        ]
+        #
+        # for i in att:
+        #     print(i)
 
-        for i in att:
-            print(i)
+        # self.update()
 
-        self.update()
-
-        self.postscript(file='test.ps',
-                        # pagewidth=500,
-                        # pageheight=500,
-                        pagex=0,
-                        pagey=0,
-                        pageanchor='nw',
-                        rotate=1,
-                        # width=50,
-                        # height=50,
-                        x=0,
-                        y=0,
-                        )
-
-    def as_postscript(self):
+    def as_postscript(self, **kwargs):
 
         # POSTSCRIPT
 
+        # file - give name of file and it saves one for you
         # width - default is canvas width
         # height - default is canvas height
         # pagewidth - sets width of printed page; canvas image scaled to fit
@@ -233,8 +221,10 @@ class Chart(Canvas):
         # pagex=100 means 'move 100 to the right along page edge' (it will create a margin)
         # x=100 means 'move 100 to the right along image edge' (it will chop off left part of image)
         # default page height (portrait) is 793
+        # for some reason, 'nw' applied as 'sw' in portrait view and scales flip (positive pagey moves image up)
+        # DESIGN DECISION: only enabling landscape view
 
-        return self.postscript(file='test.ps', rotate=1)
+        return self.postscript(rotate=1, pageanchor='nw', pagex=0, pagey=0)
 
     def as_pdf(self):
         pass
