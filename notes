@@ -1,0 +1,23 @@
+DESIGN DECISIONS
+
+Only enabling landscape view because cannot figure out Postscript behaviour in portrait
+
+POSTSCRIPT
+
+file - give name of file and it saves one for you
+width - default is canvas width
+height - default is canvas height
+pagewidth - sets width of printed page; canvas image scaled to fit
+pageheight - sets height of printed page; canvas image scaled to fit
+pagex - positioning point
+pagey - positioning point
+pageanchor - sets where page placed relative pagex and pagey ("n" | "e" | "s" | "w" | "center")
+rotate - 0 is portrait; 1 is landscape
+x - sets left edge of area to be printed (default is left edge of window)
+y - sets the top edge of area to be printed (default is top edge of window)
+
+'nw' puts page in bottom right quadrant (so n and w edges touching x and y scales)
+pagex=100 means 'move 100 to the right along page edge' (it will create a margin)
+x=100 means 'move 100 to the right along image edge' (it will chop off left part of image)
+default page height (portrait) is 793
+for some reason, 'nw' applied as 'sw' in portrait view and scales flip (positive pagey moves image up)
