@@ -3,8 +3,7 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO figure out all variables for controlling canvas placement and size
-# TODO add try statement to on_save
+# TODO add margins to settings and render in postscript files
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -83,23 +82,12 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        chart = self.parent.chart
-
-        files = [('All files', '*.*'),
-                 ('PostScript files', '*.ps'),
-                 ('Excel files', '*.xlsx')]
-
-        file = filedialog.asksaveasfile(
-            filetypes=files,
-            defaultextension=files)
-
-        filename = file.name.lower()
-
-        if filename.endswith('.ps'):
-            file.write(chart.as_postscript())
-            file.close()
+        files = [('PostScript file', '*.ps'), ('Excel file', '*.xlsx'), ('All files', '*.*')]
+        file = filedialog.asksaveasfile(filetypes=files, defaultextension='.ps')
+        if file:
+            self.save_file(file)
         else:
-            pass
+            gui.info("File save aborted.")
 
     def on_settings(self):
         # kill any old instances if this class
@@ -123,6 +111,15 @@ class Menubar(Menu):
 
     def on_about(self):
         print("Menu item working!")
+
+    def save_file(self, file):
+        chart = self.parent.chart
+        filename = file.name.lower()
+        if filename.endswith('.ps'):
+            file.write(chart.as_postscript())
+            file.close()
+        else:
+            cli.warning("Cannot write to that format yet.")
 
 
 class Toolbar(Frame):
