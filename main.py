@@ -199,7 +199,7 @@ class Chart(Canvas):
         # self.update()
 
     def as_postscript(self, **kwargs):
-        return self.postscript(rotate=1, pageanchor='nw', pagex=0, pagey=0)
+        return self.postscript(rotate=0, pageanchor='nw', pagex=0, pagey=0)
 
     def as_pdf(self):
         pass
@@ -217,7 +217,7 @@ class Settings(Toplevel):
         self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
         self.y = floor(self.parent.y + (self.parent.height * 0.2))
 
-        self.dict_settings = dict()
+        self.settings = dict()
         self.json_settings = None
 
         self.title("Settings")
@@ -256,28 +256,54 @@ class Settings(Toplevel):
 
         # if file contains data
         if self.json_settings:
-            self.dict_settings = json.loads(self.json_settings)
+            self.settings = json.loads(self.json_settings)
             # populate fields
-            self.ent_width.insert(0, self.dict_settings["width"])
-            self.ent_height.insert(0, self.dict_settings["height"])
+            self.ent_width.insert(0, self.settings["width"])
+            self.ent_height.insert(0, self.settings["height"])
         else:
             cli.info("Blank configuration file.")
 
     def on_save(self):
         # get settings
-        self.dict_settings["width"] = self.ent_width.get()
-        self.dict_settings["height"] = self.ent_height.get()
+        self.settings["width"] = self.ent_width.get()
+        self.settings["height"] = self.ent_height.get()
 
         # save settings
-        self.json_settings = json.dumps(self.dict_settings)
+        self.json_settings = json.dumps(self.settings)
         with open('config.json', 'w') as file:
             file.write(self.json_settings)
         gui.info("Settings saved.")
 
-        # make changes to chart object (if any)
-
     def on_close(self):
         self.destroy()
+
+    def save_settings(self):
+        as_json = json.dumps(self.settings)
+        with open('config.json', 'w') as file:
+            file.write(as_json)
+        gui.info("Settings saved.")
+
+    def get_settings(self):
+        try:
+            file = open("config.json", "r")
+            settings = file.readline()
+            return settings
+        except FileNotFoundError:
+            cli.info("Configuration file not found.")
+            # create file
+            file = open("config.json", "w")
+            file.close()
+            cli.info("Configuration file created.")
+            return None
+
+        # if file contains data
+        if self.json_settings:
+            self.settings = json.loads(self.json_settings)
+            # populate fields
+            self.ent_width.insert(0, self.settings["width"])
+            self.ent_height.insert(0, self.settings["height"])
+        else:
+            cli.info("Blank configuration file.")
 
 
 class Log(Toplevel):
