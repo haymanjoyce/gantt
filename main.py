@@ -90,11 +90,9 @@ class Menubar(Menu):
             gui.info("File save aborted.")
 
     def on_settings(self):
-        # kill any old instances if this class
         if isinstance(self.parent.settings, Settings):
-            self.parent.settings.quit()
+            self.parent.settings.destroy()
         self.parent.settings = Settings(self.parent)
-        self.parent.settings.populate()
 
     def on_exit(self):
         self.parent.quit()
@@ -217,8 +215,7 @@ class Settings(Toplevel):
         self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
         self.y = floor(self.parent.y + (self.parent.height * 0.2))
 
-        self.settings = dict()
-        self.json_settings = None
+        self.settings = self.get_data()
 
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
@@ -240,70 +237,45 @@ class Settings(Toplevel):
         self.btn_save.grid(row=2, column=0, sticky="nsew", pady=(5, 0))
         self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
 
+        self.populate_fields()
+
         # you need to set geometry after grid established (for some reason)
         self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
 
-    def populate(self):
-        # opening file
-        try:
-            with open("config.json", "r") as file:
-                self.json_settings = file.readline()
-        except FileNotFoundError:
-            cli.info("Configuration file not found.")
-            with open("config.json", "w") as file:
-                cli.info("Configuration file created.")
-                # you could load file with default content here
-
-        # if file contains data
-        if self.json_settings:
-            self.settings = json.loads(self.json_settings)
-            # populate fields
-            self.ent_width.insert(0, self.settings["width"])
-            self.ent_height.insert(0, self.settings["height"])
-        else:
-            cli.info("Blank configuration file.")
-
-    def on_save(self):
-        # get settings
-        self.settings["width"] = self.ent_width.get()
-        self.settings["height"] = self.ent_height.get()
-
-        # save settings
-        self.json_settings = json.dumps(self.settings)
-        with open('config.json', 'w') as file:
-            file.write(self.json_settings)
-        gui.info("Settings saved.")
-
-    def on_close(self):
-        self.destroy()
-
-    def save_settings(self):
-        as_json = json.dumps(self.settings)
-        with open('config.json', 'w') as file:
-            file.write(as_json)
-        gui.info("Settings saved.")
-
-    def get_settings(self):
+    def get_data(self):
         try:
             file = open("config.json", "r")
-            settings = file.readline()
-            return settings
+            data = file.readline()
+            if data:
+                return json.loads(data)
+            else:
+                return dict()
         except FileNotFoundError:
             cli.info("Configuration file not found.")
-            # create file
             file = open("config.json", "w")
             file.close()
             cli.info("Configuration file created.")
-            return None
+            return dict()
 
-        # if file contains data
-        if self.json_settings:
-            self.settings = json.loads(self.json_settings)
-            # populate fields
+    def populate_fields(self):
+        if self.settings:
             self.ent_width.insert(0, self.settings["width"])
             self.ent_height.insert(0, self.settings["height"])
         else:
             cli.info("Blank configuration file.")
+
+    def save_data(self):
+        with open('config.json', 'w') as file:
+            file.write(json.dumps(self.settings))
+        gui.info("Settings saved.")
+
+    def on_save(self):
+        self.settings["width"] = self.ent_width.get()
+        self.settings["height"] = self.ent_height.get()
+        self.save_data()
+
+    def on_close(self):
+        self.destroy()
 
 
 class Log(Toplevel):
