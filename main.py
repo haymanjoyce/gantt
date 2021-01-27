@@ -4,6 +4,7 @@
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
 # TODO add margins to settings and render in postscript files
+# TODO debug instance where not all keys present in config file
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -39,8 +40,6 @@ class App(Tk):
         self.title("Main")
         self.wm_iconbitmap("favicon.ico")
 
-        self.source_file = None
-
         self.menubar = Menubar(self)
         self["menu"] = self.menubar
         # YES: self.config(menu=self.menubar)
@@ -57,6 +56,21 @@ class App(Tk):
         # erase log file
         log = open('app.log', 'r+')
         log.truncate(0)
+
+    def get_settings(self):
+        try:
+            file = open("config.json", "r")
+            data = file.readline()
+            if data:
+                return json.loads(data)
+            else:
+                return dict()
+        except FileNotFoundError:
+            cli.info("Configuration file not found.")
+            file = open("config.json", "w")
+            file.close()
+            cli.info("Configuration file created.")
+            return dict()
 
 
 class Menubar(Menu):
@@ -102,7 +116,7 @@ class Menubar(Menu):
         if isinstance(self.parent.log, Log):
             self.parent.log.destroy()
         self.parent.log = Log(self.parent)
-        self.parent.log.populate()
+        self.parent.log.populate_log()
 
     def on_help(self):
         print("Menu item working!")
@@ -170,6 +184,8 @@ class Chart(Canvas):
     def __init__(self, parent):
         super(Chart, self).__init__(parent)
 
+        self.parent = parent
+
         self.configure(bg="#dddddd")
         self.pack(fill=BOTH, expand=True)
 
@@ -178,26 +194,14 @@ class Chart(Canvas):
         self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
         self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
 
-        # att = [self.winfo_screenwidth(),
-        #        self.winfo_screenheight(),
-        #        self.winfo_geometry(),
-        #        self.winfo_depth(),
-        #        self.winfo_exists(),
-        #        self.winfo_width(),
-        #        self.winfo_height(),
-        #        self.winfo_rootx(),
-        #        self.winfo_rooty(),
-        #        self.winfo_x(),
-        #        self.winfo_y(),
-        #        ]
-        #
-        # for i in att:
-        #     print(i)
-
-        # self.update()
-
-    def as_postscript(self, **kwargs):
-        return self.postscript(rotate=0, pageanchor='nw', pagex=0, pagey=0)
+    def as_postscript(self):
+        data = self.parent.get_settings()
+        page_x = data['top_margin']
+        page_y = data['left_margin']
+        return self.postscript(rotate=1,
+                               pageanchor='nw',
+                               pagex=page_x,
+                               pagey=page_y)
 
     def as_pdf(self):
         pass
@@ -210,12 +214,11 @@ class Settings(Toplevel):
         self.parent = parent
 
         self.width = 200
-        self.height = 100
         self.minsize(200, 100)
         self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
         self.y = floor(self.parent.y + (self.parent.height * 0.2))
 
-        self.settings = self.get_data()
+        self.data = self.parent.get_settings()
 
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
@@ -227,6 +230,10 @@ class Settings(Toplevel):
         self.ent_width = Entry(self, width=10)
         self.lbl_height = Label(self, text="Page height:")
         self.ent_height = Entry(self, width=10)
+        self.lbl_top_margin = Label(self, text="Top margin:")
+        self.ent_top_margin = Entry(self, width=10)
+        self.lbl_left_margin = Label(self, text="Left margin:")
+        self.ent_left_margin = Entry(self, width=10)
         self.btn_save = Button(self, text="Save", command=self.on_save)
         self.btn_close = Button(self, text="Close", command=self.on_close)
 
@@ -234,44 +241,37 @@ class Settings(Toplevel):
         self.ent_width.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
         self.lbl_height.grid(row=1, column=0, sticky="nsew", pady=(0, 5))
         self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5))
-        self.btn_save.grid(row=2, column=0, sticky="nsew", pady=(5, 0))
-        self.btn_close.grid(row=2, column=1, sticky="nsew", pady=(5, 0))
+        self.lbl_top_margin.grid(row=3, column=0, sticky="nsew", pady=(0, 5))
+        self.ent_top_margin.grid(row=3, column=1, sticky="nsew", pady=(0, 5))
+        self.lbl_left_margin.grid(row=4, column=0, sticky="nsew", pady=(0, 5))
+        self.ent_left_margin.grid(row=4, column=1, sticky="nsew", pady=(0, 5))
+        self.btn_save.grid(row=5, column=0, sticky="nsew", pady=(5, 0))
+        self.btn_close.grid(row=5, column=1, sticky="nsew", pady=(5, 0))
 
         self.populate_fields()
 
         # you need to set geometry after grid established (for some reason)
-        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
-
-    def get_data(self):
-        try:
-            file = open("config.json", "r")
-            data = file.readline()
-            if data:
-                return json.loads(data)
-            else:
-                return dict()
-        except FileNotFoundError:
-            cli.info("Configuration file not found.")
-            file = open("config.json", "w")
-            file.close()
-            cli.info("Configuration file created.")
-            return dict()
+        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
     def populate_fields(self):
-        if self.settings:
-            self.ent_width.insert(0, self.settings["width"])
-            self.ent_height.insert(0, self.settings["height"])
+        if self.data:
+            self.ent_width.insert(0, self.data["width"])
+            self.ent_height.insert(0, self.data["height"])
+            self.ent_top_margin.insert(0, self.data['top_margin'])
+            self.ent_left_margin.insert(0, self.data['left_margin'])
         else:
             cli.info("Blank configuration file.")
 
     def save_data(self):
         with open('config.json', 'w') as file:
-            file.write(json.dumps(self.settings))
+            file.write(json.dumps(self.data))
         gui.info("Settings saved.")
 
     def on_save(self):
-        self.settings["width"] = self.ent_width.get()
-        self.settings["height"] = self.ent_height.get()
+        self.data["width"] = self.ent_width.get()
+        self.data["height"] = self.ent_height.get()
+        self.data['top_margin'] = self.ent_top_margin.get()
+        self.data['left_margin'] = self.ent_left_margin.get()
         self.save_data()
 
     def on_close(self):
@@ -298,7 +298,7 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')
         self.scroller.pack(expand=True, fill=BOTH)
 
-    def populate(self):
+    def populate_log(self):
         with open('app.log', "r") as log:
             text = str(log.read())
         self.scroller.configure(state='normal')  # writable
