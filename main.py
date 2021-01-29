@@ -3,7 +3,6 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO add margins to settings and render in postscript files
 # TODO debug instance where not all keys present in config file
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
@@ -57,7 +56,8 @@ class App(Tk):
         log = open('app.log', 'r+')
         log.truncate(0)
 
-    def get_settings(self):
+    @staticmethod
+    def get_settings():
         try:
             file = open("config.json", "r")
             data = file.readline()
@@ -71,6 +71,17 @@ class App(Tk):
             file.close()
             cli.info("Configuration file created.")
             return dict()
+
+    @staticmethod
+    def save_settings(data):
+        with open('config.json', 'w') as file:
+            file.write(json.dumps(data))
+        gui.info("Settings saved.")
+
+    @staticmethod
+    def wipe_file(filename):
+        with open(filename, 'w') as file:
+            file.truncate(0)
 
 
 class Menubar(Menu):
@@ -254,25 +265,22 @@ class Settings(Toplevel):
         self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
     def populate_fields(self):
-        if self.data:
+        if len(self.data.keys()) == 4:
             self.ent_width.insert(0, self.data["width"])
             self.ent_height.insert(0, self.data["height"])
             self.ent_top_margin.insert(0, self.data['top_margin'])
             self.ent_left_margin.insert(0, self.data['left_margin'])
         else:
-            cli.info("Blank configuration file.")
-
-    def save_data(self):
-        with open('config.json', 'w') as file:
-            file.write(json.dumps(self.data))
-        gui.info("Settings saved.")
+            cli.info("Missing fields in configuration file.")
+            self.parent.wipe_file('config.json')
+            cli.info("Configuration file wiped.")
 
     def on_save(self):
         self.data["width"] = self.ent_width.get()
         self.data["height"] = self.ent_height.get()
         self.data['top_margin'] = self.ent_top_margin.get()
         self.data['left_margin'] = self.ent_left_margin.get()
-        self.save_data()
+        self.parent.save_settings(self.data)
 
     def on_close(self):
         self.destroy()
