@@ -3,7 +3,8 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO debug instance where not all keys present in config file
+# TODO convert ps tp pdf
+# TODO try reportlab
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -13,6 +14,7 @@ import json
 import test
 import loggers
 from math import floor
+import ghostscript
 
 
 class App(Tk):
