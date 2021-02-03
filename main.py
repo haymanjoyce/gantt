@@ -14,7 +14,6 @@ import json
 import test
 import loggers
 from math import floor
-import ghostscript
 
 
 class App(Tk):
@@ -168,10 +167,11 @@ class Toolbar(Frame):
         # we store filename at root level because it's needed by other classes
         self.parent.source_file = filedialog.askopenfile(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"),))
 
-        self.lbl_filename.configure(text=self.parent.source_file.name)
-
-        if len(self.lbl_filename.cget("text")) != 0:
+        if self.parent.source_file:
+            self.lbl_filename.configure(text=self.parent.source_file.name)
             self.btn_run.config(state="normal")
+        else:
+            cli.info("File selection cancelled.")
 
     def on_run(self):
         df = pd.read_excel(self.parent.source_file.name)
@@ -186,11 +186,6 @@ class Toolbar(Frame):
         # then parse it
         # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
         # export
-
-        # this should be in canvas temporarily
-        chart = self.parent.chart
-        chart.itemconfigure(chart.line_a, width=4)
-        chart.create_line(90, 20, 90, 100, width=2)  # x1, y1, x2, y2
 
 
 class Chart(Canvas):
