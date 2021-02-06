@@ -53,13 +53,6 @@ class App(Tk):
         self.settings = None
         self.log = None
 
-        self.sample_ps = self.chart.postscript()
-        self.sample_utf8 = self.sample_ps.encode('utf-8')
-        self.sample_bytes = io.BytesIO(self.sample_utf8)
-        self.sample_image = Image.open(self.sample_bytes)
-        self.sample_image.save('sample.jpg')
-        print(type(self.sample_image))
-
         self.mainloop()
 
         # erase log file
@@ -215,6 +208,17 @@ class Chart(Canvas):
         data = self.parent.get_settings()
         page_x = data['top_margin']
         page_y = data['left_margin']
+
+        chart_as_ps = self.postscript()
+        file = open('test_ps.ps', 'w')
+        file.write(chart_as_ps)
+        file.close()
+        chart_encoded = chart_as_ps.encode('utf-8')
+        chart_as_bytes = io.BytesIO(chart_encoded)
+        chart_as_obj = Image.open(chart_as_bytes)
+        chart_as_obj.save('test_jpg.jpg')
+        chart_as_obj.save('test_pdf.pdf')
+
         return self.postscript(rotate=1,
                                pageanchor='nw',
                                pagex=page_x,
@@ -329,5 +333,4 @@ if __name__ == '__main__':
     gui.info("Logger initialised.")
 
     app = App()
-
 
