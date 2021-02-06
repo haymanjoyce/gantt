@@ -14,6 +14,8 @@ import json
 import test
 import loggers
 from math import floor
+from PIL import Image
+import io
 
 
 class App(Tk):
@@ -50,6 +52,13 @@ class App(Tk):
         self.chart = Chart(self)
         self.settings = None
         self.log = None
+
+        self.sample_ps = self.chart.postscript()
+        self.sample_utf8 = self.sample_ps.encode('utf-8')
+        self.sample_bytes = io.BytesIO(self.sample_utf8)
+        self.sample_image = Image.open(self.sample_bytes)
+        self.sample_image.save('sample.jpg')
+        print(type(self.sample_image))
 
         self.mainloop()
 
@@ -320,3 +329,5 @@ if __name__ == '__main__':
     gui.info("Logger initialised.")
 
     app = App()
+
+
