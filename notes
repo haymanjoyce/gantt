@@ -21,3 +21,10 @@ so w becomes n
 and pagex pushes image down
 
 default page height (portrait) is 793
+
+GHOSTSCRIPT
+
+The other GUIs use postscript too
+PyQt may not use postscript but cannot sell under their license
+So got to add Ghostscript to the install
+

@@ -3,8 +3,7 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO convert ps tp pdf
-# TODO try reportlab
+# TODO create class to handle saving to different file formats
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -144,6 +143,10 @@ class Menubar(Menu):
         if filename.endswith('.ps'):
             file.write(chart.as_postscript())
             file.close()
+        if filename.endswith('.pdf'):
+            pass
+        if filename.endswith('.jpg'):
+            pass
         else:
             cli.warning("Cannot write to that format yet.")
 
@@ -195,6 +198,7 @@ class Chart(Canvas):
         super(Chart, self).__init__(parent)
 
         self.parent = parent
+        self.settings = parent.get_settings()
 
         self.configure(bg="#dddddd")
         self.pack(fill=BOTH, expand=True)
@@ -205,27 +209,23 @@ class Chart(Canvas):
         self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
 
     def as_postscript(self):
-        data = self.parent.get_settings()
-        page_x = data['top_margin']
-        page_y = data['left_margin']
-
-        chart_as_ps = self.postscript()
-        file = open('test_ps.ps', 'w')
-        file.write(chart_as_ps)
-        file.close()
-        chart_encoded = chart_as_ps.encode('utf-8')
-        chart_as_bytes = io.BytesIO(chart_encoded)
-        chart_as_obj = Image.open(chart_as_bytes)
-        chart_as_obj.save('test_jpg.jpg')
-        chart_as_obj.save('test_pdf.pdf')
-
+        page_x = self.settings['top_margin']
+        page_y = self.settings['left_margin']
         return self.postscript(rotate=1,
                                pageanchor='nw',
                                pagex=page_x,
                                pagey=page_y)
 
-    def as_pdf(self):
-        pass
+    def as_bytecode(self):
+        chart_as_ps = self.postscript()
+        chart_encoded = chart_as_ps.encode('utf-8')
+        return io.BytesIO(chart_encoded)
+
+    def as_pdf(self, bytecode, filename):
+        Image.open(bytecode).save('test_pdf.pdf')
+
+    def as_jpg(self, bytecode, filename):
+        Image.open(bytecode).save('test_jpg')
 
 
 class Settings(Toplevel):
