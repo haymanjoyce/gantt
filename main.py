@@ -3,7 +3,8 @@
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
-# TODO create class to handle saving to different file formats
+# TODO docstring classes in main
+# TODO complete File class
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
