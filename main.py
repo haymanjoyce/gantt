@@ -21,6 +21,8 @@ class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
+        # DIMENSIONS
+
         cli.info(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
         cli.info(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
 
@@ -38,21 +40,26 @@ class App(Tk):
 
         self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
 
+        # DECORATION
+
         self.title("Main")
         self.wm_iconbitmap("favicon.ico")
+
+        # PERSISTENT COMPONENTS
 
         self.menubar = Menubar(self)
         self["menu"] = self.menubar
         # YES: self.config(menu=self.menubar)
         # YES: self.configure(menu=self.menubar)
         # NO: self.menu = self.menubar
-
         self.toolbar = Toolbar(self)
         self.chart = Chart(self)
-        self.settings = None
-        self.log = None
+
+        # LOOP
 
         self.mainloop()
+
+        # CLEAN UP
 
         # erase log file
         log = open('app.log', 'r+')
@@ -117,19 +124,13 @@ class Menubar(Menu):
             gui.info("File save aborted.")
 
     def on_settings(self):
-        if isinstance(self.parent.settings, Settings):
-            self.parent.settings.destroy()
-        self.parent.settings = Settings(self.parent)
+        Settings(self.parent)
 
     def on_exit(self):
         self.parent.quit()
 
     def on_log(self):
-        # kill any old instances if this class
-        if isinstance(self.parent.log, Log):
-            self.parent.log.destroy()
-        self.parent.log = Log(self.parent)
-        self.parent.log.populate_log()
+        Log(self.parent)
 
     def on_help(self):
         print("Menu item working!")
@@ -269,12 +270,12 @@ class Settings(Toplevel):
         self.btn_save.grid(row=5, column=0, sticky="nsew", pady=(5, 0))
         self.btn_close.grid(row=5, column=1, sticky="nsew", pady=(5, 0))
 
-        self.populate_fields()
+        self.on_open()  # populate fields
 
         # you need to set geometry after grid established (for some reason)
         self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
-    def populate_fields(self):
+    def on_open(self):
         if len(self.data.keys()) == 4:
             self.ent_width.insert(0, self.data["width"])
             self.ent_height.insert(0, self.data["height"])
@@ -316,7 +317,9 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')
         self.scroller.pack(expand=True, fill=BOTH)
 
-    def populate_log(self):
+        self.on_open()  # populate log
+
+    def on_open(self):
         with open('app.log', "r") as log:
             text = str(log.read())
         self.scroller.configure(state='normal')  # writable
