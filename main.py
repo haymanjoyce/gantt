@@ -5,7 +5,6 @@
 # TODO convert canvas to Excel
 # TODO docstring classes in main
 # TODO complete File class
-# TODO debug double file extension (need to use filename?)
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -318,29 +317,38 @@ class File:
         self.chart = self.parent.chart
         self.settings = self.parent.get_settings()
 
-        self.file_types = (('PostScript file', '.ps'),
-                           ('PDF file', '.pdf'),
-                           ('Text file', '.txt'),
-                           ('Excel file', '.xlsx'),
-                           ('All files', '.'))
-        self.file = filedialog.asksaveasfile(mode="w",
-                                             title="Save As",
-                                             filetypes=self.file_types,
-                                             )
+        file_types = [
+            ('PDF file', '*.pdf'),
+            ('JPG file', '*.jpg'),
+            ('PNG file', '*.png'),
+            ('BMP file', '*.bmp'),
+            ('TIFF file', '*.tif'),
+            ('Text file', '*.txt'),
+            ('Excel file', '*.xlsx'),
+            ('All files', '*.*')
+        ]
 
-        if self.file:
+        try:
+            self.file = filedialog.asksaveasfile(mode="w",
+                                                 title="Save As",
+                                                 filetypes=file_types,
+                                                 defaultextension="*.*"
+                                                 )
             self.file_name = self.file.name.lower()
             self.save_file()
+        except FileNotFoundError:
+            cli.warning("File not found.")
 
     def save_file(self):
-        if self.file_name.endswith('.ps'):
-            self.as_postscript()
-        elif self.file_name.endswith('.pdf'):
-            self.as_pdf()
-        elif self.file_name.endswith('.jpg'):
-            self.as_jpg()
+        img_suffixes = ('.pdf', '.jpg', '.png', '.bmp', '.tif')
+        if self.file_name.endswith(img_suffixes):
+            self.as_image()
+        elif self.file_name.endswith('.txt'):
+            self.as_text()
+        elif self.file_name.endswith('.xlsx'):
+            self.as_excel()
         else:
-            cli.warning("Cannot write to that format yet.")
+            cli.info("Cannot write to that format yet.")
 
     def as_postscript(self):
         page_x = self.settings['top_margin']
@@ -353,28 +361,28 @@ class File:
         self.file.close()
         cli.info("Chart saved as postscript file.")
 
-    def as_pdf(self):
+    def as_image(self):
         chart_as_ps = self.chart.postscript()
         chart_encoded = chart_as_ps.encode('utf-8')
         chart_as_bytecode = io.BytesIO(chart_encoded)
-        file_name = self.file_name.lower()
-        Image.open(chart_as_bytecode).save(file_name)
+        file_path = self.file_name.lower()
+        Image.open(chart_as_bytecode).save(file_path)
+        cli.info('Chart saved as: ' + file_path)
 
-    def as_jpg(self):
-        chart_as_ps = self.chart.postscript()
-        chart_encoded = chart_as_ps.encode('utf-8')
-        chart_as_bytecode = io.BytesIO(chart_encoded)
-        file_name = self.file_name.lower()
-        Image.open(chart_as_bytecode).save(file_name)
+    def as_text(self):
+        pass
+
+    def as_excel(self):
+        pass
 
 
 if __name__ == '__main__':
 
     cli = loggers.Stream()
-    cli.info(f"Logger initialised in main module.")
-
     gui = loggers.File()
-    gui.info("Logger initialised.")
+
+    cli.info(f"Loggers initialised. "
+             f"Example usage: 'cli.debug('Message for developer.')' or 'gui.info('Message for user.')'")
 
     app = App()
 
