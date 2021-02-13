@@ -346,9 +346,9 @@ class File:
         page_x = self.settings['top_margin']
         page_y = self.settings['left_margin']
         chart = self.chart.postscript(rotate=1,
-                              pageanchor='nw',
-                              pagex=page_x,
-                              pagey=page_y)
+                                      pageanchor='nw',
+                                      pagex=page_x,
+                                      pagey=page_y)
         self.file.write(chart)
         self.file.close()
         cli.info("Chart saved as postscript file.")
@@ -357,14 +357,14 @@ class File:
         chart_as_ps = self.chart.postscript()
         chart_encoded = chart_as_ps.encode('utf-8')
         chart_as_bytecode = io.BytesIO(chart_encoded)
-        file_name = self.file_name + ".pdf"
+        file_name = self.file_name.lower()
         Image.open(chart_as_bytecode).save(file_name)
 
     def as_jpg(self):
         chart_as_ps = self.chart.postscript()
         chart_encoded = chart_as_ps.encode('utf-8')
         chart_as_bytecode = io.BytesIO(chart_encoded)
-        file_name = self.file_name + ".jpg"
+        file_name = self.file_name.lower()
         Image.open(chart_as_bytecode).save(file_name)
 
 
