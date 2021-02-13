@@ -5,6 +5,7 @@
 # TODO convert canvas to Excel
 # TODO docstring classes in main
 # TODO complete File class
+# TODO debug double file extension (need to use filename?)
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -317,44 +318,54 @@ class File:
         self.chart = self.parent.chart
         self.settings = self.parent.get_settings()
 
-        self.file_types = [('PostScript file', '*.ps'), ('Excel file', '*.xlsx'), ('All files', '*.*')]
-        self.file = filedialog.asksaveasfile(filetypes=self.file_types, defaultextension='.ps')
-        self.file_name = self.file.name.lower()
+        self.file_types = (('PostScript file', '.ps'),
+                           ('PDF file', '.pdf'),
+                           ('Text file', '.txt'),
+                           ('Excel file', '.xlsx'),
+                           ('All files', '.'))
+        self.file = filedialog.asksaveasfile(mode="w",
+                                             title="Save As",
+                                             filetypes=self.file_types,
+                                             )
 
         if self.file:
+            self.file_name = self.file.name.lower()
             self.save_file()
-        else:
-            gui.info("File save aborted.")
 
     def save_file(self):
         if self.file_name.endswith('.ps'):
-            self.file.write(self.as_postscript())
-            self.file.close()
-        if self.file_name.endswith('.pdf'):
-            pass
-        if self.file_name.endswith('.jpg'):
-            pass
+            self.as_postscript()
+        elif self.file_name.endswith('.pdf'):
+            self.as_pdf()
+        elif self.file_name.endswith('.jpg'):
+            self.as_jpg()
         else:
             cli.warning("Cannot write to that format yet.")
 
     def as_postscript(self):
         page_x = self.settings['top_margin']
         page_y = self.settings['left_margin']
-        return self.chart.postscript(rotate=1,
-                                     pageanchor='nw',
-                                     pagex=page_x,
-                                     pagey=page_y)
+        chart = self.chart.postscript(rotate=1,
+                              pageanchor='nw',
+                              pagex=page_x,
+                              pagey=page_y)
+        self.file.write(chart)
+        self.file.close()
+        cli.info("Chart saved as postscript file.")
 
-    def as_bytecode(self):
+    def as_pdf(self):
         chart_as_ps = self.chart.postscript()
         chart_encoded = chart_as_ps.encode('utf-8')
-        return io.BytesIO(chart_encoded)
+        chart_as_bytecode = io.BytesIO(chart_encoded)
+        file_name = self.file_name + ".pdf"
+        Image.open(chart_as_bytecode).save(file_name)
 
-    def as_pdf(self, bytecode, filename):
-        Image.open(bytecode).save('test_pdf.pdf')
-
-    def as_jpg(self, bytecode, filename):
-        Image.open(bytecode).save('test_jpg')
+    def as_jpg(self):
+        chart_as_ps = self.chart.postscript()
+        chart_encoded = chart_as_ps.encode('utf-8')
+        chart_as_bytecode = io.BytesIO(chart_encoded)
+        file_name = self.file_name + ".jpg"
+        Image.open(chart_as_bytecode).save(file_name)
 
 
 if __name__ == '__main__':
