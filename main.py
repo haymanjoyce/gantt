@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
-# TODO reading multiple tabs in panda
-# TODO convert canvas to Excel
-# TODO docstring classes in main
+# TODO freezing the app and loading along with GhostScript.
+# TODO reading multiple tabs in pandas
+# TODO convert canvas data to Excel
 
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
+from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
+from tkinter import PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import os
@@ -153,7 +154,8 @@ class Toolbar(Frame):
 
     def on_select(self):
         # we store filename at root level because it's needed by other classes
-        self.parent.source_file = filedialog.askopenfile(initialdir="/desktop", title="Select file", filetypes=(("Excel files (*.xls*)", "*.xls*"),))
+        self.parent.source_file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
+                                                         filetypes=(("Excel files (*.xls*)", "*.xls*"),))
 
         if self.parent.source_file:
             self.lbl_filename.configure(text=self.parent.source_file.name)
@@ -287,6 +289,7 @@ class File:
     as_postscript method is there to show the odd things you need to do to make it work in landscape.
     File class is not derived from tkinter.
     """
+
     def __init__(self, parent):
 
         self.parent = parent
@@ -346,7 +349,6 @@ class File:
 
 
 if __name__ == '__main__':
-
     cli = loggers.Stream()
     gui = loggers.File()
 
@@ -354,4 +356,3 @@ if __name__ == '__main__':
              f"Example usage: 'cli.debug('Message for developer.')' or 'gui.info('Message for user.')'")
 
     app = App()
-
