@@ -4,7 +4,6 @@
 # TODO reading multiple tabs in panda
 # TODO convert canvas to Excel
 # TODO docstring classes in main
-# TODO complete File class
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
 from tkinter.ttk import Style, Button
@@ -166,16 +165,6 @@ class Toolbar(Frame):
         df = pd.read_excel(self.parent.source_file.name)
         print(df)
 
-        # FileProcessor
-        # then check it - logging issues
-        # then interpret it - adding to df
-        # export
-
-        # ImageProcessor
-        # then parse it
-        # then render it - chart.create_line(200, 20, 200, 100, width=1)  # x1, y1, x2, y2
-        # export
-
 
 class Chart(Canvas):
     def __init__(self, parent):
@@ -191,25 +180,6 @@ class Chart(Canvas):
         self.create_rectangle(0, 0, 800, 800, fill="#0000ff")
         self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
         self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
-
-    # def as_postscript(self):
-    #     page_x = self.settings['top_margin']
-    #     page_y = self.settings['left_margin']
-    #     return self.postscript(rotate=1,
-    #                            pageanchor='nw',
-    #                            pagex=page_x,
-    #                            pagey=page_y)
-    #
-    # def as_bytecode(self):
-    #     chart_as_ps = self.postscript()
-    #     chart_encoded = chart_as_ps.encode('utf-8')
-    #     return io.BytesIO(chart_encoded)
-    #
-    # def as_pdf(self, bytecode, filename):
-    #     Image.open(bytecode).save('test_pdf.pdf')
-    #
-    # def as_jpg(self, bytecode, filename):
-    #     Image.open(bytecode).save('test_jpg')
 
 
 class Settings(Toplevel):
@@ -311,6 +281,12 @@ class Log(Toplevel):
 
 
 class File:
+    """
+    Handles export of chart to various formats.
+    Image files, including PDF, need Ghostscript installed on client machine.
+    as_postscript method is there to show the odd things you need to do to make it work in landscape.
+    File class is not derived from tkinter.
+    """
     def __init__(self, parent):
 
         self.parent = parent
@@ -328,23 +304,20 @@ class File:
             ('All files', '*.*')
         ]
 
-        try:
-            self.file = filedialog.asksaveasfile(mode="w",
-                                                 title="Save As",
-                                                 filetypes=file_types,
-                                                 defaultextension="*.*"
-                                                 )
+        self.file = filedialog.asksaveasfile(mode="w",
+                                             title="Save As",
+                                             filetypes=file_types,
+                                             defaultextension="*.*"
+                                             )
+
+        if self.file:
             self.file_name = self.file.name.lower()
             self.save_file()
-        except FileNotFoundError:
-            cli.warning("File not found.")
 
     def save_file(self):
         img_suffixes = ('.pdf', '.jpg', '.png', '.bmp', '.tif')
-        if self.file_name.endswith(img_suffixes):
+        if self.file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif')):
             self.as_image()
-        elif self.file_name.endswith('.txt'):
-            self.as_text()
         elif self.file_name.endswith('.xlsx'):
             self.as_excel()
         else:
@@ -365,12 +338,8 @@ class File:
         chart_as_ps = self.chart.postscript()
         chart_encoded = chart_as_ps.encode('utf-8')
         chart_as_bytecode = io.BytesIO(chart_encoded)
-        file_path = self.file_name.lower()
-        Image.open(chart_as_bytecode).save(file_path)
-        cli.info('Chart saved as: ' + file_path)
-
-    def as_text(self):
-        pass
+        Image.open(chart_as_bytecode).save(self.file_name.lower())
+        cli.info('Chart saved as: ' + self.file_name.lower())
 
     def as_excel(self):
         pass
