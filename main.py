@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
-# TODO freezing the app and loading along with GhostScript.
+# TODO copying to clipboard
+# TODO setting image dimensions and printing
+# TODO freezing the app and loading along with GhostScript
 # TODO reading multiple tabs in pandas
 # TODO convert canvas data to Excel
+# TODO scrollbars if canvas larger than window
 
 from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
 from tkinter import PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
@@ -16,6 +19,7 @@ import loggers
 from math import floor
 from PIL import Image
 import io
+import data
 
 
 class App(Tk):
@@ -54,6 +58,7 @@ class App(Tk):
         # YES: self.configure(menu=self.menubar)
         # NO: self.menu = self.menubar
         self.toolbar = Toolbar(self)
+        self.viewer = Viewer(self)
         self.chart = Chart(self)
 
         # LOOP
@@ -117,7 +122,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        FileOut(self.parent)
+        Output(self.parent)
 
     def on_settings(self):
         Settings(self.parent)
@@ -156,13 +161,33 @@ class Toolbar(Frame):
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
     def on_select(self):
-        self.file_name = FileIn(self.parent).file_name
+        self.file_name = Input(self.parent).file_name
         self.lbl_filename.configure(text=self.file_name)
         self.btn_run.config(state="normal")
 
     def on_run(self):
         df = pd.read_excel(self.file_name)
         print(df)
+
+
+class Viewer(Frame):
+    def __init__(self, parent):
+        super(Viewer, self).__init__(parent)
+
+        self.parent = parent
+
+        # frame = Frame(root, width=300, height=300)
+        # frame.pack(expand=True, fill=BOTH)  # .grid(row=0,column=0)
+        # canvas = Canvas(frame, bg='#FFFFFF', width=300, height=300, scrollregion=(0, 0, 500, 500))
+        # hbar = Scrollbar(frame, orient=HORIZONTAL)
+        # hbar.pack(side=BOTTOM, fill=X)
+        # hbar.config(command=canvas.xview)
+        # vbar = Scrollbar(frame, orient=VERTICAL)
+        # vbar.pack(side=RIGHT, fill=Y)
+        # vbar.config(command=canvas.yview)
+        # canvas.config(width=300, height=300)
+        # canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+        # canvas.pack(side=LEFT, expand=True, fill=BOTH)
 
 
 class Chart(Canvas):
@@ -279,7 +304,7 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')  # readable
 
 
-class FileIn:
+class Input:
     def __init__(self, parent):
 
         self.parent = parent
@@ -298,7 +323,7 @@ class FileIn:
         return pd.read_excel(self.file_name)
 
 
-class FileOut:
+class Output:
     """
     Handles export of chart to various formats.
     Image files, including PDF, need Ghostscript installed on client machine.
@@ -318,7 +343,6 @@ class FileOut:
             ('PNG file', '*.png'),
             ('BMP file', '*.bmp'),
             ('TIFF file', '*.tif'),
-            ('Text file', '*.txt'),
             ('Excel file', '*.xlsx'),
             ('All files', '*.*')
         ]
@@ -334,7 +358,6 @@ class FileOut:
             self.save_file()
 
     def save_file(self):
-        img_suffixes = ('.pdf', '.jpg', '.png', '.bmp', '.tif')
         if self.file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif')):
             self.as_image()
         elif self.file_name.endswith('.xlsx'):
