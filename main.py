@@ -117,7 +117,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        File(self.parent)
+        FileOut(self.parent)
 
     def on_settings(self):
         Settings(self.parent)
@@ -140,10 +140,13 @@ class Toolbar(Frame):
         super(Toolbar, self).__init__(parent)
 
         self.parent = parent
+        self.file_name = None
 
         self.pack(side=TOP, fill=BOTH, padx=2, pady=(2, 0))
 
-        self.lbl_filename = Label(self, text="Select your Excel file")
+        self.placeholder = "Select your Excel file"
+
+        self.lbl_filename = Label(self, text=self.placeholder)
         self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED)
         self.btn_select = Button(self, text="Select File", command=self.on_select)
 
@@ -153,18 +156,12 @@ class Toolbar(Frame):
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
     def on_select(self):
-        # we store filename at root level because it's needed by other classes
-        self.parent.source_file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
-                                                         filetypes=(("Excel files (*.xls*)", "*.xls*"),))
-
-        if self.parent.source_file:
-            self.lbl_filename.configure(text=self.parent.source_file.name)
-            self.btn_run.config(state="normal")
-        else:
-            cli.info("File selection cancelled.")
+        self.file_name = FileIn(self.parent).file_name
+        self.lbl_filename.configure(text=self.file_name)
+        self.btn_run.config(state="normal")
 
     def on_run(self):
-        df = pd.read_excel(self.parent.source_file.name)
+        df = pd.read_excel(self.file_name)
         print(df)
 
 
@@ -282,7 +279,26 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')  # readable
 
 
-class File:
+class FileIn:
+    def __init__(self, parent):
+
+        self.parent = parent
+        self.placeholder = self.parent.toolbar.placeholder
+
+        self.file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
+                                           filetypes=(("Excel files (*.xls*)", "*.xls*"),))
+
+        if self.file:
+            self.file_name = self.file.name.lower()
+        else:
+            self.file_name = self.placeholder
+            cli.debug("File selection cancelled.")
+
+    def as_dataframe(self):
+        return pd.read_excel(self.file_name)
+
+
+class FileOut:
     """
     Handles export of chart to various formats.
     Image files, including PDF, need Ghostscript installed on client machine.
