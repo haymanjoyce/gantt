@@ -1,7 +1,3 @@
-DESIGN DECISIONS
-
-Make most postscript values available in Settings - effects vary across platforms
-
 POSTSCRIPT
 
 file - give name of file and it saves one for you

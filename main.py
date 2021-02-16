@@ -22,7 +22,7 @@ from math import floor
 from PIL import Image
 import io
 import processing
-import gui
+import frames
 
 
 # class App(Tk):
@@ -393,5 +393,5 @@ import gui
 if __name__ == '__main__':
     cli = loggers.Stream()
     cli.info(f"Logger initialised.")
-    app = gui.App()
+    app = frames.App()
 

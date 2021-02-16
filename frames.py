@@ -13,6 +13,7 @@ from PIL import Image
 import io
 import processing
 import dialogues
+import chart
 
 
 class App(Tk):
@@ -52,7 +53,7 @@ class App(Tk):
         # NO: self.menu = self.menubar
         self.toolbar = Toolbar(self)
         self.viewer = Viewer(self)
-        self.chart = Chart(self)
+        self.chart = chart.Chart(self)
 
         # LOOP
 
@@ -183,20 +184,20 @@ class Viewer(Frame):
         # canvas.pack(side=LEFT, expand=True, fill=BOTH)
 
 
-class Chart(Canvas):
-    def __init__(self, parent):
-        super(Chart, self).__init__(parent)
-
-        self.parent = parent
-        self.settings = parent.get_settings()
-
-        self.configure(bg="#dddddd")
-        self.pack(fill=BOTH, expand=True)
-
-        self.create_rectangle(0, 0, 1600, 1600, fill="#ff0000")
-        self.create_rectangle(0, 0, 800, 800, fill="#0000ff")
-        self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
-        self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
+# class Chart(Canvas):
+#     def __init__(self, parent):
+#         super(Chart, self).__init__(parent)
+#
+#         self.parent = parent
+#         self.settings = parent.get_settings()
+#
+#         self.configure(bg="#dddddd")
+#         self.pack(fill=BOTH, expand=True)
+#
+#         self.create_rectangle(0, 0, 1600, 1600, fill="#ff0000")
+#         self.create_rectangle(0, 0, 800, 800, fill="#0000ff")
+#         self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
+#         self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
 
 
 # class Settings(Toplevel):
