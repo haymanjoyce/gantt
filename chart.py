@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
 
 import loggers
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
-from tkinter import PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
-from tkinter.ttk import Style, Button
-import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-import os
-import json
-import test
-from math import floor
-from PIL import Image
-import io
-import processing
+from tkinter import Canvas, BOTH
 
 
 class Chart(Canvas):
@@ -31,7 +21,3 @@ class Chart(Canvas):
 
 
 cli = loggers.Stream()
-cli.info(f"Logger initialised in {__name__} module.")
-user = loggers.Stream()
-cli.info(f"Logger initialised in {__name__} module.")
-

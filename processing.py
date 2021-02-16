@@ -8,6 +8,4 @@ class Processing:
 
 
 cli = loggers.Stream()
-cli.info(f"Logger initialised in {__name__} module.")
-user = loggers.Stream()
-cli.info(f"Logger initialised in {__name__} module.")
+

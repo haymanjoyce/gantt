@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 
 import loggers
-from tkinter import Tk, Frame, Canvas, Label, Button, Entry, filedialog, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
-from tkinter import PhotoImage, DISABLED, StringVar, Menu, Toplevel, RAISED, scrolledtext, Text
-from tkinter.ttk import Style, Button
+from tkinter import Label, Button, Entry, filedialog, END, BOTH
+from tkinter import Toplevel, scrolledtext
+from tkinter.ttk import Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-import os
-import json
-import test
 from math import floor
 from PIL import Image
 import io
-import processing
 
 
 class Settings(Toplevel):
@@ -112,7 +108,7 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')  # readable
 
 
-class Input:
+class Excel:
     def __init__(self, parent):
 
         self.parent = parent
@@ -131,7 +127,7 @@ class Input:
         return pd.read_excel(self.file_name)
 
 
-class Output:
+class Images:
     """
     Handles export of chart to various formats.
     Image files, including PDF, need Ghostscript installed on client machine.
@@ -196,7 +192,3 @@ class Output:
 
 
 cli = loggers.Stream()
-cli.info(f"Logger initialised in {__name__} module.")
-# user = loggers.Stream()
-# cli.info(f"Logger initialised in {__name__} module.")
-
