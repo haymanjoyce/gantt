@@ -3,8 +3,11 @@
 import loggers
 
 
+class Processing:
+    pass
+
+
 cli = loggers.Stream()
 cli.info(f"Logger initialised in {__name__} module.")
-gui = loggers.Stream()
+user = loggers.Stream()
 cli.info(f"Logger initialised in {__name__} module.")
-
