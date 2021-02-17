@@ -108,31 +108,11 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')  # readable
 
 
-class Excel:
-    def __init__(self, parent):
-
-        self.parent = parent
-        self.placeholder = self.parent.toolbar.placeholder
-
-        self.file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
-                                           filetypes=(("Excel files (*.xls*)", "*.xls*"),))
-
-        if self.file:
-            self.file_name = self.file.name.lower()
-        else:
-            self.file_name = self.placeholder
-            cli.debug("File selection cancelled.")
-
-    def as_dataframe(self):
-        return pd.read_excel(self.file_name)
-
-
-class Images:
+class Imaging:
     """
     Handles export of chart to various formats.
     Image files, including PDF, need Ghostscript installed on client machine.
     as_postscript method is there to show the odd things you need to do to make it work in landscape.
-    File class is not derived from tkinter.
     """
 
     def __init__(self, parent):
@@ -147,7 +127,7 @@ class Images:
             ('PNG file', '*.png'),
             ('BMP file', '*.bmp'),
             ('TIFF file', '*.tif'),
-            ('Excel file', '*.xlsx'),
+            ('PostScript file', '*.ps'),
             ('All files', '*.*')
         ]
 
@@ -162,33 +142,25 @@ class Images:
             self.save_file()
 
     def save_file(self):
-        if self.file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif')):
-            self.as_image()
-        elif self.file_name.endswith('.xlsx'):
-            self.as_excel()
+        if self.file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
+            chart_as_ps = self.chart.postscript()
+            chart_encoded = chart_as_ps.encode('utf-8')
+            chart_as_bytecode = io.BytesIO(chart_encoded)
+            Image.open(chart_as_bytecode).save(self.file_name.lower())
+            cli.info('Chart saved as: ' + self.file_name.lower())
         else:
-            cli.info("Cannot write to that format yet.")
+            cli.warning("Cannot write to that format.")
 
-    def as_postscript(self):
-        page_x = self.settings['top_margin']
-        page_y = self.settings['left_margin']
-        chart = self.chart.postscript(rotate=1,
-                                      pageanchor='nw',
-                                      pagex=page_x,
-                                      pagey=page_y)
-        self.file.write(chart)
-        self.file.close()
-        cli.info("Chart saved as postscript file.")
 
-    def as_image(self):
-        chart_as_ps = self.chart.postscript()
-        chart_encoded = chart_as_ps.encode('utf-8')
-        chart_as_bytecode = io.BytesIO(chart_encoded)
-        Image.open(chart_as_bytecode).save(self.file_name.lower())
-        cli.info('Chart saved as: ' + self.file_name.lower())
-
-    def as_excel(self):
-        pass
+def get_name(placeholder):
+    file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
+                                  filetypes=(("Excel files (*.xls*)", "*.xls*"),))
+    if file:
+        file_name = file.name.lower()
+    else:
+        file_name = placeholder
+        cli.debug("File selection cancelled.")
+    return file_name
 
 
 cli = loggers.Stream()

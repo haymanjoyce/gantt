@@ -5,9 +5,9 @@
 # TODO setting image dimensions and printing
 # TODO freezing the app and loading along with GhostScript
 # TODO reading multiple tabs in pandas
-# TODO convert canvas data to Excel
 # TODO scrollbars if canvas larger than window
-# TODO move Excel export to Excel class
+# TODO create export Excel function
+# TODO convert Imaging class into function
 
 import loggers
 import frames

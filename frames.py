@@ -80,7 +80,6 @@ class App(Tk):
     def save_settings(data):
         with open('config.json', 'w') as file:
             file.write(json.dumps(data))
-        user.info("Settings saved.")
 
     @staticmethod
     def wipe_file(filename):
@@ -111,7 +110,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        dialogues.Images(self.parent)
+        dialogues.Imaging(self.parent)
 
     def on_settings(self):
         dialogues.Settings(self.parent)
@@ -150,7 +149,7 @@ class Toolbar(Frame):
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
     def on_select(self):
-        self.file_name = dialogues.Excel(self.parent).file_name
+        self.file_name = dialogues.get_name(self.placeholder)
         self.lbl_filename.configure(text=self.file_name)
         self.btn_run.config(state="normal")
 
