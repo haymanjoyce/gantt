@@ -110,7 +110,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        dialogues.Imaging(self.parent)
+        dialogues.save_image(self.parent.chart.postscript(), self.parent.get_settings())
 
     def on_settings(self):
         dialogues.Settings(self.parent)

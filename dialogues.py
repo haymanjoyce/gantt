@@ -108,46 +108,29 @@ class Log(Toplevel):
         self.scroller.configure(state='disabled')  # readable
 
 
-class Imaging:
-    """
-    Handles export of chart to various formats.
-    Image files, including PDF, need Ghostscript installed on client machine.
-    as_postscript method is there to show the odd things you need to do to make it work in landscape.
-    """
-
-    def __init__(self, parent):
-
-        self.parent = parent
-        self.chart = self.parent.chart
-        self.settings = self.parent.get_settings()
-
-        file_types = [
-            ('PDF file', '*.pdf'),
-            ('JPG file', '*.jpg'),
-            ('PNG file', '*.png'),
-            ('BMP file', '*.bmp'),
-            ('TIFF file', '*.tif'),
-            ('PostScript file', '*.ps'),
-            ('All files', '*.*')
-        ]
-
-        self.file = filedialog.asksaveasfile(mode="w",
-                                             title="Save As",
-                                             filetypes=file_types,
-                                             defaultextension="*.*"
-                                             )
-
-        if self.file:
-            self.file_name = self.file.name.lower()
-            self.save_file()
-
-    def save_file(self):
-        if self.file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
-            chart_as_ps = self.chart.postscript()
-            chart_encoded = chart_as_ps.encode('utf-8')
+def save_image(postscript, settings):
+    """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
+    file_types = [
+        ('PDF file', '*.pdf'),
+        ('JPG file', '*.jpg'),
+        ('PNG file', '*.png'),
+        ('BMP file', '*.bmp'),
+        ('TIFF file', '*.tif'),
+        ('PostScript file', '*.ps'),
+        ('All files', '*.*')
+    ]
+    file = filedialog.asksaveasfile(mode="w",
+                                    title="Save As",
+                                    filetypes=file_types,
+                                    defaultextension="*.*"
+                                    )
+    if file:
+        file_name = file.name.lower()
+        if file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
+            chart_encoded = postscript.encode('utf-8')
             chart_as_bytecode = io.BytesIO(chart_encoded)
-            Image.open(chart_as_bytecode).save(self.file_name.lower())
-            cli.info('Chart saved as: ' + self.file_name.lower())
+            Image.open(chart_as_bytecode).save(file_name)
+            cli.info('Chart saved as: ' + file_name)
         else:
             cli.warning("Cannot write to that format.")
 
