@@ -7,7 +7,6 @@
 # TODO reading multiple tabs in pandas
 # TODO scrollbars if canvas larger than window
 # TODO create export Excel function
-# TODO convert Imaging class into function
 
 import loggers
 import frames
