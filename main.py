@@ -8,6 +8,13 @@
 # TODO scrollbars if canvas larger than window
 # TODO create export Excel function
 
+# MANUAL OS ENVIRONMENT INSTALLS
+# ghostscript
+
+# MANUAL PYTHON ENVIRONMENT INSTALLS
+# openpyxl (xlrd only does xls)
+
+
 import loggers
 import frames
 

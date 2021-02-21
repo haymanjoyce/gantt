@@ -4,7 +4,7 @@ import loggers
 from tkinter import Label, Button, Entry, filedialog, END, BOTH
 from tkinter import Toplevel, scrolledtext
 from tkinter.ttk import Button
-import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
+import pandas as pd
 from math import floor
 from PIL import Image
 import io
@@ -135,15 +135,29 @@ def save_image(postscript, settings):
             cli.warning("Cannot write to that format.")
 
 
-def get_name(placeholder):
+def get_file_name(placeholder):
     file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
-                                  filetypes=(("Excel files (*.xls*)", "*.xls*"),))
+                                  filetypes=(("Excel files", "*.xlsx"),))
     if file:
         file_name = file.name.lower()
     else:
         file_name = placeholder
         cli.debug("File selection cancelled.")
     return file_name
+
+
+def export_data(df):
+    file = filedialog.asksaveasfile(mode="w",
+                                    title="Save As",
+                                    filetypes=(("Excel files", "*.xlsx"),),
+                                    )
+    if file:
+        file_name = file.name.lower()
+        if file_name.endswith(".xlsx"):
+            df.to_excel(file_name)
+            cli.info("Chart saved as" + file_name)
+    else:
+        cli.warning("Cannot write to that format.")
 
 
 cli = loggers.Stream()

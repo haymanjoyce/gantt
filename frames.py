@@ -97,6 +97,7 @@ class Menubar(Menu):
         self.help_menu = Menu(self, tearoff=0)
 
         self.file_menu.add_command(label="Save As...", command=self.on_save)
+        self.file_menu.add_command(label="Export...", command=self.on_export)
         self.file_menu.add_command(label="Settings...", command=self.on_settings)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=self.on_exit)
@@ -111,6 +112,9 @@ class Menubar(Menu):
 
     def on_save(self):
         dialogues.save_image(self.parent.chart.postscript(), self.parent.get_settings())
+
+    def on_export(self, df=pd.DataFrame()):
+        dialogues.export_data(df)
 
     def on_settings(self):
         dialogues.Settings(self.parent)
@@ -149,7 +153,7 @@ class Toolbar(Frame):
         self.btn_select.pack(side=RIGHT, padx=(0, 2))
 
     def on_select(self):
-        self.file_name = dialogues.get_name(self.placeholder)
+        self.file_name = dialogues.get_file_name(self.placeholder)
         self.lbl_filename.configure(text=self.file_name)
         self.btn_run.config(state="normal")
 
