@@ -6,7 +6,6 @@
 # TODO freezing the app and loading along with GhostScript
 # TODO reading multiple tabs in pandas
 # TODO scrollbars if canvas larger than window
-# TODO create export Excel function
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
