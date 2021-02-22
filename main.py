@@ -4,8 +4,6 @@
 # TODO copying to clipboard
 # TODO setting image dimensions and printing
 # TODO freezing the app and loading along with GhostScript
-# TODO reading multiple tabs in pandas
-# TODO scrollbars if canvas larger than window
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

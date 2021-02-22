@@ -160,8 +160,10 @@ class Toolbar(Frame):
         self.btn_run.config(state="normal")
 
     def on_run(self):
-        df = pd.read_excel(self.file_name)
-        print(df)
+        file = pd.ExcelFile(self.file_name)
+        sheet_0 = pd.read_excel(file, 0)
+        sheet_1 = pd.read_excel(file, 1)
+        print(sheet_1)
 
 
 class Viewer(Frame):
