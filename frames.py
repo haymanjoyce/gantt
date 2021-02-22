@@ -114,6 +114,8 @@ class Menubar(Menu):
         dialogues.save_image(self.parent.chart.postscript(), self.parent.get_settings())
 
     def on_export(self, df=pd.DataFrame()):
+        data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
+        df = df.append(data)
         dialogues.export_data(df)
 
     def on_settings(self):

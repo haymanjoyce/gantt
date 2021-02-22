@@ -132,7 +132,9 @@ def save_image(postscript, settings):
             Image.open(chart_as_bytecode).save(file_name)
             cli.info('Chart saved as: ' + file_name)
         else:
-            cli.warning("Cannot write to that format.")
+            cli.warning("File type not recognised.")
+    else:
+        cli.info("Operation cancelled.")
 
 
 def get_file_name(placeholder):
@@ -142,7 +144,7 @@ def get_file_name(placeholder):
         file_name = file.name.lower()
     else:
         file_name = placeholder
-        cli.debug("File selection cancelled.")
+        cli.debug("Operation cancelled.")
     return file_name
 
 
@@ -156,8 +158,10 @@ def export_data(df):
         if file_name.endswith(".xlsx"):
             df.to_excel(file_name)
             cli.info("Chart saved as" + file_name)
+        else:
+            cli.warning("File type not recognised.")
     else:
-        cli.warning("Cannot write to that format.")
+        cli.warning("Operation cancelled.")
 
 
 cli = loggers.Stream()
