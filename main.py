@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
-# TODO copying to clipboard
-# TODO setting image dimensions and printing
 # TODO freezing the app and loading along with GhostScript
+# TODO copy to clipboard
+# TODO setting image dimensions and printing
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
