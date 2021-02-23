@@ -5,10 +5,10 @@ from tkinter import Tk, Frame, Label, Button, END, BOTH, X, Y, TOP, BOTTOM, LEFT
 from tkinter import DISABLED, Menu
 from tkinter.ttk import Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-import json
 from math import floor
 import dialogues
 import chart
+from settings import *
 
 
 class App(Tk):
@@ -17,8 +17,8 @@ class App(Tk):
 
         # DIMENSIONS
 
-        cli.info(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
-        cli.info(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
+        # cli.info(f'Screen dimensions (pixels) - W:{self.winfo_screenwidth()} H:{self.winfo_screenheight()}')
+        # cli.info(f'Screen dimensions (mm) - W:{self.winfo_screenmmwidth()} H:{self.winfo_screenmmheight()}')
 
         self.width = floor(0.7 * self.winfo_screenwidth())
         self.height = floor(0.7 * self.winfo_screenheight())
@@ -39,7 +39,7 @@ class App(Tk):
         self.title("Main")
         self.wm_iconbitmap("favicon.ico")
 
-        # PERSISTENT COMPONENTS
+        # COMPONENTS
 
         self.menubar = Menubar(self)
         self["menu"] = self.menubar
@@ -48,7 +48,7 @@ class App(Tk):
         # NO: self.menu = self.menubar
         self.toolbar = Toolbar(self)
         self.viewer = Viewer(self)
-        # self.chart = chart.Chart(self)
+        self.chart = self.viewer.chart
 
         # LOOP
 
@@ -59,32 +59,6 @@ class App(Tk):
         # erase log file
         log = open('app.log', 'r+')
         log.truncate(0)
-
-    @staticmethod
-    def get_settings():
-        try:
-            file = open("config.json", "r")
-            data = file.readline()
-            if data:
-                return json.loads(data)
-            else:
-                return dict()
-        except FileNotFoundError:
-            cli.info("Configuration file not found.")
-            file = open("config.json", "w")
-            file.close()
-            cli.info("Configuration file created.")
-            return dict()
-
-    @staticmethod
-    def save_settings(data):
-        with open('config.json', 'w') as file:
-            file.write(json.dumps(data))
-
-    @staticmethod
-    def wipe_file(filename):
-        with open(filename, 'w') as file:
-            file.truncate(0)
 
 
 class Menubar(Menu):
@@ -111,7 +85,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        dialogues.save_image(self.parent.chart.postscript(), self.parent.get_settings())
+        dialogues.save_image(self.parent.chart.postscript(), get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
@@ -171,6 +145,7 @@ class Viewer(Frame):
         super(Viewer, self).__init__(parent)
 
         self.parent = parent
+        self.settings = get_settings()
         self.chart = chart.Chart(self)
 
         self.pack(fill=BOTH, expand=True)

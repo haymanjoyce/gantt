@@ -3,7 +3,11 @@
 import loggers
 
 
-class Processing:
+class Cleaner:
+    pass
+
+
+class Processor:
     pass
 
 

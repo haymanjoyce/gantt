@@ -8,6 +8,7 @@ import pandas as pd
 from math import floor
 from PIL import Image
 import io
+from settings import *
 
 
 class Settings(Toplevel):
@@ -21,7 +22,7 @@ class Settings(Toplevel):
         self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
         self.y = floor(self.parent.y + (self.parent.height * 0.2))
 
-        self.data = self.parent.get_settings()
+        self.data = get_settings()
 
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
@@ -29,9 +30,9 @@ class Settings(Toplevel):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
 
-        self.lbl_width = Label(self, text="Page width:")
+        self.lbl_width = Label(self, text="Chart width:")
         self.ent_width = Entry(self, width=10)
-        self.lbl_height = Label(self, text="Page height:")
+        self.lbl_height = Label(self, text="Chart height:")
         self.ent_height = Entry(self, width=10)
         self.lbl_top_margin = Label(self, text="Top margin:")
         self.ent_top_margin = Entry(self, width=10)
@@ -64,7 +65,7 @@ class Settings(Toplevel):
             self.ent_left_margin.insert(0, self.data['left_margin'])
         else:
             cli.info("Missing fields in configuration file.")
-            self.parent.wipe_file('config.json')
+            wipe_settings()
             cli.info("Configuration file wiped.")
 
     def on_save(self):
@@ -72,7 +73,7 @@ class Settings(Toplevel):
         self.data["height"] = self.ent_height.get()
         self.data['top_margin'] = self.ent_top_margin.get()
         self.data['left_margin'] = self.ent_left_margin.get()
-        self.parent.save_settings(self.data)
+        save_settings(self.data)
 
     def on_close(self):
         self.destroy()
