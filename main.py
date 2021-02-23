@@ -5,7 +5,6 @@
 # TODO adding page margin when printing to PDF (saving image)
 # TODO setting image size when saving
 # TODO copy to clipboard
-# TODO add Refresh button to redraw chart after Settings changed
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

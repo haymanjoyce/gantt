@@ -28,9 +28,9 @@ class Chart(Canvas):
 
         self.pack(fill=BOTH, expand=True)
 
-        self.build()
+        self.prepare()
 
-    def build(self):
+    def prepare(self):
         self.delete("all")
         self.settings = get_settings()
         self.width = eval(self.settings['width'])

@@ -9,6 +9,9 @@ from math import floor
 import dialogues
 import chart
 from settings import *
+import win32clipboard as clipboard
+from io import BytesIO
+from PIL import Image
 
 
 class App(Tk):
@@ -102,7 +105,16 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        pass
+        as_postscript = self.parent.viewer.chart.postscript()
+        as_utf = as_postscript.encode('utf-8')
+        as_bytecode = BytesIO(as_utf)
+        image = Image.open(as_bytecode)
+        print(image.format, image.size)
+
+        # clipboard.OpenClipboard()
+        # clipboard.EmptyClipboard()
+        # clipboard.SetClipboardData(as_object, None)
+        # clipboard.CloseClipboard()
 
     def on_log(self):
         dialogues.Log(self.parent)
