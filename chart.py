@@ -2,6 +2,7 @@
 
 import loggers
 from tkinter import Canvas, BOTH, Scrollbar, HORIZONTAL, VERTICAL, X, Y, LEFT, RIGHT, TOP, BOTTOM
+from settings import *
 
 
 class Chart(Canvas):
@@ -9,6 +10,11 @@ class Chart(Canvas):
         super(Chart, self).__init__(parent)
 
         self.parent = parent
+        self.settings = get_settings()
+        self.width = eval(self.settings['width'])
+        self.height = eval(self.settings['height'])
+        # self.top_margin = eval(self.settings['top_margin'])
+        # self.left_margin = eval(self.settings['left_margin'])
 
         self.configure(bg="#dddddd")
 
@@ -19,12 +25,12 @@ class Chart(Canvas):
         v_bar.pack(side=RIGHT, fill=Y)
         v_bar.config(command=self.yview)
 
-        self.create_rectangle(0, 0, 1600, 1600, fill="#ff0000")
-        self.create_rectangle(0, 0, 800, 800, fill="#0000ff")
-        self.create_rectangle(0, 0, 400, 400, fill="#00ff00")
-        self.create_rectangle(0, 2, 200, 200, fill="#ff0000", outline="#000")
+        self.create_rectangle(0, 0, self.width, self.height, fill="#ff0000")
+        self.create_rectangle(0, 0, self.width//2, self.height//2, fill="#0000ff")
+        self.create_rectangle(0, 0, self.width//3, self.height//3, fill="#00ff00")
+        self.create_rectangle(0, 0, self.width//4, self.height//4, fill="#ff0000", outline="#000")
 
-        self.config(width=200, height=200, scrollregion=(0, 0, 1600, 1600))
+        self.config(scrollregion=(0, 0, self.width, self.height))
         self.config(xscrollcommand=h_bar.set, yscrollcommand=v_bar.set)
         self.pack(fill=BOTH, expand=True)
 
