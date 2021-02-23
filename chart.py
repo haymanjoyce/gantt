@@ -37,7 +37,7 @@ class Chart(Canvas):
         self.create_rectangle(0, 0, self.width//3, self.height//3, fill="#00ff00")
         self.create_rectangle(0, 0, self.width//4, self.height//4, fill="#ff0000", outline="#000")
 
-    def refresh(self):
+    def redraw(self):
         self.delete("all")
         self.settings = get_settings()
         self.width = eval(self.settings['width'])

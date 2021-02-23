@@ -77,7 +77,6 @@ class Menubar(Menu):
         self.file_menu.add_command(label="Exit", command=self.on_exit)
 
         self.edit_menu.add_command(label="Copy", command=self.on_copy)
-        self.edit_menu.add_command(label="Refresh", command=self.on_refresh)
 
         self.help_menu.add_command(label="View Log", command=self.on_log)
         self.help_menu.add_separator()
@@ -104,9 +103,6 @@ class Menubar(Menu):
 
     def on_copy(self):
         pass
-
-    def on_refresh(self):
-        self.parent.viewer.chart.refresh()
 
     def on_log(self):
         dialogues.Log(self.parent)
