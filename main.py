@@ -2,10 +2,10 @@
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO freezing the app and loading along with GhostScript
-# TODO copy to clipboard
-# TODO add Refresh button to redraw chart after Settings changed
 # TODO adding page margin when printing to PDF (saving image)
 # TODO setting image size when saving
+# TODO copy to clipboard
+# TODO add Refresh button to redraw chart after Settings changed
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

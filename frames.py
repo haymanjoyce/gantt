@@ -106,7 +106,7 @@ class Menubar(Menu):
         pass
 
     def on_refresh(self):
-        self.parent.viewer.chart.update()
+        self.parent.viewer.chart.refresh()
 
     def on_log(self):
         dialogues.Log(self.parent)
