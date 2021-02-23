@@ -48,7 +48,6 @@ class App(Tk):
         # NO: self.menu = self.menubar
         self.toolbar = Toolbar(self)
         self.viewer = Viewer(self)
-        self.chart = self.viewer.chart
 
         # LOOP
 
@@ -85,7 +84,7 @@ class Menubar(Menu):
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
-        dialogues.save_image(self.parent.chart.postscript(), get_settings())
+        dialogues.save_image(self.parent.viewer.chart.postscript(), get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))

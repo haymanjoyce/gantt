@@ -112,13 +112,13 @@ class Log(Toplevel):
 def save_image(postscript, settings):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [
+        ('All files', '*.*'),
         ('PDF file', '*.pdf'),
         ('JPG file', '*.jpg'),
         ('PNG file', '*.png'),
         ('BMP file', '*.bmp'),
         ('TIFF file', '*.tif'),
         ('PostScript file', '*.ps'),
-        ('All files', '*.*')
     ]
     file = filedialog.asksaveasfile(mode="w",
                                     title="Save As",

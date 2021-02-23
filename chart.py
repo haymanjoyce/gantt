@@ -13,8 +13,6 @@ class Chart(Canvas):
         self.settings = get_settings()
         self.width = eval(self.settings['width'])
         self.height = eval(self.settings['height'])
-        # self.top_margin = eval(self.settings['top_margin'])
-        # self.left_margin = eval(self.settings['left_margin'])
 
         self.configure(bg="#dddddd")
 
@@ -32,7 +30,10 @@ class Chart(Canvas):
 
         self.config(scrollregion=(0, 0, self.width, self.height))
         self.config(xscrollcommand=h_bar.set, yscrollcommand=v_bar.set)
+        # self.config(width=self.width, height=self.height)
         self.pack(fill=BOTH, expand=True)
+        print(self.width)
+        print(self.winfo_width())
 
 
 cli = loggers.Stream()
