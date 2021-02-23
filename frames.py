@@ -36,7 +36,7 @@ class App(Tk):
 
         # DECORATION
 
-        self.title("Main")
+        self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
 
         # COMPONENTS
@@ -67,6 +67,7 @@ class Menubar(Menu):
         self.parent = parent
 
         self.file_menu = Menu(self, tearoff=0)
+        self.edit_menu = Menu(self, tearoff=0)
         self.help_menu = Menu(self, tearoff=0)
 
         self.file_menu.add_command(label="Save As...", command=self.on_save)
@@ -75,12 +76,16 @@ class Menubar(Menu):
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=self.on_exit)
 
+        self.edit_menu.add_command(label="Copy", command=self.on_copy)
+        self.edit_menu.add_command(label="Refresh", command=self.on_refresh)
+
         self.help_menu.add_command(label="View Log", command=self.on_log)
         self.help_menu.add_separator()
         self.help_menu.add_command(label="Help", command=self.on_help)
         self.help_menu.add_command(label="About", command=self.on_about)
 
         self.add_cascade(label="File", menu=self.file_menu)
+        self.add_cascade(label="Edit", menu=self.edit_menu)
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def on_save(self):
@@ -96,6 +101,12 @@ class Menubar(Menu):
 
     def on_exit(self):
         self.parent.quit()
+
+    def on_copy(self):
+        pass
+
+    def on_refresh(self):
+        self.parent.viewer.chart.update()
 
     def on_log(self):
         dialogues.Log(self.parent)
