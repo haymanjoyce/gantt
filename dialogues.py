@@ -74,7 +74,7 @@ class Settings(Toplevel):
         self.data['top_margin'] = self.ent_top_margin.get()
         self.data['left_margin'] = self.ent_left_margin.get()
         save_settings(self.data)
-        self.parent.viewer.chart.redraw()
+        self.parent.viewer.chart.build()
 
     def on_close(self):
         self.destroy()
