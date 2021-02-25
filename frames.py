@@ -2,7 +2,7 @@
 
 import loggers
 from tkinter import Tk, Frame, Label, Button, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
-from tkinter import DISABLED, Menu
+from tkinter import DISABLED, Menu, Toplevel
 from tkinter.ttk import Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 from math import floor
@@ -12,6 +12,7 @@ from settings import *
 import win32clipboard as clipboard
 from io import BytesIO
 from PIL import Image
+from copy import copy
 
 
 class App(Tk):
@@ -105,12 +106,7 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        as_postscript = self.parent.viewer.chart.postscript()
-        as_utf = as_postscript.encode('utf-8')
-        as_bytecode = BytesIO(as_utf)
-        image = Image.open(as_bytecode)
-        print(image.format, image.size)
-
+        pass
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)

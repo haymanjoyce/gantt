@@ -2,7 +2,9 @@
 
 import loggers
 from tkinter import Canvas, BOTH, Scrollbar, HORIZONTAL, VERTICAL, X, Y, LEFT, RIGHT, TOP, BOTTOM
+from tkinter import Toplevel
 from settings import *
+import copy
 
 
 class Chart(Canvas):
@@ -12,10 +14,6 @@ class Chart(Canvas):
         self.parent = parent
 
         self.configure(bg="#dddddd")
-
-        self.settings = None
-        self.width = None
-        self.height = None
 
         h_bar = Scrollbar(self.parent, orient=HORIZONTAL)
         h_bar.pack(side=BOTTOM, fill=X)
@@ -28,21 +26,21 @@ class Chart(Canvas):
 
         self.pack(fill=BOTH, expand=True)
 
-        self.prepare()
+        self.render()
 
-    def prepare(self):
-        self.delete("all")
-        self.settings = get_settings()
-        self.width = eval(self.settings['width'])
-        self.height = eval(self.settings['height'])
-        self.config(scrollregion=(0, 0, self.width, self.height))
-        self.draw()
+    def draw(self, width, height):
+        self.create_rectangle(0, 0, width, height, fill="#ff0000")
+        self.create_rectangle(0, 0, width//2, height//2, fill="#0000ff")
+        self.create_rectangle(0, 0, width//3, height//3, fill="#00ff00")
+        self.create_rectangle(0, 0, width//4, height//4, fill="#ff0000", outline="#000")
 
-    def draw(self):
-        self.create_rectangle(0, 0, self.width, self.height, fill="#ff0000")
-        self.create_rectangle(0, 0, self.width//2, self.height//2, fill="#0000ff")
-        self.create_rectangle(0, 0, self.width//3, self.height//3, fill="#00ff00")
-        self.create_rectangle(0, 0, self.width//4, self.height//4, fill="#ff0000", outline="#000")
+    def render(self):
+        settings = get_settings()
+        width = eval(settings['width'])
+        height = eval(settings['height'])
+        self.delete("all")  # required for redraw (e.g. on settings change)
+        self.config(scrollregion=(0, 0, width, height))
+        self.draw(width, height)
 
 
 cli = loggers.Stream()

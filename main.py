@@ -5,6 +5,7 @@
 # TODO adding page margin when printing to PDF (saving image)
 # TODO setting image size when saving
 # TODO copy to clipboard
+# TODO create chart in TopLevel for creation of Image object
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
