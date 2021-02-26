@@ -17,7 +17,7 @@
 
 # MANUAL PYTHON ENVIRONMENT INSTALLS
 # openpyxl (xlrd only does xls)
-# pywin32
+# pywin32 (does not work on Mac)
 
 
 import loggers
