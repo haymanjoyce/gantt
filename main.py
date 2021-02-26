@@ -17,6 +17,7 @@
 
 # MANUAL PYTHON ENVIRONMENT INSTALLS
 # openpyxl (xlrd only does xls)
+# pywin32
 
 
 import loggers

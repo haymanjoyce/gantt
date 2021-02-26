@@ -9,7 +9,7 @@ from math import floor
 import dialogues
 import chart
 from settings import *
-import win32clipboard as clipboard
+# import win32clipboard as clipboard
 from io import BytesIO
 from PIL import Image
 from copy import copy
