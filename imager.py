@@ -13,27 +13,25 @@ class Imager(Toplevel):
     def __init__(self, parent):
         super(Imager, self).__init__(parent)
 
+        self.title("Test")
+        self.wm_iconbitmap("favicon.ico")
+
         self.parent = parent
 
         self.settings = get_settings()
         self.width = eval(self.settings['width'])
         self.height = eval(self.settings['height'])
 
-        self.width = 200
-        self.minsize(200, 100)
-        self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 100))
-        self.y = floor(self.parent.y + (self.parent.height * 0.2))
+        # minsize / fixed
 
-        self.title("Test")
-        self.wm_iconbitmap("favicon.ico")
+        # ensure only one instance
 
-        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
+        self.x = floor((self.winfo_screenwidth()//2) - (self.width//2))
+        self.y = floor((self.winfo_screenheight()//2) - (self.height//2))
+
+        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
 
         self.canvas = Canvas(self)
-        # self.canvas.config(width=800)
-        # self.canvas.config(bg="blue")
-        # self.canvas.pack(fill=BOTH)
-
         self.canvas.pack()
 
         self.render()
@@ -46,6 +44,7 @@ class Imager(Toplevel):
 
     def render(self):
         self.canvas.delete("all")  # required for redraw (e.g. on settings change)
+        self.canvas.config(width=self.width, height=self.height)
         self.draw(self.width, self.height)
 
     def to_bytecode(self):
@@ -56,10 +55,3 @@ class Imager(Toplevel):
 
 cli = loggers.Stream()
 
-# we create canvas in TopLevel as it would appear as image (including margins for example)
-# we create this class in chart module
-# we need not show TopLevel - hidden
-# the out put is output = Image.open(bytecode)
-# this can be used to save files or paste to clipboard
-# you can strip out code from save_image dialogue and just give it the prepared Image object
-# this could become class in dialogues and Chart could become class in frames

@@ -6,6 +6,8 @@
 # TODO setting image size when saving
 # TODO copy to clipboard
 # TODO create chart in TopLevel for creation of Image object
+# TODO draw method will call Draw class
+# TODO Imager becomes class in dialogues and Chart becomes class in frames
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
