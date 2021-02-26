@@ -15,6 +15,7 @@ class Imager(Toplevel):
     Instance configured for display not adequate for generating images.
     Reconfiguration limitations mean cannot make one instance dual purpose.
     """
+
     def __init__(self, parent):
         super(Imager, self).__init__(parent)
 
@@ -29,7 +30,7 @@ class Imager(Toplevel):
 
         # ensure only one instance
 
-        # center drawing
+        # hide
 
         self.x = floor(((self.winfo_screenwidth()//2) - self.width//2))
         self.y = floor(((self.winfo_screenheight()//2) - self.height//2))

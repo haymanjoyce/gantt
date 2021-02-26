@@ -70,6 +70,7 @@ class Menubar(Menu):
         super(Menubar, self).__init__(parent)
 
         self.parent = parent
+        self.image = None
 
         self.file_menu = Menu(self, tearoff=0)
         self.edit_menu = Menu(self, tearoff=0)
@@ -107,7 +108,9 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        imager.Imager(self.parent)
+        if isinstance(self.image, imager.Imager):
+            self.image.destroy()
+        self.image = imager.Imager(self.parent)
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)

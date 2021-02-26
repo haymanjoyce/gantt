@@ -9,6 +9,7 @@
 # TODO draw method will call Draw class
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
 # TODO consider getting rid of top and left margin
+# TODO configure TopLevel so doesn't "ghost" canvas
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
