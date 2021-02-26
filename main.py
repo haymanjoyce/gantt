@@ -8,6 +8,7 @@
 # TODO create chart in TopLevel for creation of Image object
 # TODO draw method will call Draw class
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
+# TODO consider getting rid of top and left margin
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
