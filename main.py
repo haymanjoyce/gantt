@@ -10,6 +10,7 @@
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
 # TODO consider getting rid of top and left margin
 # TODO configure TopLevel so doesn't "ghost" canvas
+# TODO repurpose Imager class as Preview class and rehome save button to it
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
