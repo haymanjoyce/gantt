@@ -13,6 +13,7 @@ import win32clipboard as clipboard
 from io import BytesIO
 from PIL import Image
 from copy import copy
+import imager
 
 
 class App(Tk):
@@ -106,7 +107,7 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        pass
+        imager.Imager(self.parent)
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)
