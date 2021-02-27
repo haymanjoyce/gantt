@@ -13,7 +13,7 @@ from settings import *
 from io import BytesIO
 from PIL import Image
 from copy import copy
-import imager
+import preview
 
 
 class App(Tk):
@@ -70,7 +70,7 @@ class Menubar(Menu):
         super(Menubar, self).__init__(parent)
 
         self.parent = parent
-        self.image = None
+        self.preview = None
 
         self.file_menu = Menu(self, tearoff=0)
         self.edit_menu = Menu(self, tearoff=0)
@@ -108,9 +108,9 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        if isinstance(self.image, imager.Imager):
-            self.image.destroy()
-        self.image = imager.Imager(self.parent)
+        if isinstance(self.preview, preview.Preview):
+            self.preview.destroy()
+        self.preview = preview.Preview(self.parent)
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)

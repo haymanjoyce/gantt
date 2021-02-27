@@ -9,7 +9,7 @@ from math import floor
 import settings
 
 
-class Imager(Toplevel):
+class Preview(Toplevel):
     """
     This Canvas is used for generating images.
     Instance configured for display not adequate for generating images.
@@ -17,31 +17,38 @@ class Imager(Toplevel):
     """
 
     def __init__(self, parent):
-        super(Imager, self).__init__(parent)
-
-        self.title("Test")
-        self.wm_iconbitmap("favicon.ico")
+        super(Preview, self).__init__(parent)
 
         self.parent = parent
+        self.title("Test")
+
+        self.iconify()  # hack to suppress pre-configured window flash
+        self.wm_iconbitmap("favicon.ico")
+        self.deiconify()
 
         self.settings = get_settings()
         self.width = eval(self.settings['width'])
         self.height = eval(self.settings['height'])
 
+        self.x = floor(((self.winfo_screenwidth()//2) - self.width//2))
+        self.y = floor(((self.winfo_screenheight()//2) - self.height//2))
+
+
         # ensure only one instance
 
         # hide
-
-        self.x = floor(((self.winfo_screenwidth()//2) - self.width//2))
-        self.y = floor(((self.winfo_screenheight()//2) - self.height//2))
 
         self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
         self.resizable(False, False)
 
         self.canvas = Canvas(self)
-        self.canvas.pack()
+
         self.render()
+
+        self.canvas.pack()
+
+
 
     def draw(self, x=0, y=0, width=100, height=100):
         self.canvas.create_rectangle(x, y, width, height, fill="#ff0000")
