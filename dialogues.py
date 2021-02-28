@@ -26,6 +26,7 @@ class Settings(Toplevel):
 
         self.title("Settings")
         self.wm_iconbitmap("favicon.ico")
+        self.grab_set()
         self.configure(padx=10, pady=10)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -95,6 +96,7 @@ class Log(Toplevel):
 
         self.title("Log")
         self.wm_iconbitmap("favicon.ico")
+        self.grab_set()
 
         self.scroller = scrolledtext.ScrolledText(self)
         self.scroller.configure(state='disabled')

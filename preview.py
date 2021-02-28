@@ -26,6 +26,8 @@ class Preview(Toplevel):
         self.wm_iconbitmap("favicon.ico")
         self.deiconify()
 
+        self.grab_set()
+
         self.settings = get_settings()
         self.width = eval(self.settings['width'])
         self.height = eval(self.settings['height'])

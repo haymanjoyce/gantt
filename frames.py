@@ -71,10 +71,6 @@ class Menubar(Menu):
 
         self.parent = parent
 
-        self.preview_dialogue = None
-        self.log_dialogue = None
-        self.settings_dialogue = None
-
         self.file_menu = Menu(self, tearoff=0)
         self.edit_menu = Menu(self, tearoff=0)
         self.help_menu = Menu(self, tearoff=0)
@@ -105,26 +101,20 @@ class Menubar(Menu):
         dialogues.export_data(df)
 
     def on_settings(self):
-        if isinstance(self.settings_dialogue, dialogues.Settings):
-            self.settings_dialogue.destroy()
-        self.settings_dialogue = dialogues.Settings(self.parent)
+        dialogues.Settings(self.parent)
 
     def on_exit(self):
         self.parent.quit()
 
     def on_copy(self):
-        if isinstance(self.preview_dialogue, preview.Preview):
-            self.preview_dialogue.destroy()
-        self.preview_dialogue = preview.Preview(self.parent)
+        preview.Preview(self.parent)
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)
         # clipboard.CloseClipboard()
 
     def on_log(self):
-        if isinstance(self.log_dialogue, dialogues.Log):
-            self.log_dialogue.destroy()
-        self.log_dialogue = dialogues.Log(self.parent)
+        dialogues.Log(self.parent)
 
     def on_help(self):
         print("Menu item working!")
