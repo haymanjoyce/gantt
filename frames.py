@@ -13,7 +13,6 @@ from settings import *
 from io import BytesIO
 from PIL import Image
 from copy import copy
-import preview
 
 
 class App(Tk):
@@ -107,7 +106,7 @@ class Menubar(Menu):
         self.parent.quit()
 
     def on_copy(self):
-        preview.Preview(self.parent)
+        dialogues.Preview(self.parent)
         # clipboard.OpenClipboard()
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)

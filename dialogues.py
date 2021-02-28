@@ -1,14 +1,67 @@
 #!/usr/bin/env python3
 
-import loggers
 from tkinter import Label, Button, Entry, filedialog, END, BOTH
-from tkinter import Toplevel, scrolledtext
+from tkinter import Toplevel, scrolledtext, Canvas
 from tkinter.ttk import Button
-import pandas as pd
 from math import floor
 from PIL import Image
-import io
 from settings import *
+from io import BytesIO
+
+
+class Preview(Toplevel):
+    """
+    This Canvas is used for generating images.
+    Instance configured for display not adequate for generating images.
+    Reconfiguration limitations mean cannot make one instance dual purpose.
+    """
+
+    def __init__(self, parent):
+        super(Preview, self).__init__(parent)
+
+        self.iconify()  # hack to suppress pre-configured window flash
+
+        self.parent = parent
+
+        self.title("Test")
+        self.wm_iconbitmap("favicon.ico")
+
+        self.grab_set()
+
+        self.settings = get_settings()
+        self.width = eval(self.settings['width'])
+        self.height = eval(self.settings['height'])
+
+        self.x = floor(((self.winfo_screenwidth() // 2) - self.width // 2))
+        self.y = floor(((self.winfo_screenheight() // 2) - self.height // 2))
+
+        self.resizable(False, False)
+
+        self.canvas = Canvas(self)
+
+        self.render()
+
+        self.canvas.pack()
+
+        self.deiconify()
+
+        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
+
+    def draw(self, x=0, y=0, width=100, height=100):
+        self.canvas.create_rectangle(x, y, width, height, fill="#ff0000")
+        self.canvas.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
+        self.canvas.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
+        self.canvas.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
+
+    def render(self):
+        self.canvas.delete("all")  # required for redraw (e.g. on settings change)
+        self.canvas.config(width=self.width, height=self.height)
+        self.draw(0, 0, self.width, self.height)
+
+    def to_bytecode(self):
+        to_postscript = self.canvas.postscript()
+        to_utf8 = to_postscript.encode('utf-8')
+        return BytesIO(to_utf8)
 
 
 class Settings(Toplevel):
@@ -132,7 +185,7 @@ def save_image(postscript, settings):
         file_name = file.name.lower()
         if file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
             chart_encoded = postscript.encode('utf-8')
-            chart_as_bytecode = io.BytesIO(chart_encoded)
+            chart_as_bytecode = BytesIO(chart_encoded)
             Image.open(chart_as_bytecode).save(file_name)
             cli.info('Chart saved as: ' + file_name)
         else:
