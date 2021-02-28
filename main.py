@@ -9,7 +9,8 @@
 # TODO draw method will call Draw class
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
 # TODO consider getting rid of top and left margin
-# TODO repurpose Imager class as Preview class and rehome save button to it
+# TODO Re-home save button to Preview it
+# TODO Can you build canvas without packing it?
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

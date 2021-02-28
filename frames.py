@@ -75,6 +75,7 @@ class Menubar(Menu):
         self.help_menu = Menu(self, tearoff=0)
 
         self.file_menu.add_command(label="Save As...", command=self.on_save)
+        self.file_menu.add_command(label="Preview...", command=self.on_preview)
         self.file_menu.add_command(label="Export...", command=self.on_export)
         self.file_menu.add_command(label="Settings...", command=self.on_settings)
         self.file_menu.add_separator()
@@ -93,6 +94,9 @@ class Menubar(Menu):
 
     def on_save(self):
         dialogues.save_image(self.parent.viewer.chart.postscript(), get_settings())
+
+    def on_preview(self):
+        dialogues.Preview(self)
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
