@@ -10,7 +10,7 @@
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
 # TODO consider getting rid of top and left margin
 # TODO Re-home save button to Preview it
-# TODO Can you build canvas without packing it?
+# TODO Redesign GUI to avoid generating two canvases
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
