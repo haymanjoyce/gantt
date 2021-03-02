@@ -10,6 +10,8 @@
 # TODO Imager becomes class in dialogues and Chart becomes class in frames
 # TODO consider getting rid of top and left margin
 # TODO Re-home save button to Preview it
+# TODO Add Save as Postscript button
+# TODO Label warning if Ghostscript not installed
 # TODO Redesign GUI to avoid generating two canvases
 
 # MANUAL OS ENVIRONMENT INSTALLS
@@ -21,11 +23,11 @@
 
 
 import loggers
-import frames
+import mainframe
 
 
 if __name__ == '__main__':
     cli = loggers.Stream()
     cli.info(f"Logger initialised.")
-    app = frames.App()
+    app = mainframe.App()
 
