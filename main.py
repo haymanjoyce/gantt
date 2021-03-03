@@ -14,6 +14,8 @@
 # TODO Label warning if Ghostscript not installed
 # TODO Redesign GUI to avoid generating two canvases
 # TODO Lift all mainframe vars to app level as toplevels need access
+# TODO move Log to interface module and put log into Controls
+# TODO display chart under Controls
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
