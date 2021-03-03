@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel, Canvas
-from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL
+from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel, Canvas, scrolledtext
+from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import dialogues
 from utils import *
@@ -15,11 +15,13 @@ class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
-        self.width = 300
-        self.height = 400
-        self.x = int((self.winfo_screenwidth() * 0.5) - (self.width * 0.5))
-        self.y = int((self.winfo_screenheight() * 0.2))
-        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
+        # self.width = 400
+        # self.height = 400
+        # self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 200))
+        # self.y = floor(self.parent.y + (self.parent.height * 0.2))
+        # self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
+        # self.minsize(300, 300)
+
         self.resizable(False, False)
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
@@ -28,7 +30,6 @@ class App(Tk):
         self.settings = get_settings()
         self.mainframe = Controls(self)
         self.preview = None
-        self.log = None
 
         self.mainloop()
         log = open('app.log', 'r+')
@@ -39,7 +40,7 @@ class Controls(Frame):
     def __init__(self, parent):
         super(Controls, self).__init__(parent)
 
-        self.pack(fill=BOTH, expand=True)
+        self.pack()
         self.configure(padx=10, pady=5)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -54,14 +55,15 @@ class Controls(Frame):
         self.lbl_finish = Label(self, text="Timescale finish:")
         self.ent_start = Entry(self, relief="groove")
         self.ent_finish = Entry(self, relief="groove")
-
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text=self.parent.sourcefile, relief="groove", bg="#fff", anchor="w")
         self.btn_select = Button(self, text="Select file", command=self.on_select, state=NORMAL, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED, relief="groove")
+        self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, state=DISABLED, relief="groove")
         self.btn_image = Button(self, text="Save as image file", command=self.on_save, state=NORMAL, relief="groove")
         self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, state=DISABLED, relief="groove")
+        self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, state=NORMAL, relief="groove")
 
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
@@ -71,14 +73,15 @@ class Controls(Frame):
         self.lbl_finish.grid(row=2, column=1, sticky="w", pady=(0, 0))
         self.ent_start.grid(row=3, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         self.ent_finish.grid(row=3, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
-
         self.lbl_source.grid(row=4, column=0, columnspan=2, sticky="w")
         self.lbl_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5), ipady=5)
         self.btn_select.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_run.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_copy.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_image.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_export.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
+        self.btn_copy.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_image.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
         if len(self.parent.settings.keys()) == 4:
             self.insert_data()
@@ -110,14 +113,24 @@ class Controls(Frame):
             self.parent.preview.destroy()
         self.parent.preview = Preview(self.parent)
 
-        if self.parent.log:
-            self.parent.log.destroy()
-        self.parent.log = dialogues.Log(self.parent)
-
         file = pd.ExcelFile(self.parent.sourcefile)
         sheet_0 = pd.read_excel(file, 0)
         sheet_1 = pd.read_excel(file, 1)
         print(sheet_1)
+
+        with open('app.log', "r") as log:
+            text = str(log.read())
+        text = "lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsumv lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsumv lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum"
+        self.scroller.configure(state=NORMAL)  # writable
+        self.scroller.insert(END, text)
+        self.scroller.configure(state=DISABLED)  # readable
+
+    def on_copy(self):
+        pass
+        # clipboard.OpenClipboard()
+        # clipboard.EmptyClipboard()
+        # clipboard.SetClipboardData(as_object, None)
+        # clipboard.CloseClipboard()
 
     def on_save(self):
         dialogues.save_image(self.parent.preview.chart.postscript(), get_settings())
@@ -127,12 +140,8 @@ class Controls(Frame):
         df = df.append(data)
         dialogues.export_data(df)
 
-    def on_copy(self):
+    def on_postscript(self):
         pass
-        # clipboard.OpenClipboard()
-        # clipboard.EmptyClipboard()
-        # clipboard.SetClipboardData(as_object, None)
-        # clipboard.CloseClipboard()
 
 
 class Chart(Canvas):

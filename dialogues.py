@@ -9,37 +9,6 @@ from utils import *
 from io import BytesIO
 
 
-class Log(Toplevel):
-    def __init__(self, parent):
-        super(Log, self).__init__(parent)
-
-        self.parent = parent
-
-        self.width = 400
-        self.height = 400
-        self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 200))
-        self.y = floor(self.parent.y + (self.parent.height * 0.2))
-        self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
-        self.minsize(300, 300)
-
-        self.title("Log")
-        self.wm_iconbitmap("favicon.ico")
-        # self.grab_set()
-
-        self.scroller = scrolledtext.ScrolledText(self)
-        self.scroller.configure(state='disabled')
-        self.scroller.pack(expand=True, fill=BOTH)
-
-        self.on_open()  # populate log
-
-    def on_open(self):
-        with open('app.log', "r") as log:
-            text = str(log.read())
-        self.scroller.configure(state='normal')  # writable
-        self.scroller.insert(END, text)
-        self.scroller.configure(state='disabled')  # readable
-
-
 def save_image(postscript, settings):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [

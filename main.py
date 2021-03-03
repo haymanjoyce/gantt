@@ -16,6 +16,8 @@
 # TODO Lift all mainframe vars to app level as toplevels need access
 # TODO move Log to interface module and put log into Controls
 # TODO display chart under Controls
+# TODO put Controls in centre of screen
+# TODO clear log file on each run
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
