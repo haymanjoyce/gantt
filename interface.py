@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel
-from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
+from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel, Canvas
+from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import dialogues
 from utils import *
+from math import floor
+from io import BytesIO
 from copy import copy
 import win32clipboard as clipboard
 
@@ -22,16 +24,20 @@ class App(Tk):
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
 
-        self.mainframe = MainFrame(self)
+        self.sourcefile = None
+        self.settings = get_settings()
+        self.mainframe = Controls(self)
+        self.preview = None
+        self.log = None
 
         self.mainloop()
         log = open('app.log', 'r+')
-        log.truncate(0)  # erase log file
+        log.truncate(0)  # erase log fill
 
 
-class MainFrame(Frame):
+class Controls(Frame):
     def __init__(self, parent):
-        super(MainFrame, self).__init__(parent)
+        super(Controls, self).__init__(parent)
 
         self.pack(fill=BOTH, expand=True)
         self.configure(padx=10, pady=5)
@@ -39,10 +45,6 @@ class MainFrame(Frame):
         self.columnconfigure(1, weight=1)
 
         self.parent = parent
-        self.source = None
-        self.preview = None
-        self.log = None
-        self.settings = get_settings()
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -54,11 +56,11 @@ class MainFrame(Frame):
         self.ent_finish = Entry(self, relief="groove")
 
         self.lbl_source = Label(self, text="Source file:")
-        self.lbl_filepath = Label(self, text=self.source, relief="groove", bg="#fff", anchor="w")
+        self.lbl_filepath = Label(self, text=self.parent.sourcefile, relief="groove", bg="#fff", anchor="w")
         self.btn_select = Button(self, text="Select file", command=self.on_select, state=NORMAL, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED, relief="groove")
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, state=DISABLED, relief="groove")
-        self.btn_image = Button(self, text="Save as image file", command=self.on_save, state=DISABLED, relief="groove")
+        self.btn_image = Button(self, text="Save as image file", command=self.on_save, state=NORMAL, relief="groove")
         self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, state=DISABLED, relief="groove")
 
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
@@ -78,47 +80,47 @@ class MainFrame(Frame):
         self.btn_image.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_export.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
 
-        if len(self.settings.keys()) == 4:
+        if len(self.parent.settings.keys()) == 4:
             self.insert_data()
         else:
             wipe_settings()
 
     def insert_data(self):
-        self.ent_width.insert(0, self.settings["width"])
-        self.ent_height.insert(0, self.settings["height"])
-        self.ent_start.insert(0, self.settings["start"])
-        self.ent_finish.insert(0, self.settings["finish"])
+        self.ent_width.insert(0, self.parent.settings["width"])
+        self.ent_height.insert(0, self.parent.settings["height"])
+        self.ent_start.insert(0, self.parent.settings["start"])
+        self.ent_finish.insert(0, self.parent.settings["finish"])
 
     def extract_data(self):
-        self.settings["width"] = self.ent_width.get()
-        self.settings["height"] = self.ent_height.get()
-        self.settings["start"] = self.ent_start.get()
-        self.settings["finish"] = self.ent_finish.get()
+        self.parent.settings["width"] = self.ent_width.get()
+        self.parent.settings["height"] = self.ent_height.get()
+        self.parent.settings["start"] = self.ent_start.get()
+        self.parent.settings["finish"] = self.ent_finish.get()
 
     def on_select(self):
-        self.source = dialogues.get_file_name(self.source)
-        self.lbl_filepath.configure(text=self.source)
+        self.parent.sourcefile = dialogues.get_file_name(self.parent.sourcefile)
+        self.lbl_filepath.configure(text=self.parent.sourcefile)
         self.btn_run.config(state=NORMAL)
 
     def on_run(self):
         self.extract_data()
-        save_settings(self.settings)
-        
-        if self.preview:
-            self.preview.destroy()
-        self.preview = dialogues.Preview(self.parent)
+        save_settings(self.parent.settings)
 
-        if self.log:
-            self.log.destroy()
-        self.log = dialogues.Log(self.parent)
+        if self.parent.preview:
+            self.parent.preview.destroy()
+        self.parent.preview = Preview(self.parent)
 
-        file = pd.ExcelFile(self.source)
+        if self.parent.log:
+            self.parent.log.destroy()
+        self.parent.log = dialogues.Log(self.parent)
+
+        file = pd.ExcelFile(self.parent.sourcefile)
         sheet_0 = pd.read_excel(file, 0)
         sheet_1 = pd.read_excel(file, 1)
         print(sheet_1)
 
     def on_save(self):
-        dialogues.save_image(dialogues.Preview(self.parent).canvas.postscript(), get_settings())
+        dialogues.save_image(self.parent.preview.chart.postscript(), get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
@@ -131,6 +133,44 @@ class MainFrame(Frame):
         # clipboard.EmptyClipboard()
         # clipboard.SetClipboardData(as_object, None)
         # clipboard.CloseClipboard()
+
+
+class Chart(Canvas):
+    def __init__(self, parent, width, height):
+        super(Chart, self).__init__(parent)
+
+        self.parent = parent
+        self.config(width=width, height=height)
+        self.draw(0, 0, width, height)
+
+    def draw(self, x=0, y=0, width=100, height=100):
+        self.create_rectangle(x, y, width, height, fill="#ff0000")
+        self.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
+        self.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
+        self.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
+
+    def to_bytecode(self):
+        to_postscript = self.postscript()
+        to_utf8 = to_postscript.encode('utf-8')
+        return BytesIO(to_utf8)
+
+
+class Preview(Toplevel):
+    def __init__(self, parent):
+        super(Preview, self).__init__(parent)
+
+        self.parent = parent
+        self.width = eval(self.parent.settings['width'])
+        self.height = eval(self.parent.settings['height'])
+        self.x = floor(((self.winfo_screenwidth() // 2) - self.width // 2))
+        self.y = floor(((self.winfo_screenheight() // 2) - self.height // 2))
+        self.chart = Chart(self, self.width, self.height)
+
+        self.title("Test")
+        self.wm_iconbitmap("favicon.ico")
+        self.resizable(False, False)
+        self.chart.pack()
+        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
 
 cli = loggers.Stream()

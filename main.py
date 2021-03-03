@@ -13,7 +13,7 @@
 # TODO Add Save as Postscript button
 # TODO Label warning if Ghostscript not installed
 # TODO Redesign GUI to avoid generating two canvases
-# TODO Move settings to Panel
+# TODO Lift all mainframe vars to app level as toplevels need access
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -24,11 +24,11 @@
 
 
 import loggers
-import mainframe
+import interface
 
 
 if __name__ == '__main__':
     cli = loggers.Stream()
     cli.info(f"Logger initialised.")
-    app = mainframe.App()
+    app = interface.App()
 

@@ -79,7 +79,7 @@ class Log(Toplevel):
 
         self.title("Log")
         self.wm_iconbitmap("favicon.ico")
-        self.grab_set()
+        # self.grab_set()
 
         self.scroller = scrolledtext.ScrolledText(self)
         self.scroller.configure(state='disabled')
