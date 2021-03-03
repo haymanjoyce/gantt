@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel, Canvas, scrolledtext
+from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, Canvas, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-import dialogues
+# import dialogues
 from utils import *
-from math import floor
 from io import BytesIO
 from copy import copy
 import win32clipboard as clipboard
@@ -97,7 +96,7 @@ class Controls(Frame):
         self.parent.settings["finish"] = self.ent_finish.get()
 
     def on_select(self):
-        self.parent.sourcefile = dialogues.get_file_name(self.parent.sourcefile)
+        self.parent.sourcefile = get_file_name(self.parent.sourcefile)
         self.lbl_filepath.configure(text=self.parent.sourcefile)
         self.btn_run.config(state=NORMAL)
 
@@ -128,12 +127,12 @@ class Controls(Frame):
         # clipboard.CloseClipboard()
 
     def on_save(self):
-        dialogues.save_image(self.parent.preview.chart.postscript(), get_settings())
+        save_image(self.parent.preview.chart.postscript(), get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
         df = df.append(data)
-        dialogues.export_data(df)
+        export_data(df)
 
     def on_postscript(self):
         pass
@@ -163,18 +162,18 @@ class Preview(Toplevel):
     def __init__(self, parent):
         super(Preview, self).__init__(parent)
 
+        self.x = int(self.winfo_screenwidth() * 0.4)
+        self.y = int(self.winfo_screenheight() * 0.1)
+        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
+        self.resizable(False, False)
+        self.title("Gantt Page")
+        self.wm_iconbitmap("favicon.ico")
+
         self.parent = parent
         self.width = eval(self.parent.settings['width'])
         self.height = eval(self.parent.settings['height'])
-        self.x = floor(((self.winfo_screenwidth() // 2) - self.width // 2))
-        self.y = floor(((self.winfo_screenheight() // 2) - self.height // 2))
         self.chart = Chart(self, self.width, self.height)
         self.chart.pack()
-
-        self.title("Test")
-        self.wm_iconbitmap("favicon.ico")
-        self.resizable(False, False)
-        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
 
 cli = loggers.Stream()
