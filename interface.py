@@ -15,13 +15,9 @@ class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
-        # self.width = 400
-        # self.height = 400
-        # self.x = floor(self.parent.x + ((self.parent.width * 0.5) - 200))
-        # self.y = floor(self.parent.y + (self.parent.height * 0.2))
-        # self.geometry(f'{self.width}x{self.height}+{self.x}+{self.y}')  # w, h, x, y
-        # self.minsize(300, 300)
-
+        self.x = int(self.winfo_screenwidth() * 0.1)
+        self.y = int(self.winfo_screenheight() * 0.1)
+        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
@@ -120,7 +116,6 @@ class Controls(Frame):
 
         with open('app.log', "r") as log:
             text = str(log.read())
-        text = "lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsumv lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsumv lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum lorum ipsum"
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
