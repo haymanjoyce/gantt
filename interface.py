@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
+
+import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, Canvas, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-# import dialogues
-from utils import *
+import utils  # beware importing * (imports logger too)
 from io import BytesIO
 from copy import copy
 import win32clipboard as clipboard
@@ -22,13 +23,11 @@ class App(Tk):
         self.wm_iconbitmap("favicon.ico")
 
         self.sourcefile = None
-        self.settings = get_settings()
+        self.settings = utils.get_settings()
         self.mainframe = Controls(self)
         self.preview = None
 
         self.mainloop()
-        log = open('app.log', 'r+')
-        log.truncate(0)  # erase log fill
 
 
 class Controls(Frame):
@@ -81,7 +80,7 @@ class Controls(Frame):
         if len(self.parent.settings.keys()) == 4:
             self.insert_data()
         else:
-            wipe_settings()
+            utils.wipe_settings()
 
     def insert_data(self):
         self.ent_width.insert(0, self.parent.settings["width"])
@@ -96,13 +95,21 @@ class Controls(Frame):
         self.parent.settings["finish"] = self.ent_finish.get()
 
     def on_select(self):
-        self.parent.sourcefile = get_file_name(self.parent.sourcefile)
+        self.parent.sourcefile = utils.get_file_name(self.parent.sourcefile)
         self.lbl_filepath.configure(text=self.parent.sourcefile)
         self.btn_run.config(state=NORMAL)
 
     def on_run(self):
         self.extract_data()
-        save_settings(self.parent.settings)
+        utils.save_settings(self.parent.settings)
+
+        self.scroller.config(state=NORMAL)
+        self.scroller.delete("0.0", END)
+        self.scroller.config(state=DISABLED)
+
+        log_file = open('process.log', 'r+')
+        log_file.truncate(0)  # erase log file
+        log.info("Logger initialised.")
 
         if self.parent.preview:
             self.parent.preview.destroy()
@@ -113,8 +120,8 @@ class Controls(Frame):
         sheet_1 = pd.read_excel(file, 1)
         print(sheet_1)
 
-        with open('app.log', "r") as log:
-            text = str(log.read())
+        with open('process.log', "r") as log_file:
+            text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
@@ -127,12 +134,12 @@ class Controls(Frame):
         # clipboard.CloseClipboard()
 
     def on_save(self):
-        save_image(self.parent.preview.chart.postscript(), get_settings())
+        utils.save_image(self.parent.preview.chart.postscript(), utils.get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
         df = df.append(data)
-        export_data(df)
+        utils.export_data(df)
 
     def on_postscript(self):
         pass
@@ -177,3 +184,4 @@ class Preview(Toplevel):
 
 
 cli = loggers.Stream()
+log = loggers.File()

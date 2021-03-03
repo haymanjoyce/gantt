@@ -2,6 +2,8 @@
 
 import logging
 
+# WARNING: beware importing * from module with initialised logger
+
 
 class Stream(logging.Logger):
     def __init__(self):
@@ -22,7 +24,7 @@ class File(logging.Logger):
 
         self.formatter = logging.Formatter('%(levelname)s - %(message)s')
 
-        self.handler = logging.FileHandler(filename='app.log')
+        self.handler = logging.FileHandler(filename='process.log')
         self.handler.setLevel(logging.INFO)
         self.handler.setFormatter(self.formatter)
 
