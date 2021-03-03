@@ -165,11 +165,11 @@ class Preview(Toplevel):
         self.x = floor(((self.winfo_screenwidth() // 2) - self.width // 2))
         self.y = floor(((self.winfo_screenheight() // 2) - self.height // 2))
         self.chart = Chart(self, self.width, self.height)
+        self.chart.pack()
 
         self.title("Test")
         self.wm_iconbitmap("favicon.ico")
         self.resizable(False, False)
-        self.chart.pack()
         self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
 
 
