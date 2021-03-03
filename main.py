@@ -13,6 +13,7 @@
 # TODO Add Save as Postscript button
 # TODO Label warning if Ghostscript not installed
 # TODO Redesign GUI to avoid generating two canvases
+# TODO Move settings to Panel
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

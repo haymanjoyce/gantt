@@ -1,18 +1,12 @@
 #!/usr/bin/env python3
 
-import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Menu, Toplevel
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT
-# from tkinter.ttk import Button
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-from math import floor
 import dialogues
-import chart
-from settings import *
-# import win32clipboard as clipboard
-from io import BytesIO
-from PIL import Image
+from utils import *
 from copy import copy
+import win32clipboard as clipboard
 
 
 class App(Tk):
@@ -28,16 +22,16 @@ class App(Tk):
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
 
-        self.panel = Panel(self)
+        self.mainframe = MainFrame(self)
 
         self.mainloop()
         log = open('app.log', 'r+')
         log.truncate(0)  # erase log file
 
 
-class Panel(Frame):
+class MainFrame(Frame):
     def __init__(self, parent):
-        super(Panel, self).__init__(parent)
+        super(MainFrame, self).__init__(parent)
 
         self.pack(fill=BOTH, expand=True)
         self.configure(padx=10, pady=5)
@@ -48,6 +42,7 @@ class Panel(Frame):
         self.source = None
         self.preview = None
         self.log = None
+        self.settings = get_settings()
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -83,12 +78,32 @@ class Panel(Frame):
         self.btn_image.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_export.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
 
+        if len(self.settings.keys()) == 4:
+            self.insert_data()
+        else:
+            wipe_settings()
+
+    def insert_data(self):
+        self.ent_width.insert(0, self.settings["width"])
+        self.ent_height.insert(0, self.settings["height"])
+        self.ent_start.insert(0, self.settings["start"])
+        self.ent_finish.insert(0, self.settings["finish"])
+
+    def extract_data(self):
+        self.settings["width"] = self.ent_width.get()
+        self.settings["height"] = self.ent_height.get()
+        self.settings["start"] = self.ent_start.get()
+        self.settings["finish"] = self.ent_finish.get()
+
     def on_select(self):
         self.source = dialogues.get_file_name(self.source)
         self.lbl_filepath.configure(text=self.source)
         self.btn_run.config(state=NORMAL)
 
     def on_run(self):
+        self.extract_data()
+        save_settings(self.settings)
+        
         if self.preview:
             self.preview.destroy()
         self.preview = dialogues.Preview(self.parent)
