@@ -2,9 +2,9 @@
 
 # TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
 # TODO freezing the app and loading along with GhostScript
-# TODO copy to clipboard
 # TODO Label warning if Ghostscript not installed
-# TODO tidy up class methods and utils functions
+# TODO on destroy Preview copy, save as and postscript set buttons to disabled
+# TODO copy to clipboard
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

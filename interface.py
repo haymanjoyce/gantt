@@ -100,31 +100,41 @@ class Controls(Frame):
         self.btn_run.config(state=NORMAL)
 
     def on_run(self):
+        # update parent.settings with data from Control
         self.extract_data()
+
+        # save parent.settings to config.json file
         utils.save_settings(self.parent.settings)
 
+        # wipe the scroller
         self.scroller.config(state=NORMAL)
         self.scroller.delete("0.0", END)
         self.scroller.config(state=DISABLED)
 
+        # wipe the process.log file
         log_file = open('process.log', 'r+')
         log_file.truncate(0)  # erase log file
-        log.info("Logger initialised.")
+        cli.info("Log file wiped.")
 
-        if self.parent.preview:
-            self.parent.preview.destroy()
-        self.parent.preview = Preview(self.parent)
-
+        # pull data from spreadsheet
         file = pd.ExcelFile(self.parent.sourcefile)
         sheet_0 = pd.read_excel(file, 0)
         sheet_1 = pd.read_excel(file, 1)
         print(sheet_1)
 
+        # process spreadsheet
+
+        # populate scroller with process.log content
         with open('process.log', "r") as log_file:
             text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
+
+        # generate chart
+        if self.parent.preview:
+            self.parent.preview.destroy()
+        self.parent.preview = Preview(self.parent)
 
     def on_copy(self):
         pass
@@ -134,7 +144,7 @@ class Controls(Frame):
         # clipboard.CloseClipboard()
 
     def on_save(self):
-        utils.save_image(self.parent.preview.chart, utils.get_settings())
+        utils.save_image(self.parent.preview.chart)
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
@@ -142,7 +152,7 @@ class Controls(Frame):
         utils.export_data(df)
 
     def on_postscript(self):
-        pass
+        utils.save_postscript(self.parent.preview.chart)
 
 
 class Chart(Canvas):

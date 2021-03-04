@@ -33,7 +33,7 @@ def wipe_settings():
         file.truncate(0)
 
 
-def save_image(chart, settings):
+def save_image(chart):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [
         ('All files', '*.*'),
@@ -88,6 +88,14 @@ def export_data(df):
             cli.warning("File type not recognised.")
     else:
         cli.warning("Operation cancelled.")
+
+
+def save_postscript(chart):
+    file = filedialog.asksaveasfile(mode="w",
+                                    title="Save As",
+                                    filetypes=[('PostScript file', '*.ps'), ],
+                                    defaultextension="*.ps")
+    chart.postscript(file=file.name, rotate=1)
 
 
 cli = loggers.Stream()
