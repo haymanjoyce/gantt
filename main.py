@@ -4,7 +4,6 @@
 # TODO freezing the app and loading along with GhostScript
 # TODO copy to clipboard
 # TODO Label warning if Ghostscript not installed
-# TODO give save_image bytecode, not postscript
 # TODO tidy up class methods and utils functions
 
 # MANUAL OS ENVIRONMENT INSTALLS

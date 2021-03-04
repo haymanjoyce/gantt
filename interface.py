@@ -134,7 +134,7 @@ class Controls(Frame):
         # clipboard.CloseClipboard()
 
     def on_save(self):
-        utils.save_image(self.parent.preview.chart.postscript(), utils.get_settings())
+        utils.save_image(self.parent.preview.chart, utils.get_settings())
 
     def on_export(self, df=pd.DataFrame()):
         data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
@@ -158,11 +158,6 @@ class Chart(Canvas):
         self.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
         self.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
         self.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
-
-    def to_bytecode(self):
-        to_postscript = self.postscript()
-        to_utf8 = to_postscript.encode('utf-8')
-        return BytesIO(to_utf8)
 
 
 class Preview(Toplevel):

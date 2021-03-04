@@ -33,7 +33,7 @@ def wipe_settings():
         file.truncate(0)
 
 
-def save_image(postscript, settings):
+def save_image(chart, settings):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [
         ('All files', '*.*'),
@@ -52,7 +52,8 @@ def save_image(postscript, settings):
     if file:
         file_name = file.name.lower()
         if file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
-            chart_encoded = postscript.encode('utf-8')
+            chart_as_postscript = chart.postscript()
+            chart_encoded = chart_as_postscript.encode('utf-8')
             chart_as_bytecode = BytesIO(chart_encoded)
             Image.open(chart_as_bytecode).save(file_name)
             cli.info('Chart saved as: ' + file_name)
