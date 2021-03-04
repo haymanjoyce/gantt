@@ -6,9 +6,6 @@ from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, Canvas, scrolledt
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger too)
-from io import BytesIO
-from copy import copy
-import win32clipboard as clipboard
 
 
 class App(Tk):
@@ -137,11 +134,7 @@ class Controls(Frame):
         self.parent.preview = Preview(self.parent)
 
     def on_copy(self):
-        pass
-        # clipboard.OpenClipboard()
-        # clipboard.EmptyClipboard()
-        # clipboard.SetClipboardData(as_object, None)
-        # clipboard.CloseClipboard()
+        utils.copy_to_clipboard(self.parent.preview.chart)
 
     def on_save(self):
         utils.save_image(self.parent.preview.chart)

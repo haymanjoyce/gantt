@@ -5,6 +5,7 @@ import json
 from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
+import win32clipboard as clipboard
 
 
 def get_settings():
@@ -42,7 +43,6 @@ def save_image(chart):
         ('PNG file', '*.png'),
         ('BMP file', '*.bmp'),
         ('TIFF file', '*.tif'),
-        ('PostScript file', '*.ps'),
     ]
     file = filedialog.asksaveasfile(mode="w",
                                     title="Save As",
@@ -51,7 +51,7 @@ def save_image(chart):
                                     )
     if file:
         file_name = file.name.lower()
-        if file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif', '.ps')):
+        if file_name.endswith(('.pdf', '.jpg', '.png', '.bmp', '.tif')):
             chart_as_postscript = chart.postscript()
             chart_encoded = chart_as_postscript.encode('utf-8')
             chart_as_bytecode = BytesIO(chart_encoded)
@@ -96,6 +96,13 @@ def save_postscript(chart):
                                     filetypes=[('PostScript file', '*.ps'), ],
                                     defaultextension="*.ps")
     chart.postscript(file=file.name, rotate=1)
+
+
+def copy_to_clipboard(chart):
+    clipboard.OpenClipboard()
+    clipboard.EmptyClipboard()
+    clipboard.SetClipboardData(as_object, None)
+    clipboard.CloseClipboard()
 
 
 cli = loggers.Stream()
