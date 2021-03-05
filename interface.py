@@ -48,13 +48,13 @@ class Controls(Frame):
         self.ent_finish = Entry(self, relief="groove")
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text=self.parent.sourcefile, relief="groove", bg="#fff", anchor="w")
-        self.btn_select = Button(self, text="Select file", command=self.on_select, state=NORMAL, relief="groove")
-        self.btn_run = Button(self, text="Run", command=self.on_run, state=DISABLED, relief="groove")
-        self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
-        self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, state=DISABLED, relief="groove")
-        self.btn_image = Button(self, text="Save as image file", command=self.on_save, state=NORMAL, relief="groove")
-        self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, state=DISABLED, relief="groove")
-        self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, state=NORMAL, relief="groove")
+        self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
+        self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
+        self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD)  # defines window width
+        self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
+        self.btn_image = Button(self, text="Save as image file", command=self.on_save, relief="groove")
+        self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, relief="groove")
+        self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, relief="groove")
 
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
@@ -94,7 +94,6 @@ class Controls(Frame):
     def on_select(self):
         self.parent.sourcefile = utils.get_file_name(self.parent.sourcefile)
         self.lbl_filepath.configure(text=self.parent.sourcefile)
-        self.btn_run.config(state=NORMAL)
 
     def on_run(self):
         # update parent.settings with data from Control
@@ -114,10 +113,10 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull data from spreadsheet
-        file = pd.ExcelFile(self.parent.sourcefile)
-        sheet_0 = pd.read_excel(file, 0)
-        sheet_1 = pd.read_excel(file, 1)
-        print(sheet_1)
+        # file = pd.ExcelFile(self.parent.sourcefile)
+        # sheet_0 = pd.read_excel(file, 0)
+        # sheet_1 = pd.read_excel(file, 1)
+        # print(sheet_1)
 
         # process spreadsheet
 

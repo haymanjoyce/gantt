@@ -5,6 +5,7 @@
 # TODO Label warning if Ghostscript not installed
 # TODO on destroy Preview copy, save as and postscript set buttons to disabled
 # TODO copy to clipboard
+# TODO pull button states out and handle separately
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
