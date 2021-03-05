@@ -103,43 +103,19 @@ def copy_to_clipboard(chart):
     chart_as_postscript = chart.postscript()
     chart_encoded = chart_as_postscript.encode('utf-8')
 
-    # saved as bytecode / string
     chart_as_bytecode = BytesIO(chart_encoded)
 
-    # saves to bmp/tiff file ok
-    Image.open(chart_as_bytecode).save("temp.tiff")
-
-    # saves to bmp/tiff in bytes ok
     chart_as_bitmap_bytecode = BytesIO()
+
     Image.open(chart_as_bytecode).save(chart_as_bitmap_bytecode, "BMP")
-    # Image.open(chart_as_bitmap_bytecode).save("temp2.TIFF")
-    # print(type(chart_as_bitmap_bytecode.read()))
 
-    # try pointing to file with absolute path
-    path_to_file = os.path.abspath("temp2.TIFF")
-
-    # works with text
-    # result = 'Some Text'
-    # clipboard.OpenClipboard()
-    # clipboard.EmptyClipboard()
-    # clipboard.SetClipboardText(result, clipboard.CF_TEXT)
-    # clipboard.CloseClipboard()
-
-    # these constants are just integers; first argument must be one of these
-    print(clipboard.CF_BITMAP)
-
-    # try it with StringIO as per docs...
-    chart_as_string_object = StringIO(chart_as_postscript)
-    # Image.open(chart_as_string_object).save("temp.png")  # does not work
-
-    # clipboard.OpenClipboard()
-    # clipboard.EmptyClipboard()
-    # clipboard.SetClipboardData(chart_as_bitmap_bytecode.read(), clipboard.CF_BITMAP)
-    # clipboard.CloseClipboard()
+    clipboard.OpenClipboard()
+    clipboard.EmptyClipboard()
+    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap_bytecode.getvalue()[14:])
+    clipboard.CloseClipboard()
 
     chart_as_bytecode.close()
     chart_as_bitmap_bytecode.close()
-    chart_as_string_object.close()
 
 
 cli = loggers.Stream()
