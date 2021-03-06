@@ -4,12 +4,23 @@ import loggers
 
 
 class Cleaner:
-    pass
+    def __init__(self, df):
+        self.df = df
+
+    def run(self):
+        log.info("File cleaned.")
+        return self.df
 
 
 class Processor:
-    pass
+    def __init__(self, df):
+        self.df = df
+
+    def run(self):
+        log.info("File processed.")
+        return self.df
 
 
 cli = loggers.Stream()
+log = loggers.File()
 

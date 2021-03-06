@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# TODO sketch out app (tkinter, canvas, postscript, convert postscript to other formats)
+# TODO sketch out app
 # TODO freezing the app and loading along with GhostScript
 # TODO Label warning if Ghostscript not installed
-# TODO prove processing and export
+# TODO sketch out cleaning, processing, drawing and export
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

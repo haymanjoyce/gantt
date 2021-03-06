@@ -6,6 +6,8 @@ from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, Canvas, scrolledt
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger too)
+from data import Cleaner, Processor
+from draw import Draw
 
 
 class App(Tk):
@@ -126,13 +128,10 @@ class Controls(Frame):
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
-        # pull data from spreadsheet
-        file = pd.ExcelFile(self.parent.sourcefile)
-        sheet_0 = pd.read_excel(file, 0)
-        sheet_1 = pd.read_excel(file, 1)
-        print(sheet_1)
-
-        # process spreadsheet
+        # pull in, clean and process data
+        df_raw = pd.ExcelFile(self.parent.sourcefile)
+        df_cleaned = Cleaner(df_raw).run()
+        df_processed = Processor(df_cleaned).run()
 
         # populate scroller with process.log content
         with open('process.log', "r") as log_file:
@@ -141,7 +140,7 @@ class Controls(Frame):
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
 
-        # generate chart
+        # create chart
         if self.parent.preview:
             self.parent.preview.destroy()
         self.parent.preview = Preview(self.parent)
@@ -158,7 +157,7 @@ class Controls(Frame):
 
     def on_export(self, df=None):
         if not df:
-            df = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
+            df = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))  # this can be a template
         utils.export_data(df)
 
     def on_postscript(self):
@@ -173,7 +172,7 @@ class Chart(Canvas):
         self.config(width=width, height=height)
         self.draw(0, 0, width, height)
 
-    def draw(self, x=0, y=0, width=100, height=100):
+    def draw(self, x=0, y=0, width=100, height=100, df=None):
         self.create_rectangle(x, y, width, height, fill="#ff0000")
         self.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
         self.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
