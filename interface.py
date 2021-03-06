@@ -79,7 +79,8 @@ class Controls(Frame):
         else:
             utils.wipe_settings()
 
-        self.set_buttons()
+        states = [1, 0, 0, 0, 0, 0]
+        self.set_buttons(states)
 
     def insert_data(self):
         self.ent_width.insert(0, self.parent.settings["width"])
@@ -104,6 +105,9 @@ class Controls(Frame):
     def on_select(self):
         self.parent.sourcefile = utils.get_file_name(self.parent.sourcefile)
         self.lbl_filepath.configure(text=self.parent.sourcefile)
+
+        states = [1, 1, 0, 0, 0, 0]
+        self.set_buttons(states)
 
     def on_run(self):
         # update parent.settings with data from Control
@@ -141,6 +145,10 @@ class Controls(Frame):
         if self.parent.preview:
             self.parent.preview.destroy()
         self.parent.preview = Preview(self.parent)
+
+        # set button permissions
+        states = [1, 1, 1, 1, 1, 1]
+        self.set_buttons(states)
 
     def on_copy(self):
         utils.copy_to_clipboard(self.parent.preview.chart)

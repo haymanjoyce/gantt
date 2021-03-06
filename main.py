@@ -4,7 +4,6 @@
 # TODO freezing the app and loading along with GhostScript
 # TODO Label warning if Ghostscript not installed
 # TODO prove processing and export
-# TODO pull button states out and handle separately
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
