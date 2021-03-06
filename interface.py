@@ -91,6 +91,14 @@ class Controls(Frame):
         self.parent.settings["start"] = self.ent_start.get()
         self.parent.settings["finish"] = self.ent_finish.get()
 
+    def set_buttons(self, states):
+        buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
+        if not states:
+            states = [1, 0, 0, 0, 0, 0]
+        states = [NORMAL if x == 1 else DISABLED for x in states]
+        for button, state in zip(buttons, states):
+            button.config(state=state)
+
     def on_select(self):
         self.parent.sourcefile = utils.get_file_name(self.parent.sourcefile)
         self.lbl_filepath.configure(text=self.parent.sourcefile)

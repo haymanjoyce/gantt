@@ -4,9 +4,8 @@ import loggers
 import json
 from tkinter import filedialog
 from PIL import Image
-from io import BytesIO, StringIO
+from io import BytesIO
 import win32clipboard as clipboard
-import os
 
 
 def get_settings():
@@ -101,21 +100,19 @@ def save_postscript(chart):
 
 def copy_to_clipboard(chart):
     chart_as_postscript = chart.postscript()
-    chart_encoded = chart_as_postscript.encode('utf-8')
+    chart_as_utf = chart_as_postscript.encode('utf-8')
+    chart_as_bytecode = BytesIO(chart_as_utf)
 
-    chart_as_bytecode = BytesIO(chart_encoded)
-
-    chart_as_bitmap_bytecode = BytesIO()
-
-    Image.open(chart_as_bytecode).save(chart_as_bitmap_bytecode, "BMP")
+    chart_as_bitmap = BytesIO()
+    Image.open(chart_as_bytecode).save(chart_as_bitmap, "BMP")
 
     clipboard.OpenClipboard()
     clipboard.EmptyClipboard()
-    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap_bytecode.getvalue()[14:])
+    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap.getvalue()[14:])  # [14:] removes header
     clipboard.CloseClipboard()
 
     chart_as_bytecode.close()
-    chart_as_bitmap_bytecode.close()
+    chart_as_bitmap.close()
 
 
 cli = loggers.Stream()
