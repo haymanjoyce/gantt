@@ -79,6 +79,8 @@ class Controls(Frame):
         else:
             utils.wipe_settings()
 
+        self.set_buttons()
+
     def insert_data(self):
         self.ent_width.insert(0, self.parent.settings["width"])
         self.ent_height.insert(0, self.parent.settings["height"])
@@ -91,7 +93,7 @@ class Controls(Frame):
         self.parent.settings["start"] = self.ent_start.get()
         self.parent.settings["finish"] = self.ent_finish.get()
 
-    def set_buttons(self, states):
+    def set_buttons(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
         if not states:
             states = [1, 0, 0, 0, 0, 0]
