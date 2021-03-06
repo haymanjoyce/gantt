@@ -127,10 +127,10 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull data from spreadsheet
-        # file = pd.ExcelFile(self.parent.sourcefile)
-        # sheet_0 = pd.read_excel(file, 0)
-        # sheet_1 = pd.read_excel(file, 1)
-        # print(sheet_1)
+        file = pd.ExcelFile(self.parent.sourcefile)
+        sheet_0 = pd.read_excel(file, 0)
+        sheet_1 = pd.read_excel(file, 1)
+        print(sheet_1)
 
         # process spreadsheet
 
@@ -156,9 +156,9 @@ class Controls(Frame):
     def on_save(self):
         utils.save_image(self.parent.preview.chart)
 
-    def on_export(self, df=pd.DataFrame()):
-        data = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
-        df = df.append(data)
+    def on_export(self, df=None):
+        if not df:
+            df = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))
         utils.export_data(df)
 
     def on_postscript(self):
