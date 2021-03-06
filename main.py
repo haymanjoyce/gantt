@@ -4,6 +4,7 @@
 # TODO freezing the app and loading along with GhostScript
 # TODO Label warning if Ghostscript not installed
 # TODO sketch out cleaning, processing, drawing and export
+# TODO figure out drawing structure
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
