@@ -5,6 +5,7 @@
 # TODO Label warning if Ghostscript not installed
 # TODO sketch out cleaning, processing, drawing and export
 # TODO figure out drawing structure
+# TODO tidy up Chart
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
