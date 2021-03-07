@@ -150,10 +150,10 @@ class Controls(Frame):
         self.set_buttons(states)
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.parent.chart.chart)
+        utils.copy_to_clipboard(self.parent.chart.canvas)
 
     def on_save(self):
-        utils.save_image(self.parent.chart.chart)
+        utils.save_image(self.parent.chart.canvas)
 
     def on_export(self, df=None):
         if not df:
@@ -161,7 +161,7 @@ class Controls(Frame):
         utils.export_data(df)
 
     def on_postscript(self):
-        utils.save_postscript(self.parent.chart.chart)
+        utils.save_postscript(self.parent.chart.canvas)
 
 
 class Chart(Toplevel):
@@ -178,16 +178,16 @@ class Chart(Toplevel):
         self.parent = parent
         self.width = eval(self.parent.settings['width'])
         self.height = eval(self.parent.settings['height'])
-        self.chart = Canvas(self)
-        self.chart.config(width=self.width, height=self.height)
+        self.canvas = Canvas(self)
+        self.canvas.config(width=self.width, height=self.height)
         self.draw(0, 0, width=self.width, height=self.height)
-        self.chart.pack()
+        self.canvas.pack()
 
     def draw(self, x=0, y=0, width=100, height=100, df=None):
-        self.chart.create_rectangle(x, y, width, height, fill="#ff0000")
-        self.chart.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
-        self.chart.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
-        self.chart.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
+        self.canvas.create_rectangle(x, y, width, height, fill="#ff0000")
+        self.canvas.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
+        self.canvas.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
+        self.canvas.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
 
 
 cli = loggers.Stream()

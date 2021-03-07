@@ -96,6 +96,7 @@ def save_postscript(chart):
                                     filetypes=[('PostScript file', '*.ps'), ],
                                     defaultextension="*.ps")
     chart.postscript(file=file.name, rotate=1)
+    cli.info("Chart saved as " + file.name)
 
 
 def copy_to_clipboard(chart):
