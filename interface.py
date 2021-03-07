@@ -24,7 +24,7 @@ class App(Tk):
         self.sourcefile = None
         self.settings = utils.get_settings()
         self.mainframe = Controls(self)
-        self.preview = None
+        self.chart = None
 
         self.mainloop()
 
@@ -141,19 +141,19 @@ class Controls(Frame):
         self.scroller.configure(state=DISABLED)  # readable
 
         # create chart
-        if self.parent.preview:
-            self.parent.preview.destroy()
-        self.parent.preview = Preview(self.parent)
+        if self.parent.chart:
+            self.parent.chart.destroy()
+        self.parent.chart = Chart(self.parent)
 
         # set button permissions
         states = [1, 1, 1, 1, 1, 1]
         self.set_buttons(states)
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.parent.preview.chart)
+        utils.copy_to_clipboard(self.parent.chart.chart)
 
     def on_save(self):
-        utils.save_image(self.parent.preview.chart)
+        utils.save_image(self.parent.chart.chart)
 
     def on_export(self, df=None):
         if not df:
@@ -161,27 +161,12 @@ class Controls(Frame):
         utils.export_data(df)
 
     def on_postscript(self):
-        utils.save_postscript(self.parent.preview.chart)
+        utils.save_postscript(self.parent.chart.chart)
 
 
-class Chart(Canvas):
-    def __init__(self, parent, width, height):
-        super(Chart, self).__init__(parent)
-
-        self.parent = parent
-        self.config(width=width, height=height)
-        self.draw(0, 0, width, height)
-
-    def draw(self, x=0, y=0, width=100, height=100, df=None):
-        self.create_rectangle(x, y, width, height, fill="#ff0000")
-        self.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
-        self.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
-        self.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
-
-
-class Preview(Toplevel):
+class Chart(Toplevel):
     def __init__(self, parent):
-        super(Preview, self).__init__(parent)
+        super(Chart, self).__init__(parent)
 
         self.x = int(self.winfo_screenwidth() * 0.4)
         self.y = int(self.winfo_screenheight() * 0.1)
@@ -193,8 +178,16 @@ class Preview(Toplevel):
         self.parent = parent
         self.width = eval(self.parent.settings['width'])
         self.height = eval(self.parent.settings['height'])
-        self.chart = Chart(self, self.width, self.height)
+        self.chart = Canvas(self)
+        self.chart.config(width=self.width, height=self.height)
+        self.draw(0, 0, width=self.width, height=self.height)
         self.chart.pack()
+
+    def draw(self, x=0, y=0, width=100, height=100, df=None):
+        self.chart.create_rectangle(x, y, width, height, fill="#ff0000")
+        self.chart.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
+        self.chart.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
+        self.chart.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
 
 
 cli = loggers.Stream()
