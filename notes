@@ -12,15 +12,8 @@ rotate - 0 is portrait; 1 is landscape
 x - sets left edge of area to be printed (default is left edge of window)
 y - sets the top edge of area to be printed (default is top edge of window)
 
-rotates 90 to right
-so w becomes n
-and pagex pushes image down
-
-default page height (portrait) is 793
-
 GHOSTSCRIPT
 
 The other GUIs use postscript too
 PyQt may not use postscript but cannot sell under their license
 So got to add Ghostscript to the install
-

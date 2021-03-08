@@ -35,15 +35,12 @@ class Controls(Frame):
         self.columnconfigure(1, weight=1)
 
         self.parent = parent
-
         self.chart = None
-        self.settings = utils.get_settings()
 
         self.file_source = None
-        self.file_template = None
 
         self.df_raw = None
-        self.df_cleaned = None
+        self.df_cleaned = pd.read_excel("template.xlsx")
         self.df_processed = None
 
         self.lbl_width = Label(self, text="Chart width:")
@@ -82,13 +79,14 @@ class Controls(Frame):
         self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
+        self.settings = utils.get_settings()
         if len(self.settings.keys()) == 4:
             self.insert_data()
         else:
             utils.wipe_settings()
 
-        states = [1, 0, 0, 0, 0, 0]
-        self.set_buttons(states)
+        button_states = [1, 0, 0, 0, 1, 0]
+        self.set_buttons(button_states)
 
     def insert_data(self):
         self.ent_width.insert(0, self.settings["width"])
@@ -105,7 +103,7 @@ class Controls(Frame):
     def set_buttons(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
         if not states:
-            states = [1, 0, 0, 0, 0, 0]
+            states = [1, 0, 0, 0, 1, 0]
         states = [NORMAL if x == 1 else DISABLED for x in states]
         for button, state in zip(buttons, states):
             button.config(state=state)
@@ -114,8 +112,8 @@ class Controls(Frame):
         self.file_source = utils.get_file_name()
         self.lbl_filepath.configure(text=self.file_source)
 
-        states = [1, 1, 0, 0, 0, 0]
-        self.set_buttons(states)
+        button_states = [1, 1, 0, 0, 0, 0]
+        self.set_buttons(button_states)
 
     def on_run(self):
         # update parent.settings with data from Control
@@ -135,7 +133,7 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull in, clean and process data
-        self.df_raw = pd.ExcelFile(self.file_source)
+        self.df_raw = pd.read_excel(self.file_source)
         self.df_cleaned = Cleaner(self.df_raw).run()
         self.df_processed = Processor(self.df_cleaned).run()
 
@@ -152,8 +150,8 @@ class Controls(Frame):
         self.chart = Chart(self.parent)  # App is the parent
 
         # set button permissions
-        states = [1, 1, 1, 1, 1, 1]
-        self.set_buttons(states)
+        button_states = [1, 1, 1, 1, 1, 1]
+        self.set_buttons(button_states)
 
     def on_copy(self):
         utils.copy_to_clipboard(self.chart.drawing)
@@ -161,10 +159,8 @@ class Controls(Frame):
     def on_save(self):
         utils.save_image(self.chart.drawing)
 
-    def on_export(self, df=None):
-        if not df:
-            df = pd.DataFrame([[1, 2], [1, 2]], columns=list('AB'))  # this can be a template
-        utils.export_data(df)
+    def on_export(self):
+        utils.export_data(self.df_cleaned)
 
     def on_postscript(self):
         utils.save_postscript(self.chart.drawing)
