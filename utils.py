@@ -83,7 +83,7 @@ def export_data(df):
         file_name = file.name.lower()
         if file_name.endswith(".xlsx"):
             df.to_excel(file_name)
-            cli.info("Chart saved as" + file_name)
+            cli.info("Chart saved as: " + file_name)
         else:
             cli.warning("File type not recognised.")
     else:
@@ -96,7 +96,7 @@ def save_postscript(chart):
                                     filetypes=[('PostScript file', '*.ps'), ],
                                     defaultextension="*.ps")
     chart.postscript(file=file.name, rotate=1)
-    cli.info("Chart saved as " + file.name)
+    cli.info("Chart saved as: " + file.name)
 
 
 def copy_to_clipboard(chart):

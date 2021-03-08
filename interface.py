@@ -21,10 +21,8 @@ class App(Tk):
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
 
-        self.sourcefile = None
         self.settings = utils.get_settings()
-        self.mainframe = Controls(self)
-        self.chart = None
+        self.controls = Controls(self)
 
         self.mainloop()
 
@@ -40,6 +38,15 @@ class Controls(Frame):
 
         self.parent = parent
 
+        self.chart = None
+
+        self.input_file = None
+        self.output_file = None
+
+        self.df_raw = None
+        self.df_cleaned = None
+        self.df_processed = None
+
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
         self.ent_width = Entry(self, relief="groove")
@@ -49,7 +56,7 @@ class Controls(Frame):
         self.ent_start = Entry(self, relief="groove")
         self.ent_finish = Entry(self, relief="groove")
         self.lbl_source = Label(self, text="Source file:")
-        self.lbl_filepath = Label(self, text=self.parent.sourcefile, relief="groove", bg="#fff", anchor="w")
+        self.lbl_filepath = Label(self, text="", relief="groove", bg="#fff", anchor="w")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD)  # defines window width
@@ -83,12 +90,6 @@ class Controls(Frame):
 
         states = [1, 0, 0, 0, 0, 0]
         self.set_buttons(states)
-
-        self.input_file = None
-        self.df_raw = None
-        self.df_cleaned = None
-        self.df_processed = None
-        self.output_file = None
 
     def insert_data(self):
         self.ent_width.insert(0, self.parent.settings["width"])
@@ -135,9 +136,9 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull in, clean and process data
-        df_raw = pd.ExcelFile(self.parent.sourcefile)
-        df_cleaned = Cleaner(df_raw).run()
-        df_processed = Processor(df_cleaned).run()
+        self.df_raw = pd.ExcelFile(self.input_file)
+        self.df_cleaned = Cleaner(self.df_raw).run()
+        self.df_processed = Processor(self.df_cleaned).run()
 
         # populate scroller with process.log content
         with open('process.log', "r") as log_file:
@@ -147,19 +148,19 @@ class Controls(Frame):
         self.scroller.configure(state=DISABLED)  # readable
 
         # create chart
-        if self.parent.chart:
-            self.parent.chart.destroy()
-        self.parent.chart = Chart(self.parent)  # App is the parent
+        if self.chart:
+            self.chart.destroy()
+        self.chart = Chart(self.parent)  # App is the parent
 
         # set button permissions
         states = [1, 1, 1, 1, 1, 1]
         self.set_buttons(states)
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.parent.chart.canvas)
+        utils.copy_to_clipboard(self.chart.drawing)
 
     def on_save(self):
-        utils.save_image(self.parent.chart.canvas)
+        utils.save_image(self.chart.drawing)
 
     def on_export(self, df=None):
         if not df:
@@ -167,7 +168,7 @@ class Controls(Frame):
         utils.export_data(df)
 
     def on_postscript(self):
-        utils.save_postscript(self.parent.chart.canvas)
+        utils.save_postscript(self.chart.drawing)
 
 
 class Chart(Toplevel):
