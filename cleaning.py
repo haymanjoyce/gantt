@@ -5,25 +5,18 @@ import pandas as pd
 
 
 class Cleaner:
-    def __init__(self, xls):
-        self.xls = xls
-        self.df_0 = pd.read_excel(self.xls, 0)
-        self.df_1 = pd.read_excel(self.xls, 1)
+    def __init__(self, df_dict):
+        self.df_dict = df_dict
 
-    # def temp(self):
-    #     writer = pd.ExcelWriter('pandas_multiple.xlsx', engine='xlsxwriter')
-    #
-    #     # Write each dataframe to a different worksheet.
-    #     df1.to_excel(writer, sheet_name='Sheet1')
-    #     df2.to_excel(writer, sheet_name='Sheet2')
-    #     df3.to_excel(writer, sheet_name='Sheet3')
-    #
-    #     # Close the Pandas Excel writer and output the Excel file.
-    #     writer.save()
+    def check_df(self, name):
+        return name in self.df_dict.keys()
+
+    def print_df(self, name):
+        print(self.df_dict['name'])
 
     def run(self):
         log.info("File cleaned.")
-        return self.xls
+        return self.df_dict
 
 
 cli = loggers.Stream()

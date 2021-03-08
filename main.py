@@ -3,7 +3,7 @@
 # TODO sketch out app
 # TODO freezing the app and loading along with GhostScript
 # TODO warning if Ghostscript not installed
-# TODO change handling from df to xlsx object
+# TODO fix export_data
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

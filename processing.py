@@ -4,12 +4,12 @@ import loggers
 
 
 class Processor:
-    def __init__(self, xls):
-        self.xls = xls
+    def __init__(self, df_dict):
+        self.df_dict = df_dict
 
     def run(self):
         log.info("File processed.")
-        return self.xls
+        return self.df_dict
 
 
 cli = loggers.Stream()
