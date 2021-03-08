@@ -39,9 +39,9 @@ class Controls(Frame):
 
         self.file_source = None
 
-        self.df_raw = None
-        self.df_cleaned = pd.read_excel("template.xlsx")
-        self.df_processed = None
+        self.df_dict_raw = None
+        self.df_dict_cleaned = None  # pd.ExcelFile("template.xlsx")
+        self.df_dict_processed = None
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -133,9 +133,9 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull in, clean and process data
-        self.df_raw = pd.read_excel(self.file_source)
-        self.df_cleaned = Cleaner(self.df_raw).run()
-        self.df_processed = Processor(self.df_cleaned).run()
+        self.df_dict_raw = pd.ExcelFile(self.file_source)
+        self.df_dict_cleaned = Cleaner(self.df_dict_raw).run()
+        self.df_dict_processed = Processor(self.df_dict_cleaned).run()
 
         # populate scroller with data.log content
         with open('data.log', "r") as log_file:
@@ -160,7 +160,7 @@ class Controls(Frame):
         utils.save_image(self.chart.drawing)
 
     def on_export(self):
-        utils.export_data(self.df_cleaned)
+        utils.export_data(self.df_dict_cleaned)
 
     def on_postscript(self):
         utils.save_postscript(self.chart.drawing)
