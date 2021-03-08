@@ -2,21 +2,21 @@
 
 
 import loggers
-from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, Canvas, scrolledtext
+from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger too)
 from data import Cleaner, Processor
-from draw import Draw
+from drawing import Drawing
 
 
 class App(Tk):
     def __init__(self):
         super(App, self).__init__()
 
-        self.x = int(self.winfo_screenwidth() * 0.1)
-        self.y = int(self.winfo_screenheight() * 0.1)
-        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
+        self.win_x = int(self.winfo_screenwidth() * 0.1)
+        self.win_y = int(self.winfo_screenheight() * 0.1)
+        self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
@@ -84,6 +84,12 @@ class Controls(Frame):
         states = [1, 0, 0, 0, 0, 0]
         self.set_buttons(states)
 
+        self.input_file = None
+        self.df_raw = None
+        self.df_cleaned = None
+        self.df_processed = None
+        self.output_file = None
+
     def insert_data(self):
         self.ent_width.insert(0, self.parent.settings["width"])
         self.ent_height.insert(0, self.parent.settings["height"])
@@ -105,8 +111,8 @@ class Controls(Frame):
             button.config(state=state)
 
     def on_select(self):
-        self.parent.sourcefile = utils.get_file_name(self.parent.sourcefile)
-        self.lbl_filepath.configure(text=self.parent.sourcefile)
+        self.input_file = utils.get_file_name()
+        self.lbl_filepath.configure(text=self.input_file)
 
         states = [1, 1, 0, 0, 0, 0]
         self.set_buttons(states)
@@ -143,7 +149,7 @@ class Controls(Frame):
         # create chart
         if self.parent.chart:
             self.parent.chart.destroy()
-        self.parent.chart = Chart(self.parent)
+        self.parent.chart = Chart(self.parent)  # App is the parent
 
         # set button permissions
         states = [1, 1, 1, 1, 1, 1]
@@ -168,26 +174,17 @@ class Chart(Toplevel):
     def __init__(self, parent):
         super(Chart, self).__init__(parent)
 
-        self.x = int(self.winfo_screenwidth() * 0.4)
-        self.y = int(self.winfo_screenheight() * 0.1)
-        self.geometry(f'+{self.x}+{self.y}')  # w, h, x, y
+        self.win_x = int(self.winfo_screenwidth() * 0.4)
+        self.win_y = int(self.winfo_screenheight() * 0.1)
+        self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
-
         self.parent = parent
-        self.width = eval(self.parent.settings['width'])
-        self.height = eval(self.parent.settings['height'])
-        self.canvas = Canvas(self)
-        self.canvas.config(width=self.width, height=self.height)
-        self.draw(0, 0, width=self.width, height=self.height)
-        self.canvas.pack()
 
-    def draw(self, x=0, y=0, width=100, height=100, df=None):
-        self.canvas.create_rectangle(x, y, width, height, fill="#ff0000")
-        self.canvas.create_rectangle(x, y, width // 2, height // 2, fill="#0000ff")
-        self.canvas.create_rectangle(x, y, width // 3, height // 3, fill="#00ff00")
-        self.canvas.create_rectangle(x, y, width // 4, height // 4, fill="#ff0000", outline="#000")
+        self.drawing = Drawing(self)  # Chart is the parent
+        self.drawing.build_placeholder()
+        self.drawing.pack()
 
 
 cli = loggers.Stream()

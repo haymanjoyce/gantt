@@ -6,6 +6,7 @@
 # TODO sketch out cleaning, processing, drawing and export
 # TODO figure out drawing structure
 # TODO tidy up Chart
+# TODO bring down settings
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

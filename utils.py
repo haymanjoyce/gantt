@@ -63,13 +63,13 @@ def save_image(chart):
         cli.info("Operation cancelled.")
 
 
-def get_file_name(placeholder):
+def get_file_name():
     file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
                                   filetypes=(("Excel files", "*.xlsx"),))
     if file:
         file_name = file.name.lower()
     else:
-        file_name = placeholder
+        file_name = None
         cli.debug("Operation cancelled.")
     return file_name
 
