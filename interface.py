@@ -36,11 +36,8 @@ class Controls(Frame):
 
         self.parent = parent
         self.chart = None
-
         self.file_source = None
-
-        self.df_dict_raw = None
-        self.df_dict_cleaned = None  # pd.ExcelFile("template.xlsx")
+        self.df_dict_cleaned = None
         self.df_dict_processed = None
 
         self.lbl_width = Label(self, text="Chart width:")
@@ -85,7 +82,7 @@ class Controls(Frame):
         else:
             utils.wipe_settings()
 
-        button_states = [1, 0, 0, 0, 1, 0]
+        button_states = [1, 0, 0, 0, 0, 0]
         self.set_buttons(button_states)
 
     def insert_data(self):
@@ -103,7 +100,7 @@ class Controls(Frame):
     def set_buttons(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
         if not states:
-            states = [1, 0, 0, 0, 1, 0]
+            states = [1, 0, 0, 0, 0, 0]
         states = [NORMAL if x == 1 else DISABLED for x in states]
         for button, state in zip(buttons, states):
             button.config(state=state)
@@ -133,9 +130,10 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull in, clean and process data
-        self.df_dict_raw = pd.ExcelFile(self.file_source)
-        self.df_dict_cleaned = Cleaner(self.df_dict_raw).run()
-        self.df_dict_processed = Processor(self.df_dict_cleaned).run()
+        xls = pd.ExcelFile(self.file_source)
+        df_dict_raw = pd.read_excel(xls, None)
+        self.df_dict_cleaned = Cleaner(df_dict_raw).run()  # used for exporting a spreadsheet
+        self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
 
         # populate scroller with data.log content
         with open('data.log', "r") as log_file:
