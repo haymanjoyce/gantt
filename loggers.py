@@ -24,7 +24,7 @@ class File(logging.Logger):
 
         self.formatter = logging.Formatter('%(levelname)s - %(message)s')
 
-        self.handler = logging.FileHandler(filename='process.log')
+        self.handler = logging.FileHandler(filename='data.log')
         self.handler.setLevel(logging.INFO)
         self.handler.setFormatter(self.formatter)
 

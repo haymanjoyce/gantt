@@ -6,7 +6,8 @@ from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger too)
-from data import Cleaner, Processor
+from cleaning import Cleaner
+from processing import Processor
 from drawing import Drawing
 
 
@@ -128,8 +129,8 @@ class Controls(Frame):
         self.scroller.delete("0.0", END)
         self.scroller.config(state=DISABLED)
 
-        # wipe the process.log file
-        log_file = open('process.log', 'r+')
+        # wipe the data.log file
+        log_file = open('data.log', 'r+')
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
@@ -138,8 +139,8 @@ class Controls(Frame):
         self.df_cleaned = Cleaner(self.df_raw).run()
         self.df_processed = Processor(self.df_cleaned).run()
 
-        # populate scroller with process.log content
-        with open('process.log', "r") as log_file:
+        # populate scroller with data.log content
+        with open('data.log', "r") as log_file:
             text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
