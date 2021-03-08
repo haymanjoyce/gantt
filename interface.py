@@ -20,10 +20,7 @@ class App(Tk):
         self.resizable(False, False)
         self.title("Gantt Page")
         self.wm_iconbitmap("favicon.ico")
-
-        self.settings = utils.get_settings()
         self.controls = Controls(self)
-
         self.mainloop()
 
 
@@ -39,9 +36,10 @@ class Controls(Frame):
         self.parent = parent
 
         self.chart = None
+        self.settings = utils.get_settings()
 
-        self.input_file = None
-        self.output_file = None
+        self.file_source = None
+        self.file_template = None
 
         self.df_raw = None
         self.df_cleaned = None
@@ -83,7 +81,7 @@ class Controls(Frame):
         self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
-        if len(self.parent.settings.keys()) == 4:
+        if len(self.settings.keys()) == 4:
             self.insert_data()
         else:
             utils.wipe_settings()
@@ -92,16 +90,16 @@ class Controls(Frame):
         self.set_buttons(states)
 
     def insert_data(self):
-        self.ent_width.insert(0, self.parent.settings["width"])
-        self.ent_height.insert(0, self.parent.settings["height"])
-        self.ent_start.insert(0, self.parent.settings["start"])
-        self.ent_finish.insert(0, self.parent.settings["finish"])
+        self.ent_width.insert(0, self.settings["width"])
+        self.ent_height.insert(0, self.settings["height"])
+        self.ent_start.insert(0, self.settings["start"])
+        self.ent_finish.insert(0, self.settings["finish"])
 
     def extract_data(self):
-        self.parent.settings["width"] = self.ent_width.get()
-        self.parent.settings["height"] = self.ent_height.get()
-        self.parent.settings["start"] = self.ent_start.get()
-        self.parent.settings["finish"] = self.ent_finish.get()
+        self.settings["width"] = self.ent_width.get()
+        self.settings["height"] = self.ent_height.get()
+        self.settings["start"] = self.ent_start.get()
+        self.settings["finish"] = self.ent_finish.get()
 
     def set_buttons(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
@@ -112,8 +110,8 @@ class Controls(Frame):
             button.config(state=state)
 
     def on_select(self):
-        self.input_file = utils.get_file_name()
-        self.lbl_filepath.configure(text=self.input_file)
+        self.file_source = utils.get_file_name()
+        self.lbl_filepath.configure(text=self.file_source)
 
         states = [1, 1, 0, 0, 0, 0]
         self.set_buttons(states)
@@ -123,7 +121,7 @@ class Controls(Frame):
         self.extract_data()
 
         # save parent.settings to config.json file
-        utils.save_settings(self.parent.settings)
+        utils.save_settings(self.settings)
 
         # wipe the scroller
         self.scroller.config(state=NORMAL)
@@ -136,7 +134,7 @@ class Controls(Frame):
         cli.info("Log file wiped.")
 
         # pull in, clean and process data
-        self.df_raw = pd.ExcelFile(self.input_file)
+        self.df_raw = pd.ExcelFile(self.file_source)
         self.df_cleaned = Cleaner(self.df_raw).run()
         self.df_processed = Processor(self.df_cleaned).run()
 

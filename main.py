@@ -3,11 +3,6 @@
 # TODO sketch out app
 # TODO freezing the app and loading along with GhostScript
 # TODO Label warning if Ghostscript not installed
-# TODO sketch out cleaning, processing, drawing and export
-# TODO figure out drawing structure
-# TODO tidy up Chart
-# TODO bring down settings and chart
-# TODO rename parents
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

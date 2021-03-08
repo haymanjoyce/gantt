@@ -2,16 +2,18 @@
 
 import loggers
 from tkinter import Canvas
+from utils import get_settings
 
 
 class Drawing(Canvas):
     def __init__(self, parent):
         super(Drawing, self).__init__(parent)
 
-        self.window = parent
-        self.app = self.window.parent
-        self.chart_width = eval(self.app.settings['width'])
-        self.chart_height = eval(self.app.settings['height'])
+        self.parent = parent
+
+        self.settings = get_settings()
+        self.chart_width = eval(self.settings['width'])
+        self.chart_height = eval(self.settings['height'])
         self.config(width=self.chart_width, height=self.chart_height)
 
     def build_placeholder(self):
