@@ -83,11 +83,13 @@ def export_data(df_dict):
                                     filetypes=(("Excel files", "*.xlsx"),),
                                     )
     if file:
-        file_path = file.name.lower()
-        python_path = file_path.replace('/', '\\\\')
+        file_path = file.name.lower().replace('/', '\\\\')
         if file_path.endswith(".xlsx"):
-            with pd.ExcelWriter(python_path) as writer:
-                df_dict['Banners'].to_excel(writer, sheet_name='Sheet1')
+            with pd.ExcelWriter(file_path) as writer:
+                for key in df_dict.keys():
+                    df = df_dict[key]
+                    df.to_excel(writer, sheet_name=key)
+            cli.info('Chart data saved as: ' + file.name.lower())
         else:
             cli.warning("File type not recognised.")
     else:
