@@ -131,7 +131,7 @@ class Controls(Frame):
 
         # pull in, clean and process data
         xls = pd.ExcelFile(self.file_source)
-        df_dict_raw = pd.read_excel(xls, None)
+        df_dict_raw = xls.parse(sheet_name=None, header=None)
         self.df_dict_cleaned = Cleaner(df_dict_raw).run()  # used for exporting a spreadsheet
         self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
 

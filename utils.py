@@ -6,6 +6,7 @@ from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
 import win32clipboard as clipboard
+from pathlib import Path
 import pandas as pd
 import openpyxl
 
@@ -82,28 +83,15 @@ def export_data(df_dict):
                                     filetypes=(("Excel files", "*.xlsx"),),
                                     )
     if file:
-        file_name = file.name.lower()
-        if file_name.endswith(".xlsx"):
-            writer = pd.ExcelWriter(file_name, engine='openpyxl')
-            df_dict['Banners'].to_excel(writer, sheet_name='Banners')
-            df_dict['Timescales'].to_excel(writer, sheet_name='Timescales')
-            # writer.close()
-            cli.info("Chart saved as: " + file_name)
+        file_path = file.name.lower()
+        python_path = file_path.replace('/', '\\\\')
+        if file_path.endswith(".xlsx"):
+            with pd.ExcelWriter(python_path) as writer:
+                df_dict['Banners'].to_excel(writer, sheet_name='Sheet1')
         else:
             cli.warning("File type not recognised.")
     else:
         cli.warning("Operation cancelled.")
-
-    # def temp(self):
-    #     writer = pd.ExcelWriter('pandas_multiple.xlsx', engine='openpyxl')
-    #
-    #     # Write each dataframe to a different worksheet.
-    #     df1.to_excel(writer, sheet_name='Sheet1')
-    #     df2.to_excel(writer, sheet_name='Sheet2')
-    #     df3.to_excel(writer, sheet_name='Sheet3')
-    #
-    #     # Close the Pandas Excel writer and output the Excel file.
-    #     writer.save()
 
 
 def save_postscript(chart):
