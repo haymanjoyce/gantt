@@ -5,7 +5,7 @@ import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
-import utils  # beware importing * (imports logger too)
+import utils  # beware importing * (imports logger objects too)
 from cleaning import Cleaner
 from processing import Processor
 from drawing import Drawing
@@ -49,7 +49,7 @@ class Controls(Frame):
         self.ent_start = Entry(self, relief="groove")
         self.ent_finish = Entry(self, relief="groove")
         self.lbl_source = Label(self, text="Source file:")
-        self.lbl_filepath = Label(self, text="", relief="groove", bg="#fff", anchor="w")
+        self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD)  # defines window width
@@ -67,7 +67,7 @@ class Controls(Frame):
         self.ent_start.grid(row=3, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         self.ent_finish.grid(row=3, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
         self.lbl_source.grid(row=4, column=0, columnspan=2, sticky="w")
-        self.lbl_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5), ipady=5)
+        self.lbl_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5), ipady=2)
         self.btn_select.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_run.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
@@ -113,10 +113,10 @@ class Controls(Frame):
         self.set_buttons(button_states)
 
     def on_run(self):
-        # update parent.settings with data from Control
+        # update settings with data from Control
         self.extract_data()
 
-        # save parent.settings to config.json file
+        # save settings to config.json file
         utils.save_settings(self.settings)
 
         # wipe the scroller
@@ -129,7 +129,7 @@ class Controls(Frame):
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
-        # pull in, clean and process data
+        # pull in, clean and process user data
         xls = pd.ExcelFile(self.file_source)
         df_dict_raw = xls.parse(sheet_name=None, header=None)
         self.df_dict_cleaned = Cleaner(df_dict_raw).run()  # used for exporting a spreadsheet
@@ -182,4 +182,3 @@ class Chart(Toplevel):
 
 
 cli = loggers.Stream()
-log = loggers.File()

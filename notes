@@ -17,3 +17,8 @@ GHOSTSCRIPT
 The other GUIs use postscript too
 PyQt may not use postscript but cannot sell under their license
 So got to add Ghostscript to the install
+
+LOG FILES
+
+Log (*.log) files not recognised by PyCharm
+Fix: Editor > TextMate Bundles; Deselect log option

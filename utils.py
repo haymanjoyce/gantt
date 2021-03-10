@@ -6,9 +6,7 @@ from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
 import win32clipboard as clipboard
-from pathlib import Path
 import pandas as pd
-import openpyxl
 
 
 def get_settings():
@@ -93,7 +91,7 @@ def export_data(df_dict):
         else:
             cli.warning("File type not recognised.")
     else:
-        cli.warning("Operation cancelled.")
+        cli.info("Operation cancelled.")
 
 
 def save_postscript(chart):
@@ -101,8 +99,11 @@ def save_postscript(chart):
                                     title="Save As",
                                     filetypes=[('PostScript file', '*.ps'), ],
                                     defaultextension="*.ps")
-    chart.postscript(file=file.name, rotate=1)
-    cli.info("Chart saved as: " + file.name)
+    if file:
+        chart.postscript(file=file.name, rotate=1)
+        cli.info("Chart saved as: " + file.name)
+    else:
+        cli.info("Operation cancelled.")
 
 
 def copy_to_clipboard(chart):
