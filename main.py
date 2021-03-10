@@ -4,6 +4,7 @@
 # TODO warning if Ghostscript not installed
 # TODO warning if not Windows OS
 # TODO freezing the app and loading along with GhostScript
+# TODO uninstall pyinstaller and create new environment and app for building exe and then install program
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
