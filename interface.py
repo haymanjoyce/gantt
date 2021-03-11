@@ -125,7 +125,7 @@ class Controls(Frame):
         self.scroller.config(state=DISABLED)
 
         # wipe the data.log file
-        log_file = open('data.log', 'r+')
+        log_file = open("data.log", "r+")
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
@@ -136,11 +136,12 @@ class Controls(Frame):
         self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
 
         # populate scroller with data.log content
-        with open('data.log', "r") as log_file:
+        with open("data.log", "r") as log_file:
             text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
+        cli.info("Log file updated.")
 
         # create chart
         if self.chart:
@@ -173,7 +174,7 @@ class Chart(Toplevel):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap("favicon.ico")
+        self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.parent = parent
 
         self.drawing = Drawing(self)  # Chart is the parent

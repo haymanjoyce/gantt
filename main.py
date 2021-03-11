@@ -6,6 +6,7 @@
 # TODO freezing the app and loading along with GhostScript
 # TODO rebuild environment without pyinstaller
 # TODO apply get_path() to all local resources
+# TODO add checking module
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
