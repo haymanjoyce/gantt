@@ -13,7 +13,7 @@ import os
 
 def get_settings():
     try:
-        file = open("config.json", "r")
+        file = open(get_path("config.json"), "r")
         data = file.readline()
         if data:
             return json.loads(data)
@@ -21,19 +21,19 @@ def get_settings():
             return dict()
     except FileNotFoundError:
         cli.info("Configuration file not found.")
-        file = open("config.json", "w")
+        file = open(get_path("config.json"), "w")
         file.close()
         cli.info("Configuration file created.")
         return dict()
 
 
 def save_settings(data):
-    with open('config.json', 'w') as file:
+    with open(get_path("config.json"), "w") as file:
         file.write(json.dumps(data))
 
 
 def wipe_settings():
-    with open('config.json', 'w') as file:
+    with open(get_path("config.json"), "w") as file:
         file.truncate(0)
 
 
@@ -67,7 +67,7 @@ def save_image(chart):
 
 
 def get_file_name():
-    file = filedialog.askopenfile(initialdir="/desktop", title="Select file",
+    file = filedialog.askopenfile(initialdir=".", title="Select file",
                                   filetypes=(("Excel files", "*.xlsx"),))
     if file:
         file_name = file.name.lower()

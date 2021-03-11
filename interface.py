@@ -125,7 +125,7 @@ class Controls(Frame):
         self.scroller.config(state=DISABLED)
 
         # wipe the data.log file
-        log_file = open("data.log", "r+")
+        log_file = open(utils.get_path("data.log"), "r+")
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
@@ -136,7 +136,7 @@ class Controls(Frame):
         self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
 
         # populate scroller with data.log content
-        with open("data.log", "r") as log_file:
+        with open(utils.get_path("data.log"), "r") as log_file:
             text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
