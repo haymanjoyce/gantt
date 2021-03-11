@@ -67,7 +67,7 @@ def save_image(chart):
 
 
 def get_file_name():
-    file = filedialog.askopenfile(initialdir=".", title="Select file",
+    file = filedialog.askopenfile(title="Select file",
                                   filetypes=(("Excel files", "*.xlsx"),))
     if file:
         file_name = file.name.lower()
