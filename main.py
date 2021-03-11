@@ -7,7 +7,7 @@
 # TODO rebuild environment without pyinstaller
 # TODO apply get_path() to all local resources
 # TODO add checking module
-
+# TODO create copy of gantt and strip down until find issue with pyinstaller
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
