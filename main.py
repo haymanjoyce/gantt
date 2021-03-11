@@ -8,6 +8,7 @@
 # TODO apply get_path() to all local resources
 # TODO add checking module
 # TODO create copy of gantt and strip down until find issue with pyinstaller
+# TODO select file, press select but don't select file, then run breaks it as file is None
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
