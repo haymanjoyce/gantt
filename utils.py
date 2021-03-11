@@ -7,6 +7,8 @@ from PIL import Image
 from io import BytesIO
 import win32clipboard as clipboard
 import pandas as pd
+import sys
+import os
 
 
 def get_settings():
@@ -121,6 +123,13 @@ def copy_to_clipboard(chart):
 
     chart_as_bytecode.close()
     chart_as_bitmap.close()
+
+
+def get_path(filename):
+    if hasattr(sys, "_MEIPASS"):
+        return f'{os.path.join(sys._MEIPASS, filename)}'
+    else:
+        return f'{filename}'
 
 
 cli = loggers.Stream()

@@ -20,7 +20,7 @@ class App(Tk):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap("favicon.ico")
+        self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.controls = Controls(self)
         self.mainloop()
 
