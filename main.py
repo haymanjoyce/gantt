@@ -5,7 +5,6 @@
 # TODO develop a Windows installer
 # TODO rebuild environment
 # TODO add checking module (may need to use openpxyl to test for merged cells)
-# TODO select file, press select but don't select file, then run breaks it as file is None
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
