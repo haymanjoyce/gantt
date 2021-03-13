@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import logging
+import sys
+import os
 
 # WARNING: beware importing * from module with initialised logger
 
@@ -24,9 +26,16 @@ class File(logging.Logger):
 
         self.formatter = logging.Formatter('%(levelname)s - %(message)s')
 
-        self.handler = logging.FileHandler(filename='data.log')
+        self.handler = logging.FileHandler(filename=get_path("data.log"))
         self.handler.setLevel(logging.INFO)
         self.handler.setFormatter(self.formatter)
 
         self.addHandler(self.handler)
 
+
+def get_path(filename):
+    # Cannot import from utils because creates circular relationship
+    if hasattr(sys, "_MEIPASS"):
+        return f'{os.path.join(sys._MEIPASS, filename)}'
+    else:
+        return f'{filename}'
