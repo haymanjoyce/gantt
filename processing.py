@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import loggers
+import utils
 
 
 class Processor:
@@ -13,4 +14,4 @@ class Processor:
 
 
 cli = loggers.Stream()
-log = loggers.File()
+log = loggers.File(utils.get_path("data.log"))

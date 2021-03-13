@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import loggers
+import utils
 from tkinter import Canvas
 from utils import get_settings
 
@@ -24,5 +25,5 @@ class Drawing(Canvas):
 
 
 cli = loggers.Stream()
-log = loggers.File()
+log = loggers.File(utils.get_path("data.log"))
 

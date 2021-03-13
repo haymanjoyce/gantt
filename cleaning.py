@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import loggers
-import pandas as pd
+import utils
 
 
 class Cleaner:
@@ -20,5 +20,5 @@ class Cleaner:
 
 
 cli = loggers.Stream()
-log = loggers.File()
+log = loggers.File(utils.get_path("data.log"))
 
