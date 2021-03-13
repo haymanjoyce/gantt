@@ -4,6 +4,7 @@
 import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
+import openpyxl as pxl
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger objects too)
 from cleaning import Cleaner
@@ -106,7 +107,7 @@ class Controls(Frame):
             button.config(state=state)
 
     def on_select(self):
-        self.file_source = utils.get_file_name()
+        self.file_source = utils.get_file_name(self.file_source)
         self.lbl_filepath.configure(text=self.file_source)
 
         button_states = [1, 1, 0, 0, 0, 0]
