@@ -6,9 +6,9 @@ from tkinter import Canvas
 from utils import get_settings
 
 
-class Drawing(Canvas):
+class Drawer(Canvas):
     def __init__(self, parent):
-        super(Drawing, self).__init__(parent)
+        super(Drawer, self).__init__(parent)
 
         self.parent = parent
 

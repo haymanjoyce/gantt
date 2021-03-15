@@ -22,3 +22,7 @@ LOG FILES
 
 Log (*.log) files not recognised by PyCharm
 Fix: Editor > TextMate Bundles; Deselect log option
+
+OPENPYXL
+
+Decided to work with Openpyxl instead of Pandas.

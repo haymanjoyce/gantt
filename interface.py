@@ -4,12 +4,12 @@
 import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
-import openpyxl as pxl
 import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger objects too)
+from checking import Checker
 from cleaning import Cleaner
 from processing import Processor
-from drawing import Drawing
+from drawing import Drawer
 
 
 class App(Tk):
@@ -37,7 +37,7 @@ class Controls(Frame):
 
         self.parent = parent
         self.chart = None
-        self.file_source = None
+        self.file_source = "c:/users/hayma/desktop/gantt.xlsx"  # Set to None for production
         self.df_dict_cleaned = None
         self.df_dict_processed = None
 
@@ -86,6 +86,10 @@ class Controls(Frame):
         button_states = [1, 0, 0, 0, 0, 0]
         self.set_buttons(button_states)
 
+        if self.file_source:
+            self.lbl_filepath.configure(text=self.file_source)
+            self.set_buttons([1, 1, 0, 0, 0, 0])
+
     def insert_data(self):
         self.ent_width.insert(0, self.settings["width"])
         self.ent_height.insert(0, self.settings["height"])
@@ -130,10 +134,15 @@ class Controls(Frame):
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
-        # pull in, clean and process user data
+        # check data
+        Checker(self.file_source)
+
+        # clean data
         xls = pd.ExcelFile(self.file_source)
         df_dict_raw = xls.parse(sheet_name=None, header=None)
         self.df_dict_cleaned = Cleaner(df_dict_raw).run()  # used for exporting a spreadsheet
+
+        # process data
         self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
 
         # populate scroller with data.log content
@@ -179,7 +188,7 @@ class Chart(Toplevel):
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        self.drawing = Drawing(self)  # Chart is the parent
+        self.drawing = Drawer(self)  # Chart is the parent
         self.drawing.build_placeholder()
         self.drawing.pack()
 
