@@ -177,10 +177,16 @@ class Chart(Toplevel):
         self.title("Gantt Page")
         self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.parent = parent
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
 
         self.drawing = Drawing(self)  # Chart is the parent
         self.drawing.build_placeholder()
         self.drawing.pack()
+
+    def on_close(self):
+        button_states = [1, 1, 0, 0, 0, 0]
+        self.parent.controls.set_buttons(button_states)
+        self.destroy()
 
 
 cli = loggers.Stream()
