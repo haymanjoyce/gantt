@@ -3,8 +3,7 @@
 # TODO loading Ghostscript with the programme (ref: https://www.biopdf.com/guide/detecting_ghostscript.php)
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
-# TODO rebuild environment
-# TODO add checking module (may need to use openpxyl to test for merged cells)
+# TODO create drawing from spreadsheet
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

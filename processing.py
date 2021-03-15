@@ -10,11 +10,11 @@ class Processor:
         self.workbook = workbook
         self.sheet_names = self.workbook.get_sheet_names()
 
-    def print_active_sheet(self):
-        print(self.workbook.active)
+    def process_something(self):
+        print("I am processing!")
 
     def run(self):
-        self.print_active_sheet()
+        self.process_something()
         return self.workbook
 
 

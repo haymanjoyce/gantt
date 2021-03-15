@@ -2,9 +2,9 @@
 
 
 import loggers
+import utils  # beware importing * (imports logger objects too)
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
-import utils  # beware importing * (imports logger objects too)
 from checking import Checker
 from cleaning import Cleaner
 from processing import Processor
@@ -151,7 +151,7 @@ class Controls(Frame):
         # create chart
         if self.chart:
             self.chart.destroy()
-        self.chart = Chart(self.parent)  # App is the parent
+        self.chart = Chart(self.parent, self.workbook_processed)  # App is the parent
 
         # set button permissions
         button_states = [1, 1, 1, 1, 1, 1]
@@ -171,7 +171,7 @@ class Controls(Frame):
 
 
 class Chart(Toplevel):
-    def __init__(self, parent):
+    def __init__(self, parent, workbook):
         super(Chart, self).__init__(parent)
 
         self.win_x = int(self.winfo_screenwidth() * 0.4)
@@ -181,11 +181,9 @@ class Chart(Toplevel):
         self.title("Gantt Page")
         self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.parent = parent
+        self.workbook = workbook
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-
         self.drawing = Drawer(self)  # Chart is the parent
-        self.drawing.build_placeholder()
-        self.drawing.pack()
 
     def on_close(self):
         button_states = [1, 1, 0, 0, 0, 0]
