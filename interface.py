@@ -2,7 +2,8 @@
 
 
 import loggers
-import utils  # beware importing * (imports logger objects too)
+import utils
+import validation
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 from checking import Checker
@@ -41,9 +42,11 @@ class Controls(Frame):
         self.workbook_clean = None
         self.workbook_processed = None
 
+        test = self.register(validation.test, '%S')
+
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
-        self.ent_width = Entry(self, relief="groove")
+        self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=test)
         self.ent_height = Entry(self, relief="groove")
         self.lbl_start = Label(self, text="Timescale start:")
         self.lbl_finish = Label(self, text="Timescale finish:")

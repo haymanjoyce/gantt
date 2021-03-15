@@ -4,6 +4,7 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO create drawing from spreadsheet
+# TODO validate settings data
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
