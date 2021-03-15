@@ -5,12 +5,17 @@ import utils
 
 
 class Processor:
-    def __init__(self, df_dict):
-        self.df_dict = df_dict
+    def __init__(self, workbook):
+
+        self.workbook = workbook
+        self.sheet_names = self.workbook.get_sheet_names()
+
+    def print_active_sheet(self):
+        print(self.workbook.active)
 
     def run(self):
-        log.info("File processed.")
-        return self.df_dict
+        self.print_active_sheet()
+        return self.workbook
 
 
 cli = loggers.Stream()

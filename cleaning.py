@@ -5,18 +5,17 @@ import utils
 
 
 class Cleaner:
-    def __init__(self, df_dict):
-        self.df_dict = df_dict
+    def __init__(self, workbook):
 
-    def check_df(self, name):
-        return name in self.df_dict.keys()
+        self.workbook = workbook
+        self.sheet_names = self.workbook.get_sheet_names()
 
-    def print_df(self, name):
-        print(self.df_dict['name'])
+    def print_active_sheet(self):
+        print(self.workbook.active)
 
     def run(self):
-        log.info("File cleaned.")
-        return self.df_dict
+        self.print_active_sheet()
+        return self.workbook
 
 
 cli = loggers.Stream()

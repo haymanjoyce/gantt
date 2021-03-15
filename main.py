@@ -11,9 +11,9 @@
 
 # MANUAL PYTHON ENVIRONMENT INSTALLS
 # openpyxl (xlrd only does xls)
-# pandas
 # pywin32 (note, does not work on Mac)
 # ghostscript (interface to API)
+# Pillow (imaging library)
 
 import interface
 

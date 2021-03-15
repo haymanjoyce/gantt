@@ -4,12 +4,12 @@
 import loggers
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
-import pandas as pd  # requires manual install of openpyxl (xlrd only does xls)
 import utils  # beware importing * (imports logger objects too)
 from checking import Checker
 from cleaning import Cleaner
 from processing import Processor
 from drawing import Drawer
+from openpyxl import load_workbook
 
 
 class App(Tk):
@@ -38,8 +38,8 @@ class Controls(Frame):
         self.parent = parent
         self.chart = None
         self.file_source = "c:/users/hayma/desktop/gantt.xlsx"  # Set to None for production
-        self.df_dict_cleaned = None
-        self.df_dict_processed = None
+        self.workbook_clean = None
+        self.workbook_processed = None
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -134,16 +134,11 @@ class Controls(Frame):
         log_file.truncate(0)  # erase log file
         cli.info("Log file wiped.")
 
-        # check data
-        Checker(self.file_source)
-
-        # clean data
-        xls = pd.ExcelFile(self.file_source)
-        df_dict_raw = xls.parse(sheet_name=None, header=None)
-        self.df_dict_cleaned = Cleaner(df_dict_raw).run()  # used for exporting a spreadsheet
-
-        # process data
-        self.df_dict_processed = Processor(self.df_dict_cleaned).run()  # used for drawing
+        # prep file
+        workbook = load_workbook(self.file_source)
+        workbook = Checker(workbook).run()
+        self.workbook_clean = Cleaner(workbook).run()
+        self.workbook_processed = Processor(self.workbook_clean).run()
 
         # populate scroller with data.log content
         with open(utils.get_path("data.log"), "r") as log_file:
@@ -169,7 +164,7 @@ class Controls(Frame):
         utils.save_image(self.chart.drawing)
 
     def on_export(self):
-        utils.export_data(self.df_dict_cleaned)
+        utils.export_data(self.workbook_clean)
 
     def on_postscript(self):
         utils.save_postscript(self.chart.drawing)

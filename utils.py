@@ -6,7 +6,6 @@ from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
 import win32clipboard as clipboard
-import pandas as pd
 import sys
 import os
 
@@ -77,7 +76,7 @@ def get_file_name(current_name):
     return file_name
 
 
-def export_data(df_dict):
+def export_data(workbook):
     file = filedialog.asksaveasfile(mode="w",
                                     title="Save As",
                                     filetypes=(("Excel files", "*.xlsx"),),
@@ -85,10 +84,7 @@ def export_data(df_dict):
     if file:
         file_path = file.name.lower().replace('/', '\\\\')
         if file_path.endswith(".xlsx"):
-            with pd.ExcelWriter(file_path) as writer:
-                for key in df_dict.keys():
-                    df = df_dict[key]
-                    df.to_excel(writer, sheet_name=key)
+            workbook.save(filename=file_path)
             cli.info('Chart data saved as: ' + file.name.lower())
         else:
             cli.warning("File type not recognised.")
