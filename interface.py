@@ -42,16 +42,17 @@ class Controls(Frame):
         self.workbook_clean = None
         self.workbook_processed = None
 
-        test = self.register(validation.test, '%S')
+        cmd_1 = (self.register(validation.dimension_field), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        cmd_2 = (self.register(validation.date_field), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
-        self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=test)
-        self.ent_height = Entry(self, relief="groove")
+        self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
+        self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
         self.lbl_start = Label(self, text="Timescale start:")
         self.lbl_finish = Label(self, text="Timescale finish:")
-        self.ent_start = Entry(self, relief="groove")
-        self.ent_finish = Entry(self, relief="groove")
+        self.ent_start = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
+        self.ent_finish = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")

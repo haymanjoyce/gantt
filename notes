@@ -26,3 +26,14 @@ Fix: Editor > TextMate Bundles; Deselect log option
 OPENPYXL
 
 Decided to work with Openpyxl instead of Pandas.
+
+VALIDATION ARGUMENTS
+
+%d = type of action (1=insert, 0=delete, -1 for others)
+%i = index of char string to be inserted/deleted, or -1
+%P = value of the entry if the edit is allowed
+%s = value of entry prior to editing
+%S = the text string being inserted or deleted, if any
+%v = the type of validation that is currently set
+%V = the type of validation that triggered the callback (key, focusin, focusout, forced)
+%W = the tk name of the widget
