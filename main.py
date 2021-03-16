@@ -4,7 +4,9 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO create drawing from spreadsheet
+# TODO test PyInstaller with tkcalendar addition
 # TODO validate settings data
+# TODO debug break on blank dimension fields
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -14,7 +16,7 @@
 # pywin32 (note, does not work on Mac)
 # ghostscript (interface to API)
 # Pillow (imaging library)
-# tkcalendar
+# tkcalendar (check docs when using PyInstaller)
 
 import interface
 

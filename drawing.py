@@ -14,8 +14,8 @@ class Drawer(Canvas):
         self.workbook = self.parent.workbook
 
         self.settings = get_settings()
-        self.chart_width = eval(self.settings['width'])
-        self.chart_height = eval(self.settings['height'])
+        self.chart_width = int(self.settings['width'])
+        self.chart_height = int(self.settings['height'])
 
         self.build_placeholder()
         self.draw_tasks()

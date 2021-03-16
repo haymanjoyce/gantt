@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 
+import datetime
+
+from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
+from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
+from openpyxl import load_workbook
+from tkcalendar import DateEntry
 
 import loggers
 import utils
 import validation
-from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
-from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
+
 from checking import Checker
 from cleaning import Cleaner
 from processing import Processor
 from drawing import Drawer
-from openpyxl import load_workbook
-# from tkcalendar import DateEntry
-import tkcalendar
-
-print(tkcalendar.__version__)
 
 
 class App(Tk):
@@ -55,10 +55,10 @@ class Controls(Frame):
         self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
         self.lbl_start = Label(self, text="Timescale start:")
         self.lbl_finish = Label(self, text="Timescale finish:")
-        self.ent_start = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
-        self.ent_finish = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
-        # self.ent_start = DateEntry(self)
-        # self.ent_finish = DateEntry(self)
+        # self.ent_start = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
+        # self.ent_finish = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
+        self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd')
+        self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd')
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
@@ -73,8 +73,6 @@ class Controls(Frame):
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
         self.ent_width.grid(row=1, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
-        # self.ent_width.grid(row=1, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
-        # self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
         self.lbl_start.grid(row=2, column=0, sticky="w", pady=(0, 0))
         self.lbl_finish.grid(row=2, column=1, sticky="w", pady=(0, 0))
         self.ent_start.grid(row=3, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
@@ -105,14 +103,16 @@ class Controls(Frame):
     def insert_data(self):
         self.ent_width.insert(0, self.settings["width"])
         self.ent_height.insert(0, self.settings["height"])
-        self.ent_start.insert(0, self.settings["start"])
-        self.ent_finish.insert(0, self.settings["finish"])
+        self.ent_start.set_date(self.settings["start"])
+        self.ent_finish.set_date(self.settings["finish"])
 
     def extract_data(self):
         self.settings["width"] = self.ent_width.get()
         self.settings["height"] = self.ent_height.get()
         self.settings["start"] = self.ent_start.get()
         self.settings["finish"] = self.ent_finish.get()
+        self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
+        self.settings["finish"] = self.ent_finish.get_date().strftime('%Y/%m/%d')
 
     def set_buttons(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
