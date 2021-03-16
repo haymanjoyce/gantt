@@ -5,7 +5,9 @@ import utils
 
 
 def dimension_field(*args):
-    if args[2].isdigit():
+    if len(args[2]) > 5:
+        return False
+    elif args[2].isdigit():
         return True
     elif args[2] == "":
         return True
@@ -14,6 +16,7 @@ def dimension_field(*args):
 
 
 def date_field(*args):
+    print(args[2])
     return True
 
 

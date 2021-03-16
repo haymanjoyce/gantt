@@ -14,6 +14,7 @@
 # pywin32 (note, does not work on Mac)
 # ghostscript (interface to API)
 # Pillow (imaging library)
+# tkcalendar
 
 import interface
 

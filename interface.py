@@ -11,6 +11,10 @@ from cleaning import Cleaner
 from processing import Processor
 from drawing import Drawer
 from openpyxl import load_workbook
+# from tkcalendar import DateEntry
+import tkcalendar
+
+print(tkcalendar.__version__)
 
 
 class App(Tk):
@@ -53,6 +57,8 @@ class Controls(Frame):
         self.lbl_finish = Label(self, text="Timescale finish:")
         self.ent_start = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
         self.ent_finish = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
+        # self.ent_start = DateEntry(self)
+        # self.ent_finish = DateEntry(self)
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
@@ -67,6 +73,8 @@ class Controls(Frame):
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
         self.ent_width.grid(row=1, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
+        # self.ent_width.grid(row=1, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
+        # self.ent_height.grid(row=1, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
         self.lbl_start.grid(row=2, column=0, sticky="w", pady=(0, 0))
         self.lbl_finish.grid(row=2, column=1, sticky="w", pady=(0, 0))
         self.ent_start.grid(row=3, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
