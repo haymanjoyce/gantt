@@ -15,10 +15,5 @@ def dimension_field(*args):
         return False
 
 
-def date_field(*args):
-    print(args[2])
-    return True
-
-
 cli = loggers.Stream()
 log = loggers.File(utils.get_path("data.log"))

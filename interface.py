@@ -47,7 +47,6 @@ class Controls(Frame):
         self.workbook_processed = None
 
         cmd_1 = (self.register(validation.dimension_field), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-        cmd_2 = (self.register(validation.date_field), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -55,10 +54,8 @@ class Controls(Frame):
         self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
         self.lbl_start = Label(self, text="Timescale start:")
         self.lbl_finish = Label(self, text="Timescale finish:")
-        # self.ent_start = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
-        # self.ent_finish = Entry(self, relief="groove", validate="key", validatecommand=cmd_2)
-        self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd')
-        self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd')
+        self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
+        self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.lbl_source = Label(self, text="Source file:")
         self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
@@ -87,6 +84,9 @@ class Controls(Frame):
         self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
+        self.ent_start.bind('<FocusIn>', self.check_finish)
+        self.ent_finish.bind('<FocusIn>', self.check_start)
+
         self.settings = utils.get_settings()
         if len(self.settings.keys()) == 4:
             self.insert_data()
@@ -100,6 +100,28 @@ class Controls(Frame):
             self.lbl_filepath.configure(text=self.file_source)
             self.set_buttons([1, 1, 0, 0, 0, 0])
 
+    def check_finish(self, *args):
+        start = self.ent_start.get_date()
+        finish = self.ent_finish.get_date()
+        if start > finish:
+            cli.warning("Start greater than finish.")
+        elif start == finish:
+            cli.warning("Start is the same as finish.")
+
+    def check_start(self, *args):
+        start = self.ent_start.get_date()
+        finish = self.ent_finish.get_date()
+        if start > finish:
+            cli.warning("Finish is less than start.")
+        elif start == finish:
+            cli.warning("Finish is the same as start.")
+
+    def wipe_scroller(self):
+        pass
+
+    def load_scroller(self):
+        pass
+
     def insert_data(self):
         self.ent_width.insert(0, self.settings["width"])
         self.ent_height.insert(0, self.settings["height"])
@@ -109,8 +131,6 @@ class Controls(Frame):
     def extract_data(self):
         self.settings["width"] = self.ent_width.get()
         self.settings["height"] = self.ent_height.get()
-        self.settings["start"] = self.ent_start.get()
-        self.settings["finish"] = self.ent_finish.get()
         self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
         self.settings["finish"] = self.ent_finish.get_date().strftime('%Y/%m/%d')
 
@@ -204,3 +224,5 @@ class Chart(Toplevel):
 
 
 cli = loggers.Stream()
+log = loggers.File(utils.get_path("data.log"))
+
