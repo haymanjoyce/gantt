@@ -9,7 +9,6 @@ from tkcalendar import DateEntry
 
 import loggers
 import utils
-import validation
 
 from checking import Checker
 from cleaning import Cleaner
@@ -35,23 +34,20 @@ class Controls(Frame):
     def __init__(self, parent):
         super(Controls, self).__init__(parent)
 
-        self.pack()
-        self.configure(padx=10, pady=5)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
+        self.self_configure()
 
         self.parent = parent
         self.chart = None
-        self.file_source = "c:/users/hayma/desktop/gantt.xlsx"  # Set to None for production
+        self.file_source = None
         self.workbook_clean = None
         self.workbook_processed = None
-
-        cmd_1 = (self.register(validation.dimension_field), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        self.settings = utils.get_settings()
+        self.v_cmd_1 = (self.register(self.field_validation_1), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
-        self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
-        self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=cmd_1)
+        self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_1)
+        self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_1)
         self.lbl_start = Label(self, text="Timescale start:")
         self.lbl_finish = Label(self, text="Timescale finish:")
         self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
@@ -66,6 +62,30 @@ class Controls(Frame):
         self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, relief="groove")
         self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, relief="groove")
 
+        self.pack_widgets()
+        self.bind_widgets()
+        self.load_settings()
+        self.set_button_states([1, 0, 0, 0, 0, 0])
+        self.set_file_source("c:/users/hayma/desktop/gantt.xlsx")  # development only
+
+    @staticmethod
+    def field_validation_1(*args):
+        if len(args[2]) > 5:
+            return False
+        elif args[2].isdigit():
+            return True
+        elif args[2] == "":
+            return True
+        else:
+            return False
+
+    def self_configure(self):
+        self.pack()
+        self.configure(padx=10, pady=5)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+
+    def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
         self.ent_width.grid(row=1, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
@@ -84,21 +104,27 @@ class Controls(Frame):
         self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
+    def bind_widgets(self):
         self.ent_start.bind('<FocusIn>', self.check_finish)
         self.ent_finish.bind('<FocusIn>', self.check_start)
 
-        self.settings = utils.get_settings()
+    def load_settings(self):
         if len(self.settings.keys()) == 4:
             self.insert_data()
         else:
             utils.wipe_settings()
 
-        button_states = [1, 0, 0, 0, 0, 0]
-        self.set_buttons(button_states)
+    def insert_data(self):
+        self.ent_width.insert(0, self.settings["width"])
+        self.ent_height.insert(0, self.settings["height"])
+        self.ent_start.set_date(self.settings["start"])
+        self.ent_finish.set_date(self.settings["finish"])
 
-        if self.file_source:
-            self.lbl_filepath.configure(text=self.file_source)
-            self.set_buttons([1, 1, 0, 0, 0, 0])
+    def extract_data(self):
+        self.settings["width"] = self.ent_width.get()
+        self.settings["height"] = self.ent_height.get()
+        self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
+        self.settings["finish"] = self.ent_finish.get_date().strftime('%Y/%m/%d')
 
     def check_finish(self, *args):
         start = self.ent_start.get_date()
@@ -116,25 +142,7 @@ class Controls(Frame):
         elif start == finish:
             cli.warning("Finish is the same as start.")
 
-    def wipe_scroller(self):
-        pass
-
-    def load_scroller(self):
-        pass
-
-    def insert_data(self):
-        self.ent_width.insert(0, self.settings["width"])
-        self.ent_height.insert(0, self.settings["height"])
-        self.ent_start.set_date(self.settings["start"])
-        self.ent_finish.set_date(self.settings["finish"])
-
-    def extract_data(self):
-        self.settings["width"] = self.ent_width.get()
-        self.settings["height"] = self.ent_height.get()
-        self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
-        self.settings["finish"] = self.ent_finish.get_date().strftime('%Y/%m/%d')
-
-    def set_buttons(self, states=None):
+    def set_button_states(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
         if not states:
             states = [1, 0, 0, 0, 0, 0]
@@ -142,12 +150,22 @@ class Controls(Frame):
         for button, state in zip(buttons, states):
             button.config(state=state)
 
+    def set_file_source(self, file_source=None):
+        if file_source:
+            self.file_source = file_source
+            self.lbl_filepath.configure(text=file_source)
+            self.set_button_states([1, 1, 0, 0, 0, 0])
+        else:
+            self.file_source = None
+            self.lbl_filepath.configure(text="")
+            self.set_button_states([1, 0, 0, 0, 0, 0])
+
     def on_select(self):
         self.file_source = utils.get_file_name(self.file_source)
         self.lbl_filepath.configure(text=self.file_source)
 
         button_states = [1, 1, 0, 0, 0, 0]
-        self.set_buttons(button_states)
+        self.set_button_states(button_states)
 
     def on_run(self):
         # update settings with data from Control
@@ -187,7 +205,7 @@ class Controls(Frame):
 
         # set button permissions
         button_states = [1, 1, 1, 1, 1, 1]
-        self.set_buttons(button_states)
+        self.set_button_states(button_states)
 
     def on_copy(self):
         utils.copy_to_clipboard(self.chart.drawing)
@@ -219,7 +237,7 @@ class Chart(Toplevel):
 
     def on_close(self):
         button_states = [1, 1, 0, 0, 0, 0]
-        self.parent.controls.set_buttons(button_states)
+        self.parent.controls.set_button_states(button_states)
         self.destroy()
 
 
