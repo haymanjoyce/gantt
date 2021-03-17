@@ -128,4 +128,4 @@ def get_path(filename):
         return f'{filename}'
 
 
-cli = loggers.Stream()
+cli = loggers.Widget()

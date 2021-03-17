@@ -34,6 +34,6 @@ class Drawer(Canvas):
         self.create_text(100, 100, text=text)
 
 
-cli = loggers.Stream()
+cli = loggers.Widget()
 log = loggers.File(utils.get_path("data.log"))
 

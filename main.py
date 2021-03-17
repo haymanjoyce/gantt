@@ -8,7 +8,7 @@
 # TODO validate settings data
 # TODO debug break on blank dimension fields
 # TODO ditch log file; see if you can stream to scroller
-# TODO tidy up Controls putting more into methods
+# TODO wipe and renew scroller each time file changed
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

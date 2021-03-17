@@ -29,3 +29,30 @@ class File(logging.Logger):
         self.handler.setFormatter(self.formatter)
 
         self.addHandler(self.handler)
+
+
+class Widget(logging.Logger):
+    def __init__(self, widget=None):
+        super(Widget, self).__init__(name='Stream', level='DEBUG')
+
+        self.widget = widget
+
+        self.formatter = logging.Formatter('%(levelname)s - %(message)s')
+
+        self.handler = WidgetHandler(widget=None)
+        self.handler.setLevel(logging.DEBUG)
+        self.handler.setFormatter(self.formatter)
+
+        self.addHandler(self.handler)
+
+
+class WidgetHandler(logging.StreamHandler):
+    def __init__(self, widget):
+        super(WidgetHandler, self).__init__()
+
+        self.widget = widget
+
+    def emit(self, record):
+        print(record)
+        print(self.format(record))
+        print(self.widget)  # insert message into widget

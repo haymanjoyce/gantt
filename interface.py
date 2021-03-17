@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import datetime
+import loggers
 
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
-import loggers
 import utils
 
 from checking import Checker
@@ -110,17 +110,17 @@ class Controls(Frame):
 
     def load_settings(self):
         if len(self.settings.keys()) == 4:
-            self.insert_data()
+            self.insert_field_data()
         else:
             utils.wipe_settings()
 
-    def insert_data(self):
+    def insert_field_data(self):
         self.ent_width.insert(0, self.settings["width"])
         self.ent_height.insert(0, self.settings["height"])
         self.ent_start.set_date(self.settings["start"])
         self.ent_finish.set_date(self.settings["finish"])
 
-    def extract_data(self):
+    def extract_field_data(self):
         self.settings["width"] = self.ent_width.get()
         self.settings["height"] = self.ent_height.get()
         self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
@@ -160,6 +160,14 @@ class Controls(Frame):
             self.lbl_filepath.configure(text="")
             self.set_button_states([1, 0, 0, 0, 0, 0])
 
+    # def wipe_scroller(self):
+    #     self.scroller.config(state=NORMAL)
+    #     self.scroller.delete("0.0", END)
+    #     self.scroller.config(state=DISABLED)
+
+    def update_scroller(self):
+        pass
+
     def on_select(self):
         self.file_source = utils.get_file_name(self.file_source)
         self.lbl_filepath.configure(text=self.file_source)
@@ -168,16 +176,8 @@ class Controls(Frame):
         self.set_button_states(button_states)
 
     def on_run(self):
-        # update settings with data from Control
-        self.extract_data()
-
-        # save settings to config.json file
+        self.extract_field_data()
         utils.save_settings(self.settings)
-
-        # wipe the scroller
-        self.scroller.config(state=NORMAL)
-        self.scroller.delete("0.0", END)
-        self.scroller.config(state=DISABLED)
 
         # wipe the data.log file
         log_file = open(utils.get_path("data.log"), "r+")
@@ -203,9 +203,7 @@ class Controls(Frame):
             self.chart.destroy()
         self.chart = Chart(self.parent, self.workbook_processed)  # App is the parent
 
-        # set button permissions
-        button_states = [1, 1, 1, 1, 1, 1]
-        self.set_button_states(button_states)
+        self.set_button_states([1, 1, 1, 1, 1, 1])
 
     def on_copy(self):
         utils.copy_to_clipboard(self.chart.drawing)
@@ -236,8 +234,7 @@ class Chart(Toplevel):
         self.drawing = Drawer(self)  # Chart is the parent
 
     def on_close(self):
-        button_states = [1, 1, 0, 0, 0, 0]
-        self.parent.controls.set_button_states(button_states)
+        self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])
         self.destroy()
 
 

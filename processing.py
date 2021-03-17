@@ -18,5 +18,5 @@ class Processor:
         return self.workbook
 
 
-cli = loggers.Stream()
+cli = loggers.Widget()
 log = loggers.File(utils.get_path("data.log"))
