@@ -11,7 +11,7 @@ class Processor:
         self.sheet_names = self.workbook.get_sheet_names()
 
     def process_something(self):
-        print("I am processing!")
+        pass
 
     def run(self):
         self.process_something()

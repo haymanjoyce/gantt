@@ -3,7 +3,7 @@
 import logging
 
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
-from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
+from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
@@ -26,14 +26,25 @@ class App(Tk):
         self.title("Gantt Page")
         self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.controls = Controls(self)
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.mainloop()
+
+    def on_close(self):
+        utils.wipe_log()
+        try:
+            self.quit()
+        except RuntimeError:
+            self.destroy()
 
 
 class Controls(Frame):
     def __init__(self, parent):
         super(Controls, self).__init__(parent)
 
-        self.self_configure()
+        self.pack()
+        self.configure(padx=10, pady=5)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
 
         self.parent = parent
         self.chart = None
@@ -52,10 +63,10 @@ class Controls(Frame):
         self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.lbl_source = Label(self, text="Source file:")
-        self.lbl_filepath = Label(self, text="", anchor="w", relief="groove", bg="#fff")
+        self.ent_filepath = Entry(self, text="", relief="groove")
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
-        self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD)  # defines window width
+        self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
         self.btn_image = Button(self, text="Save as image file", command=self.on_save, relief="groove")
         self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, relief="groove")
@@ -64,6 +75,7 @@ class Controls(Frame):
         self.pack_widgets()
         self.bind_widgets()
         self.load_settings()
+        self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0])
         self.set_file_source("c:/users/hayma/desktop/gantt.xlsx")  # development only
 
@@ -78,12 +90,6 @@ class Controls(Frame):
         else:
             return False
 
-    def self_configure(self):
-        self.pack()
-        self.configure(padx=10, pady=5)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
@@ -94,7 +100,7 @@ class Controls(Frame):
         self.ent_start.grid(row=3, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         self.ent_finish.grid(row=3, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
         self.lbl_source.grid(row=4, column=0, columnspan=2, sticky="w")
-        self.lbl_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5), ipady=2)
+        self.ent_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_select.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_run.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
@@ -152,57 +158,54 @@ class Controls(Frame):
     def set_file_source(self, file_source=None):
         if file_source:
             self.file_source = file_source
-            self.lbl_filepath.configure(text=file_source)
+            self.ent_filepath.delete(0, END)
+            self.ent_filepath.insert(0, file_source)
             self.set_button_states([1, 1, 0, 0, 0, 0])
         else:
             self.file_source = None
-            self.lbl_filepath.configure(text="")
+            self.ent_filepath.delete(0, END)
             self.set_button_states([1, 0, 0, 0, 0, 0])
-
-    # def wipe_scroller(self):
-    #     self.scroller.config(state=NORMAL)
-    #     self.scroller.delete("0.0", END)
-    #     self.scroller.config(state=DISABLED)
-
-    def update_scroller(self):
-        pass
 
     def on_select(self):
         self.file_source = utils.get_file_name(self.file_source)
-        self.lbl_filepath.configure(text=self.file_source)
+        self.set_file_source(self.file_source)
 
-        button_states = [1, 1, 0, 0, 0, 0]
-        self.set_button_states(button_states)
+    def wipe_scroller(self):
+        self.scroller.config(state=NORMAL)
+        self.scroller.delete('1.0', END)  # from line '1' (entry equivalent is from char 0)
+        self.scroller.config(state=DISABLED)
 
-    def on_run(self):
-        self.extract_field_data()
-        utils.save_settings(self.settings)
+    def update_scroller(self):
+        self.wipe_scroller()
+        log = utils.get_log()
+        if log:
+            self.scroller.configure(state=NORMAL)  # writable
+            self.scroller.insert(END, log)
+            self.scroller.configure(state=DISABLED)  # readable
+        else:
+            logging.info("No errors reported.")
+            self.update_scroller()
 
-        # wipe the app.log file
-        log_file = open(utils.get_path("app.log"), "r+")
-        log_file.truncate(0)  # erase log file
-        logging.info("Log file wiped.")
-
-        # prep file
+    def prep_data(self):
         workbook = load_workbook(self.file_source)
         workbook = Checker(workbook).run()
         self.workbook_clean = Cleaner(workbook).run()
         self.workbook_processed = Processor(self.workbook_clean).run()
 
-        # populate scroller with app.log content
-        with open(utils.get_path("app.log"), "r") as log_file:
-            text = str(log_file.read())
-        self.scroller.configure(state=NORMAL)  # writable
-        self.scroller.insert(END, text)
-        self.scroller.configure(state=DISABLED)  # readable
-        logging.info("Log file updated.")
-
-        # create chart
+    def create_chart(self):
         if self.chart:
             self.chart.destroy()
         self.chart = Chart(self.parent, self.workbook_processed)  # App is the parent
-
         self.set_button_states([1, 1, 1, 1, 1, 1])
+
+    def on_run(self):
+        self.extract_field_data()
+        utils.save_settings(self.settings)
+        utils.wipe_log()
+        self.wipe_scroller()
+        self.prep_data()
+        self.create_chart()
+        self.update_scroller()
 
     def on_copy(self):
         utils.copy_to_clipboard(self.chart.drawing)

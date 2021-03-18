@@ -29,11 +29,24 @@ def get_settings():
 def save_settings(data):
     with open(get_path("config.json"), "w") as file:
         file.write(json.dumps(data))
+    logging.info("Settings saved.")
 
 
 def wipe_settings():
     with open(get_path("config.json"), "w") as file:
         file.truncate(0)
+    logging.info("Settings wiped.")
+
+
+def get_log():
+    with open(get_path("app.log"), "r") as log_file:
+        log = str(log_file.read())
+    return log
+
+
+def wipe_log():
+    with open(get_path("app.log"), "r+") as file:
+        file.truncate(0)  # erase log file
 
 
 def save_image(chart):

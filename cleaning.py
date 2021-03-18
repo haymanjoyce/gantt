@@ -11,7 +11,7 @@ class Cleaner:
         self.sheet_names = self.workbook.get_sheet_names()
 
     def clean_something(self):
-        print("I am cleaning!")
+        pass
 
     def run(self):
         self.clean_something()
