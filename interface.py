@@ -178,13 +178,9 @@ class Controls(Frame):
     def update_scroller(self):
         self.wipe_scroller()
         log = utils.get_log()
-        if log:
-            self.scroller.configure(state=NORMAL)  # writable
-            self.scroller.insert(END, log)
-            self.scroller.configure(state=DISABLED)  # readable
-        else:
-            logging.info("No errors reported.")
-            self.update_scroller()
+        self.scroller.configure(state=NORMAL)  # writable
+        self.scroller.insert(END, log)
+        self.scroller.configure(state=DISABLED)  # readable
 
     def prep_data(self):
         workbook = load_workbook(self.file_source)
@@ -201,10 +197,10 @@ class Controls(Frame):
     def on_run(self):
         self.extract_field_data()
         utils.save_settings(self.settings)
-        utils.wipe_log()
-        self.wipe_scroller()
         self.prep_data()
         self.create_chart()
+        if not utils.get_log():
+            logging.info("No errors detected.")
         self.update_scroller()
 
     def on_copy(self):

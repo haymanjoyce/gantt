@@ -5,10 +5,7 @@
 # TODO develop a Windows installer
 # TODO create drawing from spreadsheet
 # TODO test PyInstaller with tkcalendar addition
-# TODO validate settings data
 # TODO debug break on blank dimension fields
-# TODO ditch log file; see if you can stream to scroller
-# TODO wipe and renew scroller each time file changed
 # TODO validation for source file entry field
 
 # MANUAL OS ENVIRONMENT INSTALLS

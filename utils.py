@@ -19,23 +19,23 @@ def get_settings():
         else:
             return dict()
     except FileNotFoundError:
-        logging.info("Configuration file not found.")
+        logging.debug("Configuration file not found.")
         file = open(get_path("config.json"), "w")
         file.close()
-        logging.info("Configuration file created.")
+        logging.debug("Configuration file created.")
         return dict()
 
 
 def save_settings(data):
     with open(get_path("config.json"), "w") as file:
         file.write(json.dumps(data))
-    logging.info("Settings saved.")
+    logging.debug("Settings saved.")
 
 
 def wipe_settings():
     with open(get_path("config.json"), "w") as file:
         file.truncate(0)
-    logging.info("Settings wiped.")
+    logging.debug("Settings wiped.")
 
 
 def get_log():
@@ -75,7 +75,7 @@ def save_image(chart):
         else:
             logging.warning("File type not recognised.")
     else:
-        logging.info("Operation cancelled.")
+        logging.debug("Operation cancelled.")
 
 
 def get_file_name(current_name):
@@ -85,7 +85,7 @@ def get_file_name(current_name):
         file_name = file.name.lower()
     else:
         file_name = current_name
-        logging.info("Operation cancelled.")
+        logging.debug("Operation cancelled.")
     return file_name
 
 
@@ -102,7 +102,7 @@ def export_data(workbook):
         else:
             logging.warning("File type not recognised.")
     else:
-        logging.info("Operation cancelled.")
+        logging.debug("Operation cancelled.")
 
 
 def save_postscript(chart):
@@ -114,7 +114,7 @@ def save_postscript(chart):
         chart.postscript(file=file.name, rotate=1)
         logging.info("Chart saved as: " + file.name)
     else:
-        logging.info("Operation cancelled.")
+        logging.debug("Operation cancelled.")
 
 
 def copy_to_clipboard(chart):
@@ -132,6 +132,8 @@ def copy_to_clipboard(chart):
 
     chart_as_bytecode.close()
     chart_as_bitmap.close()
+
+    logging.info("Image copied to clipboard.")
 
 
 def get_path(filename):
