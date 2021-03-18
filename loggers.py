@@ -56,3 +56,23 @@ class WidgetHandler(logging.StreamHandler):
         print(record)
         print(self.format(record))
         print(self.widget)  # insert message into widget
+
+
+# logger = logging.getLogger(name=__name__)
+# logger.setLevel(logging.DEBUG)
+#
+# simple_format = logging.Formatter(style='{', fmt='{levelname} - {message}')
+#
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging.DEBUG)
+# stream_handler.setFormatter(simple_format)
+#
+# file_handler = logging.FileHandler(filename="data.log")
+# file_handler.setLevel(logging.DEBUG)
+# file_handler.setFormatter(simple_format)
+#
+# logger.addHandler(stream_handler)
+# logger.addHandler(file_handler)
+#
+# logger.debug("Debug level message.")
+# logger.info("Info level message.")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import loggers
+import logging
 import utils
 
 
@@ -16,7 +16,3 @@ class Processor:
     def run(self):
         self.process_something()
         return self.workbook
-
-
-cli = loggers.Widget()
-log = loggers.File(utils.get_path("data.log"))

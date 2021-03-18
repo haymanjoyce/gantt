@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime
-import loggers
+import logging
 
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD
@@ -130,17 +129,17 @@ class Controls(Frame):
         start = self.ent_start.get_date()
         finish = self.ent_finish.get_date()
         if start > finish:
-            cli.warning("Start greater than finish.")
+            logging.warning("Start greater than finish.")
         elif start == finish:
-            cli.warning("Start is the same as finish.")
+            logging.warning("Start is the same as finish.")
 
     def check_start(self, *args):
         start = self.ent_start.get_date()
         finish = self.ent_finish.get_date()
         if start > finish:
-            cli.warning("Finish is less than start.")
+            logging.warning("Finish is less than start.")
         elif start == finish:
-            cli.warning("Finish is the same as start.")
+            logging.warning("Finish is the same as start.")
 
     def set_button_states(self, states=None):
         buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
@@ -179,10 +178,10 @@ class Controls(Frame):
         self.extract_field_data()
         utils.save_settings(self.settings)
 
-        # wipe the data.log file
-        log_file = open(utils.get_path("data.log"), "r+")
+        # wipe the app.log file
+        log_file = open(utils.get_path("app.log"), "r+")
         log_file.truncate(0)  # erase log file
-        cli.info("Log file wiped.")
+        logging.info("Log file wiped.")
 
         # prep file
         workbook = load_workbook(self.file_source)
@@ -190,13 +189,13 @@ class Controls(Frame):
         self.workbook_clean = Cleaner(workbook).run()
         self.workbook_processed = Processor(self.workbook_clean).run()
 
-        # populate scroller with data.log content
-        with open(utils.get_path("data.log"), "r") as log_file:
+        # populate scroller with app.log content
+        with open(utils.get_path("app.log"), "r") as log_file:
             text = str(log_file.read())
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, text)
         self.scroller.configure(state=DISABLED)  # readable
-        cli.info("Log file updated.")
+        logging.info("Log file updated.")
 
         # create chart
         if self.chart:
@@ -236,8 +235,4 @@ class Chart(Toplevel):
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])
         self.destroy()
-
-
-cli = loggers.Stream()
-log = loggers.File(utils.get_path("data.log"))
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import loggers
+import logging
 import utils
 from tkinter import Canvas
 from utils import get_settings
@@ -32,8 +32,3 @@ class Drawer(Canvas):
         sheet = self.workbook["Tasks"]
         text = sheet["A1"].value
         self.create_text(100, 100, text=text)
-
-
-cli = loggers.Widget()
-log = loggers.File(utils.get_path("data.log"))
-

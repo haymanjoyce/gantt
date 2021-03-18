@@ -20,8 +20,10 @@
 # Pillow (imaging library)
 # tkcalendar (check docs when using PyInstaller)
 
+import logging
 import interface
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='app.log', level=logging.INFO, format='%(levelname)s - %(message)s')
     app = interface.App()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import loggers
+import logging
 import utils
 
 
@@ -16,8 +16,4 @@ class Cleaner:
     def run(self):
         self.clean_something()
         return self.workbook
-
-
-cli = loggers.Widget()
-log = loggers.File(utils.get_path("data.log"))
 

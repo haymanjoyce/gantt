@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import loggers
+import logging
 import json
 from tkinter import filedialog
 from PIL import Image
@@ -19,10 +19,10 @@ def get_settings():
         else:
             return dict()
     except FileNotFoundError:
-        cli.info("Configuration file not found.")
+        logging.info("Configuration file not found.")
         file = open(get_path("config.json"), "w")
         file.close()
-        cli.info("Configuration file created.")
+        logging.info("Configuration file created.")
         return dict()
 
 
@@ -58,11 +58,11 @@ def save_image(chart):
             chart_encoded = chart_as_postscript.encode('utf-8')
             chart_as_bytecode = BytesIO(chart_encoded)
             Image.open(chart_as_bytecode).save(file_name)
-            cli.info('Chart saved as: ' + file_name)
+            logging.info('Chart saved as: ' + file_name)
         else:
-            cli.warning("File type not recognised.")
+            logging.warning("File type not recognised.")
     else:
-        cli.info("Operation cancelled.")
+        logging.info("Operation cancelled.")
 
 
 def get_file_name(current_name):
@@ -72,7 +72,7 @@ def get_file_name(current_name):
         file_name = file.name.lower()
     else:
         file_name = current_name
-        cli.debug("Operation cancelled.")
+        logging.info("Operation cancelled.")
     return file_name
 
 
@@ -85,11 +85,11 @@ def export_data(workbook):
         file_path = file.name.lower().replace('/', '\\\\')
         if file_path.endswith(".xlsx"):
             workbook.save(filename=file_path)
-            cli.info('Chart data saved as: ' + file.name.lower())
+            logging.info('Chart data saved as: ' + file.name.lower())
         else:
-            cli.warning("File type not recognised.")
+            logging.warning("File type not recognised.")
     else:
-        cli.info("Operation cancelled.")
+        logging.info("Operation cancelled.")
 
 
 def save_postscript(chart):
@@ -99,9 +99,9 @@ def save_postscript(chart):
                                     defaultextension="*.ps")
     if file:
         chart.postscript(file=file.name, rotate=1)
-        cli.info("Chart saved as: " + file.name)
+        logging.info("Chart saved as: " + file.name)
     else:
-        cli.info("Operation cancelled.")
+        logging.info("Operation cancelled.")
 
 
 def copy_to_clipboard(chart):
@@ -126,6 +126,3 @@ def get_path(filename):
         return f'{os.path.join(sys._MEIPASS, filename)}'
     else:
         return f'{filename}'
-
-
-cli = loggers.Widget()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import loggers
+import logging
 import utils
 
 
@@ -13,12 +13,8 @@ class Checker:
     def check_merged_cells(self):
         for sheet_name in self.sheet_names:
             if bool(self.workbook[sheet_name].merged_cells.ranges):
-                log.error(f"Merged cells found in {sheet_name} sheet.")
+                logging.error(f"Merged cells found in {sheet_name} sheet.")
 
     def run(self):
         self.check_merged_cells()
         return self.workbook
-
-
-cli = loggers.Widget()
-log = loggers.File(utils.get_path("data.log"))
