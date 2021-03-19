@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import datetime
 
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST
@@ -76,7 +77,7 @@ class Controls(Frame):
 
         self.pack_widgets()
         self.bind_widgets()
-        self.load_settings()
+        self.insert_field_data()
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0])
         self.set_file_source("c:/users/hayma/desktop/gantt.xlsx")  # development only
@@ -124,17 +125,11 @@ class Controls(Frame):
         self.ent_start.bind('<FocusIn>', self.check_finish)
         self.ent_finish.bind('<FocusIn>', self.check_start)
 
-    def load_settings(self):
-        if len(self.settings.keys()) == 4:
-            self.insert_field_data()
-        else:
-            utils.wipe_settings()
-
     def insert_field_data(self):
-        self.ent_width.insert(0, self.settings["width"])
-        self.ent_height.insert(0, self.settings["height"])
-        self.ent_start.set_date(self.settings["start"])
-        self.ent_finish.set_date(self.settings["finish"])
+        self.ent_width.insert(0, self.settings.get("width", 800))
+        self.ent_height.insert(0, self.settings.get("height", 600))
+        self.ent_start.set_date(self.settings.get("start", datetime.date.today().strftime('%Y/%m/%d')))
+        self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
 
     def extract_field_data(self):
         self.settings["width"] = self.ent_width.get()
