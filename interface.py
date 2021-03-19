@@ -221,15 +221,19 @@ class Controls(Frame):
 
     def on_copy(self):
         utils.copy_to_clipboard(self.chart.drawing)
+        self.update_scroller()
 
     def on_save(self):
         utils.save_image(self.chart.drawing)
+        self.update_scroller()
 
     def on_export(self):
         utils.export_data(self.workbook_clean)
+        self.update_scroller()
 
     def on_postscript(self):
         utils.save_postscript(self.chart.drawing)
+        self.update_scroller()
 
 
 class Chart(Toplevel):
