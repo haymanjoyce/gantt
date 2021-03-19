@@ -132,8 +132,18 @@ class Controls(Frame):
         self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
 
     def extract_field_data(self):
-        self.settings["width"] = self.ent_width.get()
-        self.settings["height"] = self.ent_height.get()
+        width = self.ent_width.get()
+        height = self.ent_height.get()
+        if width:
+            self.settings["width"] = width
+        else:
+            self.settings["width"] = 800
+            logging.info("Default chart width used.")
+        if height:
+            self.settings["height"] = height
+        else:
+            self.settings["height"] = 600
+            logging.info("Default chart height used.")
         self.settings["start"] = self.ent_start.get_date().strftime('%Y/%m/%d')
         self.settings["finish"] = self.ent_finish.get_date().strftime('%Y/%m/%d')
 
