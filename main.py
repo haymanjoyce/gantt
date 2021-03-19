@@ -6,7 +6,6 @@
 # TODO create drawing from spreadsheet
 # TODO test PyInstaller with tkcalendar addition
 # TODO debug break on blank dimension fields
-# TODO validation for source file entry field
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

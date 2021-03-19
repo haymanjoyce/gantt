@@ -52,7 +52,9 @@ class Controls(Frame):
         self.workbook_clean = None
         self.workbook_processed = None
         self.settings = utils.get_settings()
+
         self.v_cmd_1 = (self.register(self.field_validation_1), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        self.v_cmd_2 = (self.register(self.field_validation_2), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
@@ -63,7 +65,7 @@ class Controls(Frame):
         self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.lbl_source = Label(self, text="Source file:")
-        self.ent_filepath = Entry(self, text="", relief="groove")
+        self.ent_filepath = Entry(self, text="", relief="groove", validate="key", validatecommand=self.v_cmd_2)
         self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
@@ -89,6 +91,15 @@ class Controls(Frame):
             return True
         else:
             return False
+
+    @staticmethod
+    def field_validation_2(*args):
+        if args[2].isdigit():
+            return False
+        elif args[2] == "":
+            return True
+        else:
+            return True
 
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
