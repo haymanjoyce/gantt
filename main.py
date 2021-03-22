@@ -19,8 +19,10 @@
 
 import logging
 import interface
+from utils import get_path
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='app.log', level=logging.INFO, format='%(levelname)s - %(message)s')
+    filename = get_path('app.log')
+    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')
     app = interface.App()
