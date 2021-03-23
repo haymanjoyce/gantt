@@ -4,8 +4,6 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO create drawing from spreadsheet
-# TODO get logging to work with Pyinstaller (using --runtime-hook logging, for example)
-# TODO try replacing _MEIPASS reference in script to same reference in --workpath in batch file
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
