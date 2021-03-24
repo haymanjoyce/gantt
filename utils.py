@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Ragbag of functions that are meant to be class or object agnostic (i.e. static)."""
+
 import logging
 import json
 from tkinter import filedialog
@@ -29,13 +31,13 @@ def get_settings():
 def save_settings(data):
     with open(get_path("config.json"), "w") as file:
         file.write(json.dumps(data))
-    logging.debug("Settings saved.")
+    logging.info("Settings saved.")
 
 
 def wipe_settings():
     with open(get_path("config.json"), "w") as file:
         file.truncate(0)
-    logging.debug("Settings wiped.")
+    logging.info("Settings wiped.")
 
 
 def get_log():

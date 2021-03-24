@@ -6,12 +6,13 @@ from tkinter import Canvas
 from utils import get_settings
 
 
-class Drawing(Canvas):
-    def __init__(self, parent):
-        super(Drawing, self).__init__(parent)
+class Chart(Canvas):
+    """Chart extends the Canvas class."""
+    def __init__(self, parent, data=None):
+        super(Chart, self).__init__(parent)
 
         self.parent = parent
-        self.workbook = self.parent.workbook
+        self.data = data
 
         self.settings = get_settings()
         self.chart_width = int(self.settings['width'])
@@ -28,7 +29,7 @@ class Drawing(Canvas):
         self.create_rectangle(0, 0, self.chart_width // 4, self.chart_height // 4, fill="#ff0000")
 
     def draw_tasks(self):
-        sheet = self.workbook["Tasks"]
+        pass
 
     def draw_task(self, start, finish, **options):
         pass

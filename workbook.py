@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 
 import logging
-import utils
 
 
-class SheetOps:
+class Workbook:
+    """Extra methods for Openpyxl workbook objects.  Unable to extend class."""
     def __init__(self, workbook):
 
         self.workbook = workbook
-        self.sheet_names = self.workbook.get_sheet_names()
 
     def check_merged_cells(self):
-        for sheet_name in self.sheet_names:
+        for sheet_name in self.workbook.sheet_names:
             if bool(self.workbook[sheet_name].merged_cells.ranges):
                 logging.error(f"Merged cells found in {sheet_name} sheet.")
 
-    def run(self):
+    def check_headers_row_exists(self):
+        pass
+
+    def check_headers_exist(self):
+        pass
+
+    def run_all_checks(self):
         self.check_merged_cells()
-        return self.workbook

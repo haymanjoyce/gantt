@@ -5,9 +5,8 @@
 # TODO develop a Windows installer
 # TODO create sample spreadsheet programmatically
 # TODO create drawing from spreadsheet
-# TODO add header col on row check
-# TODO add header col names check
-# TODO add data contiguity check (no breaks in table)
+# TODO scroller defaults to bottom so always shows last entry
+# TODO check chart can receive data
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -27,5 +26,5 @@ from utils import get_path
 
 if __name__ == '__main__':
     filename = get_path('app.log')
-    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')
+    logging.basicConfig(filename=filename, level=logging.DEBUG, format='%(levelname)s - %(message)s')  # Set to INFO for production
     app = interface.App()

@@ -10,9 +10,7 @@ from tkcalendar import DateEntry
 
 import utils
 
-from sheet_ops import SheetOps
-from cell_ops import CellOps
-from drawing import Drawing
+from chart import Chart
 
 
 class App(Tk):
@@ -46,11 +44,9 @@ class Controls(Frame):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
 
-        self.parent = parent
-        self.chart = None
-        self.file_source = None
-        self.workbook_clean = None
-        self.workbook_processed = None
+        self.parent = parent  # App is the parent
+        self.view = None  # for View (i.e. TopLevel) instance, parent of Chart (i.e. Canvas) instance
+        self.file_source = None  # for path to user's Excel spreadsheet
         self.settings = utils.get_settings()
 
         self.v_cmd_1 = (self.register(self.field_validation_1), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
@@ -76,10 +72,11 @@ class Controls(Frame):
 
         self.pack_widgets()
         self.bind_widgets()
-        self.insert_field_data()
+        self.insert_settings_data()
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0])
-        self.set_file_source("c:/users/hayma/desktop/gantt.xlsx")  # development only
+
+        self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
@@ -124,13 +121,13 @@ class Controls(Frame):
         self.ent_start.bind('<FocusIn>', self.check_finish)
         self.ent_finish.bind('<FocusIn>', self.check_start)
 
-    def insert_field_data(self):
+    def insert_settings_data(self):
         self.ent_width.insert(0, self.settings.get("width", 800))
         self.ent_height.insert(0, self.settings.get("height", 600))
         self.ent_start.set_date(self.settings.get("start", datetime.date.today().strftime('%Y/%m/%d')))
         self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
 
-    def extract_field_data(self):
+    def extract_settings_data(self):
         width = self.ent_width.get()
         height = self.ent_height.get()
         if width:
@@ -170,7 +167,7 @@ class Controls(Frame):
         for button, state in zip(buttons, states):
             button.config(state=state)
 
-    def set_file_source(self, file_source=None):
+    def set_select(self, file_source=None):
         if file_source:
             self.file_source = file_source
             self.ent_filepath.delete(0, END)
@@ -183,7 +180,7 @@ class Controls(Frame):
 
     def on_select(self):
         self.file_source = utils.get_file_name(self.file_source)
-        self.set_file_source(self.file_source)
+        self.set_select(self.file_source)
 
     def wipe_scroller(self):
         self.scroller.config(state=NORMAL)
@@ -197,46 +194,49 @@ class Controls(Frame):
         self.scroller.insert(END, log)
         self.scroller.configure(state=DISABLED)  # readable
 
-    def prep_data(self):
-        workbook = load_workbook(self.file_source)
-        workbook = SheetOps(workbook).run()
-        self.workbook_clean = CellOps(workbook).run()
-
-    def create_chart(self):
-        if self.chart:
-            self.chart.destroy()
-        self.chart = Chart(self.parent, self.workbook_processed)  # App is the parent
+    def create_view(self, data=None):
+        if self.view:
+            self.view.destroy()
+        self.view = View(parent=self.parent, data=None)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1])
 
     def on_run(self):
-        self.extract_field_data()
+        self.extract_settings_data()
         utils.save_settings(self.settings)
-        self.prep_data()
-        self.create_chart()
+        workbook = load_workbook(self.file_source)
+        # run all checks on workbook
+        # do workbook to dataclass mapping
+        # build data objects
+        # feed objects to Chart
+        self.create_view(data=None)  # converts dataclasses into canvas objects
         if not utils.get_log():
             logging.info("No errors detected.")
         self.update_scroller()
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.chart.drawing)
+        utils.copy_to_clipboard(self.view.view)
         self.update_scroller()
 
     def on_save(self):
-        utils.save_image(self.chart.drawing)
+        utils.save_image(self.view.view)
         self.update_scroller()
 
     def on_export(self):
-        utils.export_data(self.workbook_clean)
+        # map dataclass objects to workbook object
+        # feed workbook to export_data
+        workbook = load_workbook(self.file_source)  # temp
+        utils.export_data(workbook)
         self.update_scroller()
 
     def on_postscript(self):
-        utils.save_postscript(self.chart.drawing)
+        utils.save_postscript(self.view.view)
         self.update_scroller()
 
 
-class Chart(Toplevel):
-    def __init__(self, parent, workbook):
-        super(Chart, self).__init__(parent)
+class View(Toplevel):
+    """This is the parent of Canvas.  It determines image size (i.e. the Canvas does not do so)."""
+    def __init__(self, parent, data=None):
+        super(View, self).__init__(parent)
 
         self.win_x = int(self.winfo_screenwidth() * 0.4)
         self.win_y = int(self.winfo_screenheight() * 0.1)
@@ -245,9 +245,9 @@ class Chart(Toplevel):
         self.title("Gantt Page")
         self.wm_iconbitmap(utils.get_path("favicon.ico"))
         self.parent = parent
-        self.workbook = workbook
+        self.data = data
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = Drawing(self)  # Chart is the parent
+        self.chart = Chart(parent=self, data=self.data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])
