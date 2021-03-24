@@ -6,9 +6,9 @@ from tkinter import Canvas
 from utils import get_settings
 
 
-class Drawer(Canvas):
+class Drawing(Canvas):
     def __init__(self, parent):
-        super(Drawer, self).__init__(parent)
+        super(Drawing, self).__init__(parent)
 
         self.parent = parent
         self.workbook = self.parent.workbook
@@ -18,7 +18,6 @@ class Drawer(Canvas):
         self.chart_height = int(self.settings['height'])
 
         self.build_placeholder()
-        self.draw_tasks()
         self.pack()
 
     def build_placeholder(self):
@@ -30,5 +29,20 @@ class Drawer(Canvas):
 
     def draw_tasks(self):
         sheet = self.workbook["Tasks"]
-        text = sheet["A1"].value
-        self.create_text(100, 100, text=text)
+
+    def draw_task(self, start, finish, **options):
+        pass
+
+    def draw_rectangle(self, x1, y1, x2, x3, **options):
+        print(options)
+        self.create_rectangle(x1, y1, x2, x3, options)
+
+    def draw_tasknames(self):
+        pass
+
+    def draw_taskname(self):
+        pass
+
+    def draw_text(self):
+        pass
+

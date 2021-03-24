@@ -3,7 +3,11 @@
 # TODO loading Ghostscript with the programme (ref: https://www.biopdf.com/guide/detecting_ghostscript.php)
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
+# TODO create sample spreadsheet programmatically
 # TODO create drawing from spreadsheet
+# TODO add header col on row check
+# TODO add header col names check
+# TODO add data contiguity check (no breaks in table)
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -12,8 +16,9 @@
 # openpyxl (xlrd only does xls)
 # pywin32 (note, does not work on Mac)
 # ghostscript (interface to API)
-# Pillow (imaging library)
+# Pillow (fork of PIL; better maintained)
 # tkcalendar (PyInstaller requires hidden import from Babel)
+# attrs
 
 import logging
 import interface

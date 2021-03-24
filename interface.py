@@ -10,10 +10,9 @@ from tkcalendar import DateEntry
 
 import utils
 
-from checking import Checker
-from cleaning import Cleaner
-from processing import Processor
-from drawing import Drawer
+from sheet_ops import SheetOps
+from cell_ops import CellOps
+from drawing import Drawing
 
 
 class App(Tk):
@@ -200,9 +199,8 @@ class Controls(Frame):
 
     def prep_data(self):
         workbook = load_workbook(self.file_source)
-        workbook = Checker(workbook).run()
-        self.workbook_clean = Cleaner(workbook).run()
-        self.workbook_processed = Processor(self.workbook_clean).run()
+        workbook = SheetOps(workbook).run()
+        self.workbook_clean = CellOps(workbook).run()
 
     def create_chart(self):
         if self.chart:
@@ -249,7 +247,7 @@ class Chart(Toplevel):
         self.parent = parent
         self.workbook = workbook
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = Drawer(self)  # Chart is the parent
+        self.drawing = Drawing(self)  # Chart is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])

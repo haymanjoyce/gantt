@@ -4,15 +4,16 @@ import logging
 import utils
 
 
-class Processor:
+class CellOps:
     def __init__(self, workbook):
 
         self.workbook = workbook
         self.sheet_names = self.workbook.get_sheet_names()
 
-    def process_something(self):
+    def clean_something(self):
         pass
 
     def run(self):
-        self.process_something()
+        self.clean_something()
         return self.workbook
+
