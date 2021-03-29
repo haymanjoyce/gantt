@@ -9,8 +9,9 @@ from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
 import utils
+import materials
 
-from chart import Chart
+from drawing import Drawing
 
 
 class App(Tk):
@@ -197,18 +198,17 @@ class Controls(Frame):
     def create_view(self, data=None):
         if self.view:
             self.view.destroy()
-        self.view = View(parent=self.parent, data=None)  # App is the parent
+        self.view = View(parent=self.parent, data=data)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1])
 
     def on_run(self):
         self.extract_settings_data()
         utils.save_settings(self.settings)
-        workbook = load_workbook(self.file_source)
-        # run all checks on workbook
-        # do workbook to dataclass mapping
-        # build data objects
-        # feed objects to Chart
-        self.create_view(data=None)  # converts dataclasses into canvas objects
+        workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
+        utils.run_checks(workbook)
+        data = materials.Materials(workbook).data
+        print(data)
+        self.create_view(data=data)
         if not utils.get_log():
             logging.info("No errors detected.")
         self.update_scroller()
@@ -222,8 +222,6 @@ class Controls(Frame):
         self.update_scroller()
 
     def on_export(self):
-        # map dataclass objects to workbook object
-        # feed workbook to export_data
         workbook = load_workbook(self.file_source)  # temp
         utils.export_data(workbook)
         self.update_scroller()
@@ -247,7 +245,7 @@ class View(Toplevel):
         self.parent = parent
         self.data = data
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.chart = Chart(parent=self, data=self.data)  # View is the parent
+        self.drawing = Drawing(parent=self, data=self.data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])

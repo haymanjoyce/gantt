@@ -3,10 +3,18 @@
 # TODO loading Ghostscript with the programme (ref: https://www.biopdf.com/guide/detecting_ghostscript.php)
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
+# TODO try statement for all processes so breaks gracefully
+# TODO option for user to email error message back to me
 # TODO create sample spreadsheet programmatically
 # TODO create drawing from spreadsheet
 # TODO scroller defaults to bottom so always shows last entry
 # TODO check chart can receive data
+# TODO workbook to dataclass mapping
+# TODO build data objects
+# TODO complete build_export
+# TODO use factory method to build chart
+# TODO complete check_header_names
+# TODO put all data objects into dict, not list
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -26,6 +26,8 @@ Fix: Editor > TextMate Bundles; Deselect log option
 OPENPYXL
 
 Decided to work with Openpyxl instead of Pandas.
+Workbook class not extensible (consensus on Stack Overflow)
+Dropped class housing methods as most methods static
 
 VALIDATION ARGUMENTS
 

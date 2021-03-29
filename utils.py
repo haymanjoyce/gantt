@@ -11,10 +11,44 @@ import win32clipboard as clipboard
 import sys
 import os
 
+LOG_FILE = "app.log"
+CONFIG_FILE = "config.json"
+
+
+# MISCELLANEOUS
+
+def get_path(filename):
+    """Provides path to app if bundled into one .exe file."""
+    if hasattr(sys, "_MEIPASS"):
+        return f'{os.path.join(sys._MEIPASS, filename)}'
+    else:
+        return f'{filename}'
+
+
+def copy_to_clipboard(chart):
+    chart_as_postscript = chart.postscript()
+    chart_as_utf = chart_as_postscript.encode('utf-8')
+    chart_as_bytecode = BytesIO(chart_as_utf)
+
+    chart_as_bitmap = BytesIO()
+    Image.open(chart_as_bytecode).save(chart_as_bitmap, "BMP")
+
+    clipboard.OpenClipboard()
+    clipboard.EmptyClipboard()
+    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap.getvalue()[14:])  # [14:] removes header
+    clipboard.CloseClipboard()
+
+    chart_as_bytecode.close()
+    chart_as_bitmap.close()
+
+    logging.info("Image copied to clipboard.")
+
+
+# SETTINGS
 
 def get_settings():
     try:
-        file = open(get_path("config.json"), "r")
+        file = open(get_path(CONFIG_FILE), "r")
         data = file.readline()
         if data:
             return json.loads(data)
@@ -22,34 +56,38 @@ def get_settings():
             return dict()
     except FileNotFoundError:
         logging.debug("Configuration file not found.")
-        file = open(get_path("config.json"), "w")
+        file = open(get_path(CONFIG_FILE), "w")
         file.close()
         logging.debug("Configuration file created.")
         return dict()
 
 
 def save_settings(data):
-    with open(get_path("config.json"), "w") as file:
+    with open(get_path(CONFIG_FILE), "w") as file:
         file.write(json.dumps(data))
     logging.info("Settings saved.")
 
 
 def wipe_settings():
-    with open(get_path("config.json"), "w") as file:
+    with open(get_path(CONFIG_FILE), "w") as file:
         file.truncate(0)
     logging.info("Settings wiped.")
 
 
+# LOG
+
 def get_log():
-    with open(get_path("app.log"), "r") as log_file:
+    with open(get_path(LOG_FILE), "r") as log_file:
         log = str(log_file.read())
     return log
 
 
 def wipe_log():
-    with open(get_path("app.log"), "r+") as file:
+    with open(get_path(LOG_FILE), "r+") as file:
         file.truncate(0)  # erase log file
 
+
+# DIALOGUES
 
 def save_image(chart):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
@@ -119,27 +157,46 @@ def save_postscript(chart):
         logging.debug("Operation cancelled.")
 
 
-def copy_to_clipboard(chart):
-    chart_as_postscript = chart.postscript()
-    chart_as_utf = chart_as_postscript.encode('utf-8')
-    chart_as_bytecode = BytesIO(chart_as_utf)
+# OPENPYXL
 
-    chart_as_bitmap = BytesIO()
-    Image.open(chart_as_bytecode).save(chart_as_bitmap, "BMP")
-
-    clipboard.OpenClipboard()
-    clipboard.EmptyClipboard()
-    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap.getvalue()[14:])  # [14:] removes header
-    clipboard.CloseClipboard()
-
-    chart_as_bytecode.close()
-    chart_as_bitmap.close()
-
-    logging.info("Image copied to clipboard.")
+def check_merged_cells(workbook):
+    for sheet in workbook.sheetnames:
+        if bool(workbook[sheet].merged_cells.ranges):
+            logging.error(f"Merged cells found in {sheet} sheet.")
 
 
-def get_path(filename):
-    if hasattr(sys, "_MEIPASS"):
-        return f'{os.path.join(sys._MEIPASS, filename)}'
-    else:
-        return f'{filename}'
+def check_header_rows_exists(workbook):
+    for sheet in workbook.sheetnames:
+        if None in [cell.value for cell in workbook[sheet][1][:3]]:
+            logging.error(f"Column header(s) missing in {sheet} sheet.")
+
+
+def check_header_names(workbook):
+    for sheet_name in workbook.sheetnames:
+        get_sheet_headers(workbook[sheet_name])
+
+
+def run_checks(workbook):
+    check_merged_cells(workbook)
+    check_header_names(workbook)
+    check_header_names(workbook)
+
+
+def get_sheet_headers(sheet):
+    return [cell.value for cell in sheet[1][:sheet.max_column]]
+
+
+def get_sheet_names(workbook):
+    return workbook.sheetnames
+
+
+def create_template():
+    pass
+
+
+def create_sample():
+    pass
+
+
+def create_export():
+    pass
