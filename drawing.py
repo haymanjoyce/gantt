@@ -13,24 +13,20 @@ class Drawing(Canvas):
 
         self.parent = parent
         self.data = data
-
-        self.settings = get_settings()
-        self.chart_width = int(self.settings['width'])
-        self.chart_height = int(self.settings['height'])
-
         self.draw_chart()
 
     def draw_chart(self):
-        print(self.data[0])
         self.draw_placeholder()
         self.pack()
 
     def draw_placeholder(self):
-        self.config(width=self.chart_width, height=self.chart_height)
-        self.create_rectangle(0, 0, self.chart_width, self.chart_height, fill="#ff0000")
-        self.create_rectangle(0, 0, self.chart_width // 2, self.chart_height // 2, fill="#0000ff")
-        self.create_rectangle(0, 0, self.chart_width // 3, self.chart_height // 3, fill="#00ff00")
-        self.create_rectangle(0, 0, self.chart_width // 4, self.chart_height // 4, fill="#ff0000")
+        width = self.data.get("chart").width
+        height = self.data.get("chart").height
+        self.config(width=width, height=height)
+        self.create_rectangle(0, 0, width, height, fill="#ff0000")
+        self.create_rectangle(0, 0, width // 2, height // 2, fill="#0000ff")
+        self.create_rectangle(0, 0, width // 3, height // 3, fill="#00ff00")
+        self.create_rectangle(0, 0, width // 4, height // 4, fill="#ff0000")
 
     # PRIMITIVES
 

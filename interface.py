@@ -206,8 +206,7 @@ class Controls(Frame):
         utils.save_settings(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         utils.run_checks(workbook)
-        data = materials.Materials(workbook).data
-        print(data)
+        data = materials.Materials(workbook).inventory
         self.create_view(data=data)
         if not utils.get_log():
             logging.info("No errors detected.")

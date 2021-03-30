@@ -13,11 +13,12 @@ class Materials:
 
         self.workbook = workbook
         self.settings = utils.get_settings()
-        self.data = list()
-        self.populate_list()
+        self.inventory = dict()
+        self.populate()
 
-    def populate_list(self):
+    def populate(self):
         self.create_chart()
+        self.create_scales()
 
     def create_chart(self):
         chart = designs.Chart()
@@ -26,45 +27,32 @@ class Materials:
         chart.height = int(self.settings['height'])
         chart.start = datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
         chart.finish = datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
-        self.data.append(chart)
-
-    def create_scale(self):
-        pass
+        self.inventory.setdefault("chart", chart)
 
     def create_scales(self):
-        pass
-
-    def create_row(self):
-        pass
+        data = self.workbook["Scales"]
+        scales = list()
+        for row in data.iter_rows(min_row=2, values_only=True):
+            scale = designs.Scale()
+            scale.interval = row[1]
+            scales.append(scale)
+        self.inventory.setdefault("scales", scales)
+        print(self.inventory.get("scales"))
+        # a = [cell.value for cell in data[1][:3]
 
     def create_rows(self):
-        pass
-
-    def create_task(self):
         pass
 
     def create_tasks(self):
         pass
 
-    def create_milestone(self):
-        pass
-
     def create_milestones(self):
-        pass
-
-    def create_relationship(self):
         pass
 
     def create_relationships(self):
         pass
 
-    def create_curtain(self):
-        pass
-
     def create_curtains(self):
-        pass
-
-    def create_bar(self):
         pass
 
     def create_bars(self):
