@@ -15,6 +15,7 @@
 # TODO use factory method to build chart
 # TODO complete check_header_names
 # TODO put all data objects into dict, not list
+# TODO put col header numbers in dict (name: index)
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -29,7 +30,7 @@
 
 import logging
 import interface
-from utils import get_path
+from filing import get_path
 
 
 if __name__ == '__main__':

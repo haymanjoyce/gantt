@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
-import utils
 from tkinter import Canvas
-from utils import get_settings
 
 
 class Drawing(Canvas):

@@ -4,7 +4,7 @@
 
 import datetime
 
-import utils
+import filing
 import designs
 
 
@@ -12,7 +12,7 @@ class Materials:
     def __init__(self, workbook):
 
         self.workbook = workbook
-        self.settings = utils.get_settings()
+        self.settings = filing.get_settings()
         self.inventory = dict()
         self.populate()
 
@@ -37,7 +37,6 @@ class Materials:
             scale.interval = row[1]
             scales.append(scale)
         self.inventory.setdefault("scales", scales)
-        print(self.inventory.get("scales"))
         # a = [cell.value for cell in data[1][:3]
 
     def create_rows(self):
