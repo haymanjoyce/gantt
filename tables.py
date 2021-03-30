@@ -6,7 +6,9 @@ from attr import attrs, attrib
 
 SHEETNAMES = ['Scales', 'Rows', 'Tasks', 'Milestones', 'Relationships', 'Curtains', 'Bars']
 
-SCALES = ['Placement', 'Interval', 'Scale Height', 'Date Format', 'Fill Color', 'Font Color', 'Font Size', 'Font Style']
+MANDATORY = True
+
+SCALES = [('Placement', {MANDATORY}), 'Interval', 'Scale Height', 'Date Format', 'Fill Color', 'Font Color', 'Font Size', 'Font Style']
 ROWS = ['Row Number', 'Row Height', 'Fill Color', 'Text', 'Font Color', 'Font Size', 'Font Style']
 TASKS = ['Parent Row', 'Start Date', 'Finish Date', 'Fill Color', 'Text', 'Font Color', 'Font Size', 'Font Style', 'Text Anchor', 'Text Align', 'Text Adjust', 'Task Number', 'Layer']
 MILESTONES = ['Parent Row', 'Date', 'Fill Color', 'Text', 'Font Color', 'Font Size', 'Font Style', 'Text Anchor', 'Text Align', 'Text Adjust', 'Task Number', 'Layer']
@@ -15,13 +17,32 @@ CURTAINS = ['Start Date', 'Finish Date', 'Fill Color']
 BARS = ['Date', 'Line Color', 'Line Width']
 
 
+def create_dict(workbook):
+    """For development only."""
+    wb_dict = dict()
+    for sheet in workbook.sheetnames:
+        wb_dict.setdefault(sheet, dict())
+        sheet_dict = wb_dict.get(sheet)
+        for index, value in enumerate(get_sheet_headers(workbook[sheet])):
+            sheet_dict.setdefault(value, dict())
+            field_dict = sheet_dict.get(value)
+            field_dict.setdefault("MANDATORY", True)
+            field_dict.setdefault("NAMES", (value,))
+            field_dict.setdefault("COLUMN", int(index))
+    return wb_dict
+
+
 def check_merged_cells(workbook):
     for sheet in workbook.sheetnames:
         if bool(workbook[sheet].merged_cells.ranges):
             logging.error(f"Merged cells found in {sheet} sheet.")
 
 
-def check_header_rows_exists(workbook):
+def check_sheets_exist(workbook):
+    pass
+
+
+def check_header_rows_exist(workbook):
     for sheet in workbook.sheetnames:
         if None in [cell.value for cell in workbook[sheet][1][:3]]:
             logging.error(f"Column header(s) missing in {sheet} sheet.")
@@ -30,12 +51,6 @@ def check_header_rows_exists(workbook):
 def check_header_names(workbook):
     for sheet_name in workbook.sheetnames:
         get_sheet_headers(workbook[sheet_name])
-
-
-def run_checks(workbook):
-    check_merged_cells(workbook)
-    check_header_names(workbook)
-    check_header_names(workbook)
 
 
 def get_sheet_headers(sheet):

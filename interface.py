@@ -101,6 +101,10 @@ class Controls(Frame):
         else:
             return True
 
+    @staticmethod
+    def check_workbook(workbook):
+        tables.check_merged_cells(workbook)
+
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
@@ -207,7 +211,7 @@ class Controls(Frame):
         self.extract_settings_data()
         filing.save_settings(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        tables.run_checks(workbook)
+        self.check_workbook(workbook)
         data = materials.Materials(workbook).inventory
         self.create_view(data=data)
         if not filing.get_log():

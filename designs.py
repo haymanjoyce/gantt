@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-"""This module is for defining dataclasses."""
-
 import datetime
 import logging
 

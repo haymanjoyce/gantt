@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-"""This module is for creating a list of dataclass objects."""
-
 import datetime
 
 import filing

@@ -5,7 +5,6 @@ from tkinter import Canvas
 
 
 class Drawing(Canvas):
-    """Drawing extends the Canvas class."""
     def __init__(self, parent, data=None):
         super(Drawing, self).__init__(parent)
 

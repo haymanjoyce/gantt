@@ -5,6 +5,7 @@ import json
 import sys
 import os
 
+
 LOG_FILE = "app.log"
 CONFIG_FILE = "config.json"
 
