@@ -27,9 +27,25 @@ def create_dict(workbook):
             sheet_dict.setdefault(value, dict())
             field_dict = sheet_dict.get(value)
             field_dict.setdefault("MANDATORY", True)
-            field_dict.setdefault("NAMES", (value,))
+            field_dict.setdefault("NAMES", (value, ))
             field_dict.setdefault("COLUMN", int(index))
     return wb_dict
+
+
+def create_field_dict(field_name, index):
+    field_dict = dict()
+    field_dict.setdefault("MANDATORY", True)
+    field_dict.setdefault("NAMES", (field_name, ))
+    field_dict.setdefault("COLUMN", int(index))
+    return field_dict
+
+
+def create_sheet_dict(field_dicts):
+    pass
+
+
+def create_workbook_dict(sheet_dicts):
+    pass
 
 
 def check_merged_cells(workbook):
