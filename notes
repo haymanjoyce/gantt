@@ -25,7 +25,7 @@ Fix: Editor > TextMate Bundles; Deselect log option
 
 OPENPYXL
 
-Decided to work with Openpyxl instead of Pandas.
+Decided to work with Openpyxl instead of Pandas
 Workbook class not extensible (consensus on Stack Overflow)
 Dropped class housing methods as most methods static
 
@@ -39,3 +39,11 @@ VALIDATION ARGUMENTS
 %v = the type of validation that is currently set
 %V = the type of validation that triggered the callback (key, focusin, focusout, forced)
 %W = the tk name of the widget
+
+FUTURE DEVELOPMENT
+
+Develop own grid interface
+Changes to data dynamically update image
+Develop scheduling capability of data objects
+User can define header row
+Multiple task and milestone sheets

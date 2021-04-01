@@ -9,8 +9,8 @@ from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
 import filing
-import materials
-import tables
+import dataset
+import source
 import dialogues
 import drawing
 import utils
@@ -103,7 +103,7 @@ class Controls(Frame):
 
     @staticmethod
     def check_workbook(workbook):
-        tables.check_merged_cells(workbook)
+        source.check_merged_cells(workbook)
 
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
@@ -212,7 +212,7 @@ class Controls(Frame):
         filing.save_settings(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         self.check_workbook(workbook)
-        data = materials.Materials(workbook).inventory
+        data = dataset.Dataset(workbook).dataset
         self.create_view(data=data)
         if not filing.get_log():
             logging.info("No errors detected.")

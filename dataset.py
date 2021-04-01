@@ -6,12 +6,12 @@ import filing
 import designs
 
 
-class Materials:
+class Dataset:
     def __init__(self, workbook):
 
         self.workbook = workbook
         self.settings = filing.get_settings()
-        self.inventory = dict()
+        self.dataset = dict()
         self.populate()
 
     def populate(self):
@@ -25,7 +25,7 @@ class Materials:
         chart.height = int(self.settings['height'])
         chart.start = datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
         chart.finish = datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
-        self.inventory.setdefault("chart", chart)
+        self.dataset.setdefault("chart", chart)
 
     def create_scales(self):
         data = self.workbook["Scales"]
@@ -34,7 +34,7 @@ class Materials:
             scale = designs.Scale()
             scale.interval = row[1]
             scales.append(scale)
-        self.inventory.setdefault("scales", scales)
+        self.dataset.setdefault("scales", scales)
         # a = [cell.value for cell in data[1][:3]
 
     def create_rows(self):
