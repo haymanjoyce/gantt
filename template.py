@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import source
+import wb
 
 TEMPLATE = {'Bars': {'Date': {'INDEX': 0, 'MANDATORY': True, 'NAMES': ('Date',)},
                      'Line Color': {'INDEX': 1,
@@ -172,7 +172,7 @@ def create_sheet_dict(sheet_headers):
 def create_workbook_dict(workbook):
     wb_dict = dict()
     for sheet_name in workbook.sheetnames:
-        sheet_headers = source.get_sheet_fieldnames(workbook[sheet_name])
+        sheet_headers = wb.get_sheet_fieldnames(workbook[sheet_name])
         sheet_dict = create_sheet_dict(sheet_headers)
         wb_dict.setdefault(sheet_name, sheet_dict)
     return wb_dict
