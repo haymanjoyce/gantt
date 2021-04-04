@@ -10,7 +10,7 @@ from tkcalendar import DateEntry
 
 import filing
 import dataset
-import wb
+import checks
 import dialogues
 import drawing
 import utils
@@ -103,7 +103,7 @@ class Controls(Frame):
 
     @staticmethod
     def check_workbook(workbook):
-        wb.check_merged_cells(workbook)
+        checks.check_merged_cells(workbook)
 
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
