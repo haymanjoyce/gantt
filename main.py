@@ -13,9 +13,9 @@
 # TODO build data objects
 # TODO complete build_export
 # TODO use factory method to build chart
-# TODO complete check_header_names
 # TODO put all data objects into dict, not list
 # TODO put col header numbers in dict (name: index)
+# TODO map wb headers to data objects
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
