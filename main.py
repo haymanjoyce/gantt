@@ -16,6 +16,7 @@
 # TODO put all data objects into dict, not list
 # TODO put col header numbers in dict (name: index)
 # TODO map wb headers to data objects
+# TODO saves as template with default filename
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

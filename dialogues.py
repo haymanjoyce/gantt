@@ -9,7 +9,6 @@ from io import BytesIO
 def save_image(chart):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [
-        ('All files', '*.*'),
         ('PDF file', '*.pdf'),
         ('JPG file', '*.jpg'),
         ('PNG file', '*.png'),
@@ -19,7 +18,8 @@ def save_image(chart):
     file = filedialog.asksaveasfile(mode="w",
                                     title="Save As",
                                     filetypes=file_types,
-                                    defaultextension="*.*"
+                                    defaultextension="*.pdf",
+                                    initialfile="*.pdf"
                                     )
     if file:
         file_name = file.name.lower()
@@ -46,10 +46,24 @@ def get_file_name(current_name):
     return file_name
 
 
-def export_data(workbook):
+def save_postscript(chart):
+    file = filedialog.asksaveasfile(mode="w",
+                                    title="Save As",
+                                    filetypes=[('PostScript file', '*.ps'), ],
+                                    defaultextension="*.ps",
+                                    initialfile="*.ps")
+    if file:
+        chart.postscript(file=file.name, rotate=1)
+        logging.info("Chart saved as: " + file.name)
+    else:
+        logging.debug("Operation cancelled.")
+
+
+def export_workbook(workbook):
     file = filedialog.asksaveasfile(mode="w",
                                     title="Save As",
                                     filetypes=(("Excel files", "*.xlsx"),),
+                                    initialfile="template.xlsx"
                                     )
     if file:
         file_path = file.name.lower().replace('/', '\\\\')
@@ -58,17 +72,5 @@ def export_data(workbook):
             logging.info('Chart data saved as: ' + file.name.lower())
         else:
             logging.warning("File type not recognised.")
-    else:
-        logging.debug("Operation cancelled.")
-
-
-def save_postscript(chart):
-    file = filedialog.asksaveasfile(mode="w",
-                                    title="Save As",
-                                    filetypes=[('PostScript file', '*.ps'), ],
-                                    defaultextension="*.ps")
-    if file:
-        chart.postscript(file=file.name, rotate=1)
-        logging.info("Chart saved as: " + file.name)
     else:
         logging.debug("Operation cancelled.")

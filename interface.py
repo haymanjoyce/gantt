@@ -71,6 +71,7 @@ class Controls(Frame):
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
         self.btn_image = Button(self, text="Save as image file", command=self.on_save, relief="groove")
         self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, relief="groove")
+        self.btn_template = Button(self, text="Download template", command=self.on_template, relief="groove")
 
         self.pack_widgets()
         self.bind_widgets()
@@ -120,7 +121,8 @@ class Controls(Frame):
         self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
         self.btn_copy.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_image.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
+        self.btn_postscript.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_template.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
     def bind_widgets(self):
         self.ent_start.bind('<FocusIn>', self.check_finish)
@@ -224,13 +226,13 @@ class Controls(Frame):
         dialogues.save_image(self.view.drawing)
         self.update_scroller()
 
-    # def on_export(self):
-    #     workbook = load_workbook(self.file_source)  # temp
-    #     dialogues.export_data(workbook)
-    #     self.update_scroller()
-
     def on_postscript(self):
         dialogues.save_postscript(self.view.drawing)
+        self.update_scroller()
+
+    def on_template(self):
+        workbook = load_workbook(self.file_source)  # temp
+        dialogues.export_workbook(workbook)
         self.update_scroller()
 
 
