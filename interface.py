@@ -14,6 +14,7 @@ import checks
 import dialogues
 import drawing
 import utils
+import template
 
 
 class App(Tk):
@@ -231,7 +232,7 @@ class Controls(Frame):
         self.update_scroller()
 
     def on_template(self):
-        workbook = load_workbook(self.file_source)  # temp
+        workbook = template.create_template()
         dialogues.export_workbook(workbook)
         self.update_scroller()
 
