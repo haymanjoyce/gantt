@@ -201,6 +201,7 @@ class Controls(Frame):
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, log)
         self.scroller.configure(state=DISABLED)  # readable
+        self.scroller.see(END)
 
     def create_view(self, data=None):
         if self.view:
