@@ -37,3 +37,7 @@ def check_header_rows(workbook):
                     missing += field_name,
             if missing:
                 logging.warning(f"Fields missing from {wb_sheet_name}: {', '.join(missing)}.")
+
+
+def check_misspelled_headers(workbook):
+    pass

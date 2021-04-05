@@ -17,6 +17,9 @@
 # TODO put col header numbers in dict (name: index)
 # TODO map wb headers to data objects
 # TODO saves as template with default filename
+# TODO in check fieldnames, suggest misspellings
+# TODO add check workbook button
+# TODO check if log has changed
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

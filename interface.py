@@ -66,7 +66,8 @@ class Controls(Frame):
         self.ent_finish = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
         self.lbl_source = Label(self, text="Source file:")
         self.ent_filepath = Entry(self, text="", relief="groove", validate="key", validatecommand=self.v_cmd_2)
-        self.btn_select = Button(self, text="Select file", command=self.on_select, relief="groove")
+        self.btn_select = Button(self, text="Select workbook", command=self.on_select, relief="groove")
+        self.btn_check = Button(self, text="Check workbook", command=self.on_check, relief="groove")
         self.btn_run = Button(self, text="Run", command=self.on_run, relief="groove")
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
@@ -78,9 +79,9 @@ class Controls(Frame):
         self.bind_widgets()
         self.insert_settings_data()
         self.wipe_scroller()
-        self.set_button_states([1, 0, 0, 0, 0])
+        self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
-        self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
+        # self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
@@ -102,10 +103,6 @@ class Controls(Frame):
         else:
             return True
 
-    @staticmethod
-    def check_workbook(workbook):
-        checks.check_merged_cells(workbook)
-
     def pack_widgets(self):
         self.lbl_width.grid(row=0, column=0, sticky="w", pady=(0, 0))
         self.lbl_height.grid(row=0, column=1, sticky="w", pady=(0, 0))
@@ -118,12 +115,13 @@ class Controls(Frame):
         self.lbl_source.grid(row=4, column=0, columnspan=2, sticky="w")
         self.ent_filepath.grid(row=5, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_select.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_run.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
-        self.btn_copy.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_image.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_postscript.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_template.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
+        self.btn_check.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_run.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.scroller.grid(row=9, column=0, columnspan=2, pady=(0, 5))
+        self.btn_copy.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_image.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_template.grid(row=13, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
     def bind_widgets(self):
         self.ent_start.bind('<FocusIn>', self.check_finish)
@@ -168,9 +166,9 @@ class Controls(Frame):
             logging.warning("Finish is the same as start.")
 
     def set_button_states(self, states=None):
-        buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_postscript]
+        buttons = [self.btn_select, self.btn_check, self.btn_run, self.btn_copy, self.btn_image, self.btn_postscript, self.btn_template]
         if not states:
-            states = [1, 0, 0, 0, 0]
+            states = [1, 0, 0, 0, 0, 0, 1]
         states = [NORMAL if x == 1 else DISABLED for x in states]  # swaps values for variables
         for button, state in zip(buttons, states):
             button.config(state=state)
@@ -180,15 +178,26 @@ class Controls(Frame):
             self.file_source = file_source
             self.ent_filepath.delete(0, END)
             self.ent_filepath.insert(0, file_source)
-            self.set_button_states([1, 1, 0, 0, 0])
+            self.set_button_states([1, 1, 1, 0, 0, 0, 1])
         else:
             self.file_source = None
             self.ent_filepath.delete(0, END)
-            self.set_button_states([1, 0, 0, 0, 0])
+            self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
     def on_select(self):
         self.file_source = dialogues.get_file_name(self.file_source)
         self.set_select(self.file_source)
+
+    def on_check(self):
+        workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
+        checks.check_merged_cells(workbook)
+        checks.check_sheets_exist(workbook)
+        checks.check_header_rows_exist(workbook)
+        checks.check_header_rows(workbook)
+        checks.check_misspelled_headers(workbook)
+        if not filing.get_log():
+            logging.info("No errors detected.")
+        self.update_scroller()
 
     def wipe_scroller(self):
         self.scroller.config(state=NORMAL)
@@ -207,13 +216,12 @@ class Controls(Frame):
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=data)  # App is the parent
-        self.set_button_states([1, 1, 1, 1, 1])
+        self.set_button_states([1, 1, 1, 1, 1, 1, 1])
 
     def on_run(self):
         self.extract_settings_data()
         filing.save_settings(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        self.check_workbook(workbook)
         data = dataset.Dataset(workbook).dataset
         self.create_view(data=data)
         if not filing.get_log():
@@ -255,6 +263,6 @@ class View(Toplevel):
         self.drawing = drawing.Drawing(parent=self, data=self.data)  # View is the parent
 
     def on_close(self):
-        self.parent.controls.set_button_states([1, 1, 0, 0, 0])
+        self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])
         self.destroy()
 
