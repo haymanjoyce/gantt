@@ -70,14 +70,13 @@ class Controls(Frame):
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD, state=DISABLED)  # defines window width
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
         self.btn_image = Button(self, text="Save as image file", command=self.on_save, relief="groove")
-        self.btn_export = Button(self, text="Export as Excel spreadsheet", command=self.on_export, relief="groove")
         self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, relief="groove")
 
         self.pack_widgets()
         self.bind_widgets()
         self.insert_settings_data()
         self.wipe_scroller()
-        self.set_button_states([1, 0, 0, 0, 0, 0])
+        self.set_button_states([1, 0, 0, 0, 0])
 
         self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
 
@@ -121,7 +120,6 @@ class Controls(Frame):
         self.scroller.grid(row=8, column=0, columnspan=2, pady=(0, 5))
         self.btn_copy.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_image.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_export.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
     def bind_widgets(self):
@@ -167,10 +165,10 @@ class Controls(Frame):
             logging.warning("Finish is the same as start.")
 
     def set_button_states(self, states=None):
-        buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_export, self.btn_postscript]
+        buttons = [self.btn_select, self.btn_run, self.btn_copy, self.btn_image, self.btn_postscript]
         if not states:
-            states = [1, 0, 0, 0, 0, 0]
-        states = [NORMAL if x == 1 else DISABLED for x in states]
+            states = [1, 0, 0, 0, 0]
+        states = [NORMAL if x == 1 else DISABLED for x in states]  # swaps values for variables
         for button, state in zip(buttons, states):
             button.config(state=state)
 
@@ -179,11 +177,11 @@ class Controls(Frame):
             self.file_source = file_source
             self.ent_filepath.delete(0, END)
             self.ent_filepath.insert(0, file_source)
-            self.set_button_states([1, 1, 0, 0, 0, 0])
+            self.set_button_states([1, 1, 0, 0, 0])
         else:
             self.file_source = None
             self.ent_filepath.delete(0, END)
-            self.set_button_states([1, 0, 0, 0, 0, 0])
+            self.set_button_states([1, 0, 0, 0, 0])
 
     def on_select(self):
         self.file_source = dialogues.get_file_name(self.file_source)
@@ -205,7 +203,7 @@ class Controls(Frame):
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=data)  # App is the parent
-        self.set_button_states([1, 1, 1, 1, 1, 1])
+        self.set_button_states([1, 1, 1, 1, 1])
 
     def on_run(self):
         self.extract_settings_data()
@@ -226,10 +224,10 @@ class Controls(Frame):
         dialogues.save_image(self.view.drawing)
         self.update_scroller()
 
-    def on_export(self):
-        workbook = load_workbook(self.file_source)  # temp
-        dialogues.export_data(workbook)
-        self.update_scroller()
+    # def on_export(self):
+    #     workbook = load_workbook(self.file_source)  # temp
+    #     dialogues.export_data(workbook)
+    #     self.update_scroller()
 
     def on_postscript(self):
         dialogues.save_postscript(self.view.drawing)
@@ -253,6 +251,6 @@ class View(Toplevel):
         self.drawing = drawing.Drawing(parent=self, data=self.data)  # View is the parent
 
     def on_close(self):
-        self.parent.controls.set_button_states([1, 1, 0, 0, 0, 0])
+        self.parent.controls.set_button_states([1, 1, 0, 0, 0])
         self.destroy()
 
