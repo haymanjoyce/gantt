@@ -4,6 +4,7 @@ import logging
 import json
 import sys
 import os
+import hashlib
 
 
 LOG_FILE = "app.log"
@@ -55,3 +56,8 @@ def get_log():
 def wipe_log():
     with open(get_path(LOG_FILE), "r+") as file:
         file.truncate(0)  # erase log file
+
+
+def append_log(text):
+    with open(get_path(LOG_FILE), "a") as file:
+        file.write(text)

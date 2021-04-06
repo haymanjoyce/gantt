@@ -5,9 +5,13 @@ from template import SHEETS
 
 
 def check_merged_cells(workbook):
+    issues = 0
     for sheet in workbook.sheetnames:
         if bool(workbook[sheet].merged_cells.ranges):
             logging.error(f"Merged cells found in {sheet} sheet.")
+            issues += 1
+    if issues == 0:
+        logging.info(f"No merged cells found.")
 
 
 def check_sheets_exist(workbook):
@@ -18,15 +22,22 @@ def check_sheets_exist(workbook):
             missing.append(sheet_name)
     if missing:
         logging.error(f"Sheets not found: {str(missing).strip('[]')}.")
+    else:
+        logging.info(f"No missing sheets.")
 
 
 def check_header_rows_exist(workbook):
+    issues = 0
     for sheet in workbook.sheetnames:
         if None in [cell.value for cell in workbook[sheet][1][:3]]:
             logging.error(f"Column header(s) missing in {sheet} sheet.")
+            issues += 1
+    if issues == 0:
+        logging.info(f"Header rows exist.")
 
 
 def check_header_rows(workbook):
+    issues = 0
     for wb_sheet_name in workbook.sheetnames:
         if wb_sheet_name in SHEETS.keys():
             wb_sheet = workbook[wb_sheet_name]
@@ -37,6 +48,8 @@ def check_header_rows(workbook):
                     missing += field_name,
             if missing:
                 logging.warning(f"Fields missing from {wb_sheet_name}: {', '.join(missing)}.")
+    if issues == 0:
+        logging.info(f"No missing fields.")
 
 
 def check_misspelled_headers(workbook):

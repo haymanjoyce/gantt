@@ -52,6 +52,8 @@ class Controls(Frame):
         self.view = None  # for View (i.e. TopLevel) instance, parent of Chart (i.e. Canvas) instance
         self.file_source = None  # for path to user's Excel spreadsheet
         self.settings = filing.get_settings()
+        self.check_count = 0
+        self.run_count = 0
 
         self.v_cmd_1 = (self.register(self.field_validation_1), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         self.v_cmd_2 = (self.register(self.field_validation_2), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
@@ -190,13 +192,14 @@ class Controls(Frame):
 
     def on_check(self):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
+        self.check_count += 1
+        filing.append_log(f'CHECK #{self.check_count}\n')
         checks.check_merged_cells(workbook)
         checks.check_sheets_exist(workbook)
         checks.check_header_rows_exist(workbook)
         checks.check_header_rows(workbook)
         checks.check_misspelled_headers(workbook)
-        if not filing.get_log():
-            logging.info("No errors detected.")
+        filing.append_log(f'\n')
         self.update_scroller()
 
     def wipe_scroller(self):
@@ -219,13 +222,14 @@ class Controls(Frame):
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
 
     def on_run(self):
+        self.run_count += 1
+        filing.append_log(f'RUN #{self.run_count}\n')
         self.extract_settings_data()
         filing.save_settings(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         data = dataset.Dataset(workbook).dataset
         self.create_view(data=data)
-        if not filing.get_log():
-            logging.info("No errors detected.")
+        filing.append_log(f'\n')
         self.update_scroller()
 
     def on_copy(self):
