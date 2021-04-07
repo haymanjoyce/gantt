@@ -47,10 +47,24 @@ def check_header_rows(workbook):
                 if field_name not in wb_field_names:
                     missing += field_name,
             if missing:
-                logging.warning(f"Fields missing from {wb_sheet_name}: {', '.join(missing)}.")
+                logging.warning(f"Fields missing:\nIn {wb_sheet_name}: {', '.join(missing)}.")
+                issues += 1
     if issues == 0:
         logging.info(f"No missing fields.")
 
 
 def check_misspelled_headers(workbook):
-    pass
+    issues = 0
+    for wb_sheet_name in workbook.sheetnames:
+        if wb_sheet_name in SHEETS.keys():
+            wb_sheet = workbook[wb_sheet_name]
+            wb_field_names = [cell.value for cell in wb_sheet[1]]
+            misspelled = ()
+            for wb_field_name in wb_field_names:
+                if wb_field_name not in SHEETS[wb_sheet_name]:
+                    misspelled += wb_field_name,
+            if misspelled:
+                logging.warning(f"Possible misspellings:\nIn {wb_sheet_name}: {', '.join(misspelled)}.")
+                issues += 1
+    if issues == 0:
+        logging.info(f"No misspelled fields.")

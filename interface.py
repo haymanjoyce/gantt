@@ -83,7 +83,7 @@ class Controls(Frame):
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
-        # self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
+        self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
