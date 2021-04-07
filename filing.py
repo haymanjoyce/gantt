@@ -4,7 +4,6 @@ import logging
 import json
 import sys
 import os
-import hashlib
 
 
 LOG_FILE = "app.log"
@@ -19,7 +18,7 @@ def get_path(filename):
         return f'{filename}'
 
 
-def get_settings():
+def get_config_data():
     try:
         file = open(get_path(CONFIG_FILE), "r")
         data = file.readline()
@@ -35,16 +34,16 @@ def get_settings():
         return dict()
 
 
-def save_settings(data):
+def save_config_data(data):
     with open(get_path(CONFIG_FILE), "w") as file:
         file.write(json.dumps(data))
-    logging.info("Settings saved.")
+    logging.debug("Configuration data saved.")
 
 
-def wipe_settings():
+def wipe_config_file():
     with open(get_path(CONFIG_FILE), "w") as file:
         file.truncate(0)
-    logging.info("Settings wiped.")
+    logging.debug("Configuration file wiped.")
 
 
 def get_log():

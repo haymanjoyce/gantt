@@ -51,7 +51,7 @@ class Controls(Frame):
         self.parent = parent  # App is the parent
         self.view = None  # for View (i.e. TopLevel) instance, parent of Chart (i.e. Canvas) instance
         self.file_source = None  # for path to user's Excel spreadsheet
-        self.settings = filing.get_settings()
+        self.settings = filing.get_config_data()
         self.check_count = 0
         self.run_count = 0
 
@@ -79,7 +79,7 @@ class Controls(Frame):
 
         self.pack_widgets()
         self.bind_widgets()
-        self.insert_settings_data()
+        self.insert_form_data()
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
@@ -129,13 +129,13 @@ class Controls(Frame):
         self.ent_start.bind('<FocusIn>', self.check_finish)
         self.ent_finish.bind('<FocusIn>', self.check_start)
 
-    def insert_settings_data(self):
+    def insert_form_data(self):
         self.ent_width.insert(0, self.settings.get("width", 800))
         self.ent_height.insert(0, self.settings.get("height", 600))
         self.ent_start.set_date(self.settings.get("start", datetime.date.today().strftime('%Y/%m/%d')))
         self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
 
-    def extract_settings_data(self):
+    def get_form_data(self):
         width = self.ent_width.get()
         height = self.ent_height.get()
         if width:
@@ -200,14 +200,14 @@ class Controls(Frame):
         checks.check_header_rows(workbook)
         checks.check_misspelled_headers(workbook)
         filing.append_log(f'\n')
-        self.update_scroller()
+        self.refresh_scroller()
 
     def wipe_scroller(self):
         self.scroller.config(state=NORMAL)
         self.scroller.delete('1.0', END)  # from line '1' (entry equivalent is from char 0)
         self.scroller.config(state=DISABLED)
 
-    def update_scroller(self):
+    def refresh_scroller(self):
         self.wipe_scroller()
         log = filing.get_log()
         self.scroller.configure(state=NORMAL)  # writable
@@ -224,30 +224,30 @@ class Controls(Frame):
     def on_run(self):
         self.run_count += 1
         filing.append_log(f'RUN #{self.run_count}\n')
-        self.extract_settings_data()
-        filing.save_settings(self.settings)
+        self.get_form_data()
+        filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        data = dataset.Dataset(workbook).dataset
+        data = dataset.Dataset(workbook).data
         self.create_view(data=data)
         filing.append_log(f'\n')
-        self.update_scroller()
+        self.refresh_scroller()
 
     def on_copy(self):
         utils.copy_to_clipboard(self.view.drawing)
-        self.update_scroller()
+        self.refresh_scroller()
 
     def on_save(self):
         dialogues.save_image(self.view.drawing)
-        self.update_scroller()
+        self.refresh_scroller()
 
     def on_postscript(self):
         dialogues.save_postscript(self.view.drawing)
-        self.update_scroller()
+        self.refresh_scroller()
 
     def on_template(self):
         workbook = template.create_template()
         dialogues.export_workbook(workbook)
-        self.update_scroller()
+        self.refresh_scroller()
 
 
 class View(Toplevel):

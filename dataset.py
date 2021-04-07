@@ -10,8 +10,8 @@ class Dataset:
     def __init__(self, workbook):
 
         self.workbook = workbook
-        self.settings = filing.get_settings()
-        self.dataset = dict()
+        self.settings = filing.get_config_data()
+        self.data = dict()
         self.populate()
 
     def populate(self):
@@ -25,7 +25,7 @@ class Dataset:
         chart.height = int(self.settings['height'])
         chart.start = datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
         chart.finish = datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
-        self.dataset.setdefault("chart", chart)
+        self.data.setdefault("chart", chart)
 
     def create_scales(self):
         data = self.workbook["Scales"]
@@ -34,7 +34,7 @@ class Dataset:
             scale = designs.Scale()
             scale.interval = row[1]
             scales.append(scale)
-        self.dataset.setdefault("scales", scales)
+        self.data.setdefault("scales", scales)
         # a = [cell.value for cell in data[1][:3]
 
     def create_rows(self):
