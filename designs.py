@@ -10,6 +10,7 @@ from attr import attrs, attrib, Factory
 class Chart:
 
     name = attrib(default="chart")
+
     width = attrib(default=800)
     height = attrib(default=600)
     start = attrib(default=datetime.datetime.today())
@@ -23,8 +24,9 @@ class Chart:
 @attrs
 class Scale:
 
-    name = attrib(default=None)
-    labels = attrib(default="scale")
+    name = attrib(default="scale")
+    labels = attrib(default="")
+
     width = attrib(default=800)
     height = attrib(default=600)
     start = attrib(default=datetime.datetime.today())
@@ -61,29 +63,98 @@ class Scale:
 
 @attrs
 class Row:
-    pass
+
+    name = attrib(default="row")
+    labels = attrib(default="")
+
+    row_number = attrib(default=0)
+
+    height = attrib(default=20)
+    fill = attrib(default="")
+
+    text = attrib(default="")
+    font_color = attrib(default="")
+    font_size = attrib(default=10)
+    font_style = attrib(default="")
 
 
 @attrs
 class Task:
-    pass
+
+    name = attrib(default="task")
+    labels = attrib(default="")
+
+    id = attrib(default=None)
+    parent_row = attrib(default=None)
+    start = attrib(default=None)
+    finish = attrib(default=None)
+    fill = attrib(default=None)
+
+    text = attrib(default="")
+    font_color = attrib(default="")
+    font_size = attrib(default=10)
+    font_style = attrib(default="")
+    text_anchor = attrib(default="")
+    text_align = attrib(default="")
+    text_adjust = attrib(default="")
+
+    bar_layer = attrib(default=None)
+    text_layer = attrib(default=None)
 
 
 @attrs
 class Milestone:
-    pass
+
+    name = attrib(default="milestone")
+    labels = attrib(default="")
+
+    id = attrib(default=None)
+    parent_row = attrib(default=None)
+    date = attrib(default=None)
+    fill = attrib(default=None)
+
+    text = attrib(default="")
+    font_color = attrib(default="")
+    font_size = attrib(default=10)
+    font_style = attrib(default="")
+    text_anchor = attrib(default="")
+    text_align = attrib(default="")
+    text_adjust = attrib(default="")
+
+    bar_layer = attrib(default=None)
+    text_layer = attrib(default=None)
 
 
 @attrs
 class Relationship:
-    pass
+
+    name = attrib(default="")
+    labels = attrib(default="")
+
+    source = attrib(default="")
+    destination = attrib(default="")
+    width = attrib(default="")
+    color = attrib(default="")
 
 
 @attrs
 class Curtain:
-    pass
+
+    name = attrib(default="")
+    labels = attrib(default="")
+
+    start = attrib(default="")
+    finish = attrib(default="")
+    fill = attrib(default="")
 
 
 @attrs
 class Bar:
-    pass
+
+    name = attrib(default="")
+    labels = attrib(default="")
+
+    date = attrib(default="")
+    color = attrib(default="")
+    width = attrib(default="")
+
