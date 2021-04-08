@@ -7,6 +7,9 @@
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
 # TODO map wb headers to data objects
+# TODO find field name in sheet and assign column number to variables in mapper module
+# TODO auto populate SHEET from dataclass designs and so template adapts to class design automatically
+# TODO fix import SHEETS in checks and refactor template and interval field name
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

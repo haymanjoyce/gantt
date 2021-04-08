@@ -83,7 +83,7 @@ class Controls(Frame):
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
-        self.set_select("c:/users/hayma/desktop/gantt.xlsx")  # development only
+        self.set_select("c:/users/hayma/desktop/template.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
@@ -228,6 +228,7 @@ class Controls(Frame):
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         data = dataset.Dataset(workbook).data
+        print(data)
         self.create_view(data=data)
         filing.append_log(f'\n')
         self.refresh_scroller()
@@ -245,7 +246,8 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def on_template(self):
-        workbook = template.create_template()
+        field_name_dict = template.get_field_name_dict()
+        workbook = template.create_template(field_name_dict)
         dialogues.export_workbook(workbook)
         self.refresh_scroller()
 

@@ -17,6 +17,7 @@ class Dataset:
     def populate(self):
         self.create_chart()
         self.create_scales()
+        self.create_rows()
 
     def create_chart(self):
         chart = designs.Chart()
@@ -30,15 +31,20 @@ class Dataset:
     def create_scales(self):
         data = self.workbook["Scales"]
         scales = list()
-        for row in data.iter_rows(min_row=2, values_only=True):
+        for sheet_row in data.iter_rows(min_row=2, values_only=True):
             scale = designs.Scale()
-            scale.interval = row[1]
+            scale.interval = sheet_row[1]
             scales.append(scale)
         self.data.setdefault("scales", scales)
-        # a = [cell.value for cell in data[1][:3]
 
     def create_rows(self):
-        pass
+        data = self.workbook["Rows"]
+        rows = list()
+        for sheet_row in data.iter_rows(min_row=2, values_only=True):
+            row = designs.Row()
+            row.row_number = sheet_row[1]
+            rows.append(row)
+        self.data.setdefault("rows", rows)
 
     def create_tasks(self):
         pass

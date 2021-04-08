@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
-from template import SHEETS
+# from template import SHEETS
 
 
 def check_merged_cells(workbook):
