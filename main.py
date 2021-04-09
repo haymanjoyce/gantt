@@ -6,9 +6,8 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
-# TODO clean up formatting of attributes (e.g. intervals underscore, removing private fields)
+# TODO complete dataset module
 # TODO try except statements for case where destination file open
-
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -28,5 +27,5 @@ from filing import get_path
 
 if __name__ == '__main__':
     filename = get_path('app.log')
-    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')  # Set to INFO for production
+    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')
     app = interface.App()
