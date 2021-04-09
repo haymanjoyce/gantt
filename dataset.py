@@ -31,11 +31,13 @@ class Dataset:
     def create_scales(self):
         scale_data = self.workbook["Scales"]
         mapping = get_mapping(scale_data)
+        print(mapping)
         scales = list()
         for sheet_row in scale_data.iter_rows(min_row=2, values_only=True):
             scale = designs.Scale()
-            scale.interval = sheet_row[mapping.get('_INTERVAL')]
+            scale.interval = sheet_row[mapping.get('INTERVAL')]
             scales.append(scale)
+        print(scales)
         self.dataset_dict.setdefault("scales", scales)
 
     def create_rows(self):

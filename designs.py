@@ -10,7 +10,6 @@ from attr import attrs, attrib, Factory
 class Chart:
 
     name = attrib(default="chart")
-
     width = attrib(default=800)
     height = attrib(default=600)
     start = attrib(default=datetime.datetime.today())
@@ -26,16 +25,22 @@ class Scale:
 
     name = attrib(default="scale")
     labels = attrib(default="")
-
     width = attrib(default=800)
-    height = attrib(default=600)
+    height = attrib(default=100)
     start = attrib(default=datetime.datetime.today())
-    finish = attrib()
+    _finish = attrib(default=None)
     _interval = attrib(default="days")
 
-    @finish.default
+    @property
     def finish(self):
-        return self.start + datetime.timedelta(20)
+        return self._finish
+
+    @finish.setter
+    def finish(self, value):
+        if value:
+            self.finish = value
+        else:
+            self._finish = self.start + datetime.timedelta(20)
 
     @property
     def interval(self):
@@ -66,12 +71,9 @@ class Row:
 
     name = attrib(default="row")
     labels = attrib(default="")
-
     row_number = attrib(default=0)
-
     height = attrib(default=20)
     fill = attrib(default="")
-
     text = attrib(default="")
     font_color = attrib(default="")
     font_size = attrib(default=10)
@@ -83,13 +85,11 @@ class Task:
 
     name = attrib(default="task")
     labels = attrib(default="")
-
     id = attrib(default=None)
     parent_row = attrib(default=None)
     start = attrib(default=None)
     finish = attrib(default=None)
     fill = attrib(default=None)
-
     text = attrib(default="")
     font_color = attrib(default="")
     font_size = attrib(default=10)
@@ -97,7 +97,6 @@ class Task:
     text_anchor = attrib(default="")
     text_align = attrib(default="")
     text_adjust = attrib(default="")
-
     bar_layer = attrib(default=None)
     text_layer = attrib(default=None)
 
@@ -107,12 +106,10 @@ class Milestone:
 
     name = attrib(default="milestone")
     labels = attrib(default="")
-
     id = attrib(default=None)
     parent_row = attrib(default=None)
     date = attrib(default=None)
     fill = attrib(default=None)
-
     text = attrib(default="")
     font_color = attrib(default="")
     font_size = attrib(default=10)
@@ -130,7 +127,6 @@ class Relationship:
 
     name = attrib(default="")
     labels = attrib(default="")
-
     source = attrib(default="")
     destination = attrib(default="")
     width = attrib(default="")
@@ -142,7 +138,6 @@ class Curtain:
 
     name = attrib(default="")
     labels = attrib(default="")
-
     start = attrib(default="")
     finish = attrib(default="")
     fill = attrib(default="")
@@ -153,7 +148,6 @@ class Bar:
 
     name = attrib(default="")
     labels = attrib(default="")
-
     date = attrib(default="")
     color = attrib(default="")
     width = attrib(default="")
