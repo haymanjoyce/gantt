@@ -61,17 +61,21 @@ def save_postscript(chart):
 
 
 def export_workbook(workbook):
-    file = filedialog.asksaveasfile(mode="w",
-                                    title="Save As",
-                                    filetypes=(("Excel files", "*.xlsx"),),
-                                    initialfile="template.xlsx"
-                                    )
-    if file:
-        file_path = file.name.lower().replace('/', '\\\\')
-        if file_path.endswith(".xlsx"):
-            workbook.save(filename=file_path)
-            logging.info('Chart data saved as: ' + file.name.lower())
+    try:
+        file = filedialog.asksaveasfile(mode="w",
+                                        title="Save As",
+                                        filetypes=(("Excel files", "*.xlsx"),),
+                                        initialfile="template.xlsx"
+                                        )
+        if file:
+            file_path = file.name.lower().replace('/', '\\\\')
+            if file_path.endswith(".xlsx"):
+                workbook.save(filename=file_path)
+                logging.info('Chart data saved as: ' + file.name.lower())
+            else:
+                logging.warning("File type not recognised.")
         else:
-            logging.warning("File type not recognised.")
-    else:
-        logging.debug("Operation cancelled.")
+            logging.debug("Operation cancelled.")
+    except PermissionError:
+        logging.warning("Permission denied.  Destination file may be open.")
+

@@ -40,5 +40,6 @@ def get_field_names(data_class_instance):
         field_name = field_name.capitalize()
         if field_name == "Id":
             field_name = field_name.upper()
-        field_names += field_name,
+        if field_name not in ('Name', ):
+            field_names += field_name,
     return field_names

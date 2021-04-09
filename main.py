@@ -7,6 +7,7 @@
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
 # TODO clean up formatting of attributes (e.g. intervals underscore, removing private fields)
+# TODO debug if save to template whilst file open
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
