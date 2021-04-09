@@ -8,6 +8,7 @@
 # TODO try statement for all processes so breaks gracefully
 # TODO complete dataset module
 # TODO try except statements for case where destination file open
+# TODO what is calling field_name_dict on app init?
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

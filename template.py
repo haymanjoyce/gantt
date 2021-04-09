@@ -35,12 +35,19 @@ def get_field_name_dict():
 
 def get_field_names(data_class_instance):
     field_names = ()
-    for field_name in data_class_instance.__dict__:
+    instance_attributes = data_class_instance.__dict__
+    exceptions = get_exceptions(instance_attributes)
+    for field_name in instance_attributes:
         field_name = field_name.replace("_", " ")
         field_name = field_name.strip()
         field_name = field_name.capitalize()
         if field_name == "Id":
             field_name = field_name.upper()
-        if field_name not in ('Name', 'Labels'):
+        if field_name not in exceptions:
             field_names += field_name,
     return field_names
+
+
+def get_exceptions(instance_attributes):
+    # print(instance_attributes.get('name'))
+    return ()
