@@ -11,7 +11,7 @@ class Dataset:
 
         self.workbook = workbook
         self.settings = filing.get_config_data()
-        self.data = dict()
+        self.dataset_dict = dict()
         self.populate()
 
     def populate(self):
@@ -26,25 +26,27 @@ class Dataset:
         chart.height = int(self.settings['height'])
         chart.start = datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
         chart.finish = datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
-        self.data.setdefault("chart", chart)
+        self.dataset_dict.setdefault("chart", chart)
 
     def create_scales(self):
-        data = self.workbook["Scales"]
+        scale_data = self.workbook["Scales"]
+        mapping = get_mapping(scale_data)
+        print(mapping)
         scales = list()
-        for sheet_row in data.iter_rows(min_row=2, values_only=True):
+        for sheet_row in scale_data.iter_rows(min_row=2, values_only=True):
             scale = designs.Scale()
-            scale.interval = sheet_row[1]
+            scale.interval = sheet_row[5]
             scales.append(scale)
-        self.data.setdefault("scales", scales)
+        self.dataset_dict.setdefault("scales", scales)
 
     def create_rows(self):
-        data = self.workbook["Rows"]
+        row_data = self.workbook["Rows"]
         rows = list()
-        for sheet_row in data.iter_rows(min_row=2, values_only=True):
+        for sheet_row in row_data.iter_rows(min_row=2, values_only=True):
             row = designs.Row()
             row.row_number = sheet_row[1]
             rows.append(row)
-        self.data.setdefault("rows", rows)
+        self.dataset_dict.setdefault("rows", rows)
 
     def create_tasks(self):
         pass
@@ -60,3 +62,17 @@ class Dataset:
 
     def create_bars(self):
         pass
+
+
+def get_mapping(sheet):
+    """Maps field names to column numbers in sheet."""
+    headers = sheet[1]
+    mapping = dict()
+    for header in headers:
+        key = header.value
+        key = key.replace(" ", "_")
+        key = key.strip()
+        key = key.upper()
+        value = header.column
+        mapping.setdefault(key, value)
+    return mapping

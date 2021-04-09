@@ -6,10 +6,10 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
-# TODO map wb headers to data objects
+# TODO clean up formatting of attributes (e.g. property attribute case, removing private fields)
 # TODO find field name in sheet and assign column number to variables in mapper module
-# TODO auto populate SHEET from dataclass designs and so template adapts to class design automatically
-# TODO fix import SHEETS in checks and refactor template and interval field name; see if privatising variable hides it
+# TODO we're not there yet with mapping; map key in field_name_dict to key in wb_field_name_dict, I think
+
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -29,5 +29,5 @@ from filing import get_path
 
 if __name__ == '__main__':
     filename = get_path('app.log')
-    logging.basicConfig(filename=filename, level=logging.DEBUG, format='%(levelname)s - %(message)s')  # Set to INFO for production
+    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')  # Set to INFO for production
     app = interface.App()
