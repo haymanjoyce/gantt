@@ -6,9 +6,7 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
-# TODO clean up formatting of attributes (e.g. property attribute case, removing private fields)
-# TODO find field name in sheet and assign column number to variables in mapper module
-# TODO we're not there yet with mapping; map key in field_name_dict to key in wb_field_name_dict, I think
+# TODO clean up formatting of attributes (e.g. intervals underscore, removing private fields)
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
