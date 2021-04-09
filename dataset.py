@@ -31,11 +31,10 @@ class Dataset:
     def create_scales(self):
         scale_data = self.workbook["Scales"]
         mapping = get_mapping(scale_data)
-        print(mapping)
         scales = list()
         for sheet_row in scale_data.iter_rows(min_row=2, values_only=True):
             scale = designs.Scale()
-            scale.interval = sheet_row[5]
+            scale.interval = sheet_row[mapping.get('_INTERVAL')]
             scales.append(scale)
         self.dataset_dict.setdefault("scales", scales)
 
@@ -65,7 +64,6 @@ class Dataset:
 
 
 def get_mapping(sheet):
-    """Maps field names to column numbers in sheet."""
     headers = sheet[1]
     mapping = dict()
     for header in headers:
@@ -73,6 +71,6 @@ def get_mapping(sheet):
         key = key.replace(" ", "_")
         key = key.strip()
         key = key.upper()
-        value = header.column
+        value = header.column - 1  # needs to be 0 indexed
         mapping.setdefault(key, value)
     return mapping
