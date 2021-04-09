@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 import logging
-# from template import SHEETS
+
+from template import get_field_name_dict
+
+FIELD_NAME_DICT = get_field_name_dict()
 
 
 def check_merged_cells(workbook):
@@ -17,7 +20,7 @@ def check_merged_cells(workbook):
 def check_sheets_exist(workbook):
     sheet_names = workbook.sheetnames
     missing = []
-    for sheet_name in SHEETS.keys():
+    for sheet_name in FIELD_NAME_DICT.keys():
         if sheet_name not in sheet_names:
             missing.append(sheet_name)
     if missing:
@@ -39,11 +42,11 @@ def check_header_rows_exist(workbook):
 def check_header_rows(workbook):
     issues = 0
     for wb_sheet_name in workbook.sheetnames:
-        if wb_sheet_name in SHEETS.keys():
+        if wb_sheet_name in FIELD_NAME_DICT.keys():
             wb_sheet = workbook[wb_sheet_name]
             wb_field_names = [cell.value for cell in wb_sheet[1]]
             missing = ()
-            for field_name in SHEETS[wb_sheet_name]:
+            for field_name in FIELD_NAME_DICT[wb_sheet_name]:
                 if field_name not in wb_field_names:
                     missing += field_name,
             if missing:
@@ -56,12 +59,12 @@ def check_header_rows(workbook):
 def check_misspelled_headers(workbook):
     issues = 0
     for wb_sheet_name in workbook.sheetnames:
-        if wb_sheet_name in SHEETS.keys():
+        if wb_sheet_name in FIELD_NAME_DICT.keys():
             wb_sheet = workbook[wb_sheet_name]
             wb_field_names = [cell.value for cell in wb_sheet[1]]
             misspelled = ()
             for wb_field_name in wb_field_names:
-                if wb_field_name not in SHEETS[wb_sheet_name]:
+                if wb_field_name not in FIELD_NAME_DICT[wb_sheet_name]:
                     misspelled += wb_field_name,
             if misspelled:
                 logging.warning(f"Possible misspellings:\nIn {wb_sheet_name}: {', '.join(misspelled)}.")
