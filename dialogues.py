@@ -78,4 +78,3 @@ def export_workbook(workbook):
             logging.debug("Operation cancelled.")
     except PermissionError:
         logging.warning("Permission denied.  Destination file may be open.")
-

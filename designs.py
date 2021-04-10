@@ -9,7 +9,7 @@ from attr import attrs, attrib, Factory
 @attrs
 class Chart:
 
-    name = attrib(default="chart")
+    type = attrib(default="chart")
     width = attrib(default=800)
     height = attrib(default=600)
     start = attrib(default=datetime.datetime.today())
@@ -23,7 +23,7 @@ class Chart:
 @attrs
 class Scale:
 
-    name = attrib(default="scale")
+    type = attrib(default="scale")
     labels = attrib(default="")
     width = attrib(default=800)
     height = attrib(default=100)
@@ -69,7 +69,7 @@ class Scale:
 @attrs
 class Row:
 
-    name = attrib(default="row")
+    type = attrib(default="row")
     labels = attrib(default="")
     row_number = attrib(default=0)
     height = attrib(default=20)
@@ -83,7 +83,7 @@ class Row:
 @attrs
 class Task:
 
-    name = attrib(default="task")
+    type = attrib(default="task")
     labels = attrib(default="")
     id = attrib(default=None)
     parent_row = attrib(default=None)
@@ -104,7 +104,7 @@ class Task:
 @attrs
 class Milestone:
 
-    name = attrib(default="milestone")
+    type = attrib(default="milestone")
     labels = attrib(default="")
     id = attrib(default=None)
     parent_row = attrib(default=None)
@@ -125,7 +125,7 @@ class Milestone:
 @attrs
 class Relationship:
 
-    name = attrib(default="")
+    type = attrib(default="relationship")
     labels = attrib(default="")
     source = attrib(default="")
     destination = attrib(default="")
@@ -136,7 +136,7 @@ class Relationship:
 @attrs
 class Curtain:
 
-    name = attrib(default="")
+    type = attrib(default="curtain")
     labels = attrib(default="")
     start = attrib(default="")
     finish = attrib(default="")
@@ -146,7 +146,7 @@ class Curtain:
 @attrs
 class Bar:
 
-    name = attrib(default="")
+    type = attrib(default="bar")
     labels = attrib(default="")
     date = attrib(default="")
     color = attrib(default="")

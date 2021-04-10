@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import logging
 
 from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
@@ -7,7 +8,7 @@ from designs import *
 
 GLOBALS = globals()
 
-CLASSES = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain', 'Bar')
+DESIGNS = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')
 
 
 def create_template(field_name_dict):
@@ -25,11 +26,14 @@ def create_template(field_name_dict):
 
 def get_field_name_dict():
     field_name_dict = {}
-    for class_name in CLASSES:
-        data_class_instance = GLOBALS.get(class_name)()
-        field_names = get_field_names(data_class_instance)
-        sheet_name = class_name + 's'
-        field_name_dict.setdefault(sheet_name, field_names)
+    try:
+        for class_name in DESIGNS:
+            data_class_instance = GLOBALS.get(class_name)()
+            field_names = get_field_names(data_class_instance)
+            sheet_name = class_name + 's'
+            field_name_dict.setdefault(sheet_name, field_names)
+    except TypeError:
+        logging.debug("Trying to call class that does not exist.")
     return field_name_dict
 
 
@@ -49,5 +53,25 @@ def get_field_names(data_class_instance):
 
 
 def get_exceptions(instance_attributes):
-    # print(instance_attributes.get('name'))
-    return ()
+    exceptions = ('Type', 'Labels', )
+    design_type = instance_attributes.get('type')
+    try:
+        if design_type == DESIGNS[0]:
+            exceptions += ('Width', )
+        elif design_type == DESIGNS[1]:
+            exceptions += ()
+        elif design_type == DESIGNS[2]:
+            exceptions += ()
+        elif design_type == DESIGNS[3]:
+            exceptions += ()
+        elif design_type == DESIGNS[4]:
+            exceptions += ()
+        elif design_type == DESIGNS[5]:
+            exceptions += ()
+        elif design_type == DESIGNS[6]:
+            exceptions += ()
+        else:
+            pass
+    except IndexError:
+        logging.debug("Called item in DESIGNS that does not exist.")
+    return exceptions

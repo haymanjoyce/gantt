@@ -9,7 +9,7 @@
 # TODO complete dataset module
 # TODO try except statements for case where destination file open
 # TODO finish exceptions function
-# TODO call field name dict on_check and remove global from check module
+# TODO work out why exceptions running multiple times
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
@@ -29,5 +29,5 @@ from filing import get_path
 
 if __name__ == '__main__':
     filename = get_path('app.log')
-    logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s - %(message)s')
+    logging.basicConfig(filename=filename, level=logging.DEBUG, format='%(levelname)s - %(message)s')
     app = interface.App()

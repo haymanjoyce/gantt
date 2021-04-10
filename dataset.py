@@ -21,7 +21,7 @@ class Dataset:
 
     def create_chart(self):
         chart = designs.Chart()
-        chart.name = "chart"
+        chart.type = "chart"
         chart.width = int(self.settings['width'])
         chart.height = int(self.settings['height'])
         chart.start = datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
