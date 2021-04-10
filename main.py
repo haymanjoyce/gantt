@@ -8,6 +8,7 @@
 # TODO try statement for all processes so breaks gracefully
 # TODO complete dataset module
 # TODO try except statements for case where destination file open
+# TODO finish exceptions function
 # TODO call field name dict on_check and remove global from check module
 
 # MANUAL OS ENVIRONMENT INSTALLS

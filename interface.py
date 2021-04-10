@@ -192,13 +192,14 @@ class Controls(Frame):
 
     def on_check(self):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
+        field_name_dict = template.get_field_name_dict()
         self.check_count += 1
         filing.append_log(f'CHECK #{self.check_count}\n')
         checks.check_merged_cells(workbook)
-        checks.check_sheets_exist(workbook)
+        checks.check_sheets_exist(workbook, field_name_dict)
         checks.check_header_rows_exist(workbook)
-        checks.check_header_rows(workbook)
-        checks.check_misspelled_headers(workbook)
+        checks.check_header_rows(workbook, field_name_dict)
+        checks.check_misspelled_headers(workbook, field_name_dict)
         filing.append_log(f'\n')
         self.refresh_scroller()
 
