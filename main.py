@@ -6,10 +6,9 @@
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
-# TODO complete dataset module
 # TODO try except statements for case where destination file open
-# TODO finish exceptions function
-# TODO work out why exceptions running multiple times
+# TODO complete drawing module
+# TODO complete dataset module
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

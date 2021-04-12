@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import logging
 
 from openpyxl import Workbook
@@ -54,24 +55,22 @@ def get_field_names(data_class_instance):
 
 def get_exceptions(instance_attributes):
     exceptions = ('Type', 'Labels', )
-    design_type = instance_attributes.get('type')
+    design_type = instance_attributes.get('type').lower()
     try:
-        if design_type == DESIGNS[0]:
+        if design_type == DESIGNS[0].lower():
             exceptions += ('Width', )
-        elif design_type == DESIGNS[1]:
+        elif design_type == DESIGNS[1].lower():
             exceptions += ()
-        elif design_type == DESIGNS[2]:
+        elif design_type == DESIGNS[2].lower():
             exceptions += ()
-        elif design_type == DESIGNS[3]:
+        elif design_type == DESIGNS[3].lower():
             exceptions += ()
-        elif design_type == DESIGNS[4]:
+        elif design_type == DESIGNS[4].lower():
             exceptions += ()
-        elif design_type == DESIGNS[5]:
-            exceptions += ()
-        elif design_type == DESIGNS[6]:
+        elif design_type == DESIGNS[5].lower():
             exceptions += ()
         else:
             pass
     except IndexError:
-        logging.debug("Called item in DESIGNS that does not exist.")
+        logging.debug(f"Called item in DESIGNS that does not exist.")
     return exceptions
