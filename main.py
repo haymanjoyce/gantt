@@ -9,6 +9,7 @@
 # TODO try except statements for case where destination file open
 # TODO complete drawing module
 # TODO complete dataset module
+# TODO see if can make common dataset method
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -38,7 +38,7 @@ class Scale:
     @finish.setter
     def finish(self, value):
         if value:
-            self.finish = value
+            self._finish = value
         else:
             self._finish = self.start + datetime.timedelta(20)
 

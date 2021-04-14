@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import datetime
+import logging
 
 import filing
 import designs
@@ -29,14 +30,20 @@ class Dataset:
         self.dataset_dict.setdefault("chart", chart)
 
     def create_scales(self):
-        scale_data = self.workbook["Scales"]
-        mapping = get_mapping(scale_data)
-        scales = list()
-        for sheet_row in scale_data.iter_rows(min_row=2, values_only=True):
+        sheet_name = "Scales"
+        dict_key = sheet_name.lower()
+        data = self.workbook[sheet_name]
+        headers = data[1]
+        mapping = get_mapping(headers, sheet_name)
+        object_list = list()
+        for sheet_row in data.iter_rows(min_row=2, values_only=True):
             scale = designs.Scale()
+            scale.height = sheet_row[mapping.get('HEIGHT')]
+            scale.start = sheet_row[mapping.get('START')]
+            scale.finish = sheet_row[mapping.get('FINISH')]
             scale.interval = sheet_row[mapping.get('INTERVAL')]
-            scales.append(scale)
-        self.dataset_dict.setdefault("scales", scales)
+            object_list.append(scale)
+        self.dataset_dict.setdefault(dict_key, object_list)
 
     def create_rows(self):
         row_data = self.workbook["Rows"]
@@ -63,14 +70,19 @@ class Dataset:
         pass
 
 
-def get_mapping(sheet):
-    headers = sheet[1]
+def get_mapping(headers, sheet_name):
     mapping = dict()
+    blank_columns = 0
     for header in headers:
-        key = header.value
-        key = key.replace(" ", "_")
-        key = key.strip()
-        key = key.upper()
-        value = header.column - 1  # needs to be 0 indexed
-        mapping.setdefault(key, value)
+        if header.value:
+            key = header.value
+            key = key.replace(" ", "_")
+            key = key.strip()
+            key = key.upper()
+            value = header.column - 1  # needs to be 0 indexed
+            mapping.setdefault(key, value)
+        else:
+            blank_columns += 1
+    if blank_columns:
+        logging.warning(f"{blank_columns} blank columns found in {sheet_name}.")
     return mapping
