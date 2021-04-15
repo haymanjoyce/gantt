@@ -228,7 +228,7 @@ class Controls(Frame):
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        dataset_dict = dataset.Dataset(workbook).dataset_dict
+        dataset_dict = dataset.RowData(workbook).sheet_dict
         self.create_view(data=dataset_dict)
         filing.append_log(f'\n')
         self.refresh_scroller()

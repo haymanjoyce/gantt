@@ -17,8 +17,8 @@ class Drawing(Canvas):
         self.pack()
 
     def draw_placeholder(self):
-        width = self.data.get("chart").width
-        height = self.data.get("chart").height
+        width = 800
+        height = 600
         self.config(width=width, height=height)
         self.create_rectangle(0, 0, width, height, fill="#ff0000")
         self.create_rectangle(0, 0, width // 2, height // 2, fill="#0000ff")

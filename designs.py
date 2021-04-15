@@ -7,20 +7,6 @@ from attr import attrs, attrib, Factory
 
 
 @attrs
-class Chart:
-
-    type = attrib(default="chart")
-    width = attrib(default=800)
-    height = attrib(default=600)
-    start = attrib(default=datetime.datetime.today())
-    finish = attrib()
-
-    @finish.default
-    def default_finish(self):
-        return self.start + datetime.timedelta(20)
-
-
-@attrs
 class Scale:
 
     type = attrib(default="scale")
