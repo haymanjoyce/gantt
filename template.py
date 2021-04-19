@@ -5,11 +5,10 @@ import logging
 from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
 
-from designs import *
+from designs import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
+from designs import DESIGNS
 
 GLOBALS = globals()
-
-DESIGNS = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')
 
 
 def create_template(field_name_dict):

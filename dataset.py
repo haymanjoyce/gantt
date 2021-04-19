@@ -1,93 +1,45 @@
 #!/usr/bin/env python3
 
-import datetime
 import logging
 
-from attr import attrs, attrib, Factory
+from designs import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
+from designs import DESIGNS
 
-import filing
-import designs
-
-
-@attrs
-class ChartData:
-
-    type = attrib(default="chart")
-    settings = attrib(default=Factory(filing.get_config_data))
-    width = attrib()
-    height = attrib()
-    start = attrib()
-    finish = attrib()
-
-    @width.default
-    def default_width(self):
-        if self.settings.get('width'):
-            return int(self.settings['width'])
-        else:
-            return 800
-
-    @height.default
-    def default_height(self):
-        if self.settings.get('height'):
-            return int(self.settings['height'])
-        else:
-            return 600
-
-    @start.default
-    def default_start(self):
-        if self.settings.get('start'):
-            return datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
-        else:
-            return datetime.datetime.today()
-
-    @finish.default
-    def default_finish(self):
-        if self.settings.get('finish'):
-            return datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
-        else:
-            return self.start + datetime.timedelta(20)
+GLOBALS = globals()
 
 
-class RowData:
-    def __init__(self, workbook):
+def create_object_dict(workbook, chart_object):
+    object_dict = dict()
+    for design in DESIGNS:
+        sheet_name = design + 's'
+        sheet = workbook[sheet_name]
+        row_objects = get_row_objects(sheet, sheet_name, design, chart_object)
+        object_dict.setdefault(sheet_name, row_objects)
+    return object_dict
 
-        self.workbook = workbook
-        self.settings = filing.get_config_data()
-        self.sheet_dict = dict()
 
-    def create_objects(self):
-        sheet_name = "Scales"
-        dict_key = sheet_name.lower()
-        sheet_data = self.workbook[sheet_name]
-        sheet_headers = sheet_data[1]
-        mapping = get_mapping(sheet_headers, sheet_name)
-        object_list = list()
-        for sheet_row in sheet_data.iter_rows(min_row=2, values_only=True):
-            new_obj = designs.Scale()
-            new_obj.height = sheet_row[mapping.get('HEIGHT')]
-            new_obj.start = sheet_row[mapping.get('START')]
-            new_obj.finish = sheet_row[mapping.get('FINISH')]
-            new_obj.interval = sheet_row[mapping.get('INTERVAL')]
-            object_list.append(new_obj)
-        self.sheet_dict.setdefault(dict_key, object_list)
+def get_row_objects(sheet, sheet_name, design, chart_object):
+    row_objects = list()
+    row_object = None
+    sheet_headers = sheet[1]
+    mapping = get_mapping(sheet_headers, sheet_name)
+    for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+        if design == 'Scale':
+            row_object = create_scale_object(design, sheet_row, mapping, chart_object)
+        row_objects.append(row_object)
+    return row_objects
 
-    def create_rows(self):
-        pass
 
-    def create_tasks(self):
-        pass
-
-    def create_milestones(self):
-        pass
-
-    def create_relationships(self):
-        pass
-
-    def create_curtains(self):
-        pass
-
-    def create_bars(self):
-        pass
+def create_scale_object(design, sheet_row, mapping, chart_object):
+    scale = GLOBALS.get(design)()
+    scale.type = scale.type
+    scale.labels = scale.labels
+    scale.width = 800
+    scale.height = sheet_row[mapping.get('HEIGHT')]
+    scale.start = chart_object.start
+    scale.finish = chart_object.finish
+    scale.interval = sheet_row[mapping.get('INTERVAL')]
+    return scale
 
 
 def get_mapping(sheet_headers, sheet_name):

@@ -65,7 +65,7 @@ def export_workbook(workbook):
         file = filedialog.asksaveasfile(mode="w",
                                         title="Save As",
                                         filetypes=(("Excel files", "*.xlsx"),),
-                                        initialfile="template.xlsx"
+                                        initialfile="*.xlsx"
                                         )
         if file:
             file_path = file.name.lower().replace('/', '\\\\')

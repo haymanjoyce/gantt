@@ -5,6 +5,50 @@ import logging
 
 from attr import attrs, attrib, Factory
 
+import filing
+
+
+DESIGNS = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')  # excludes Chart
+
+
+@attrs
+class Chart:
+
+    type = attrib(default="chart")
+    settings = attrib(default=Factory(filing.get_config_data))
+    width = attrib()
+    height = attrib()
+    start = attrib()
+    finish = attrib()
+
+    @width.default
+    def default_width(self):
+        if self.settings.get('width'):
+            return int(self.settings['width'])
+        else:
+            return 800
+
+    @height.default
+    def default_height(self):
+        if self.settings.get('height'):
+            return int(self.settings['height'])
+        else:
+            return 600
+
+    @start.default
+    def default_start(self):
+        if self.settings.get('start'):
+            return datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
+        else:
+            return datetime.datetime.today()
+
+    @finish.default
+    def default_finish(self):
+        if self.settings.get('finish'):
+            return datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
+        else:
+            return self.start + datetime.timedelta(20)
+
 
 @attrs
 class Scale:
@@ -35,8 +79,8 @@ class Scale:
     @interval.setter
     def interval(self, value):
         value = str(value).lower()
-        if value in ['days', 'day', 'd', '']:
-            self._interval = 'DAYS'
+        if value in ['days', 'day', 'd', '', 'none']:
+            self._interval = 'DAYS'  # default interval
         elif value in ['weeks', 'week', 'wk', 'w']:
             self._interval = 'WEEKS'
         elif value in ['months', 'mon', 'month', 'm']:

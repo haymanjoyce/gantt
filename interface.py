@@ -8,6 +8,7 @@ from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT,
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
+import designs
 import filing
 import dataset
 import checks
@@ -216,22 +217,23 @@ class Controls(Frame):
         self.scroller.configure(state=DISABLED)  # readable
         self.scroller.see(END)
 
-    def create_view(self, data=None):
-        if self.view:
-            self.view.destroy()
-        self.view = View(parent=self.parent, data=data)  # App is the parent
-        self.set_button_states([1, 1, 1, 1, 1, 1, 1])
-
     def on_run(self):
         self.run_count += 1
         filing.append_log(f'RUN #{self.run_count}\n')
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        dataset_dict = dataset.RowData(workbook).sheet_dict
-        self.create_view(data=dataset_dict)
+        chart_object = designs.Chart()
+        row_data = dataset.create_object_dict(workbook, chart_object)
+        self.create_view()
         filing.append_log(f'\n')
         self.refresh_scroller()
+
+    def create_view(self, data=None):
+        if self.view:
+            self.view.destroy()
+        self.view = View(parent=self.parent, data=data)  # App is the parent
+        self.set_button_states([1, 1, 1, 1, 1, 1, 1])
 
     def on_copy(self):
         utils.copy_to_clipboard(self.view.drawing)
@@ -264,9 +266,8 @@ class View(Toplevel):
         self.title("Gantt Page")
         self.wm_iconbitmap(filing.get_path("favicon.ico"))
         self.parent = parent
-        self.data = data
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = drawing.Drawing(parent=self, data=self.data)  # View is the parent
+        self.drawing = drawing.Drawing(parent=self, data=data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])
