@@ -9,7 +9,7 @@
 # TODO try except statements for case where destination file open
 # TODO complete drawing module
 # TODO complete dataset module
-# TODO try refactoring dataset as class
+# TODO use scale item to draw something
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -10,7 +10,7 @@ from tkcalendar import DateEntry
 
 import designs
 import filing
-import dataset
+import loading
 import checks
 import dialogues
 import drawing
@@ -223,8 +223,8 @@ class Controls(Frame):
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        chart_object = designs.Chart()
-        row_data = dataset.create_object_dict(workbook, chart_object)
+        chart = designs.Chart()
+        items = loading.Loader(workbook, chart).load_items()
         self.create_view()
         filing.append_log(f'\n')
         self.refresh_scroller()
