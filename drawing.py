@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
 import logging
+
 from tkinter import Canvas
 
 
 class Drawing(Canvas):
-    def __init__(self, parent, data=None):
+    def __init__(self, parent, **data):
         super(Drawing, self).__init__(parent)
 
         self.parent = parent
-        self.data = data
+        self.chart = data.get('chart')
+        self.items = data.get('items')
         self.draw_chart()
 
     def draw_chart(self):

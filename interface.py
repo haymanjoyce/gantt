@@ -225,15 +225,12 @@ class Controls(Frame):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         chart = designs.Chart()
         items = loading.Loader(workbook, chart).load_items()
-        self.create_view()
-        filing.append_log(f'\n')
-        self.refresh_scroller()
-
-    def create_view(self, data=None):
         if self.view:
             self.view.destroy()
-        self.view = View(parent=self.parent, data=data)  # App is the parent
+        self.view = View(parent=self.parent, chart=chart, items=items)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
+        filing.append_log(f'\n')
+        self.refresh_scroller()
 
     def on_copy(self):
         utils.copy_to_clipboard(self.view.drawing)
@@ -256,7 +253,7 @@ class Controls(Frame):
 
 class View(Toplevel):
     """This is the parent of Canvas.  It determines image size (i.e. the Canvas does not do so)."""
-    def __init__(self, parent, data=None):
+    def __init__(self, parent, **data):
         super(View, self).__init__(parent)
 
         self.win_x = int(self.winfo_screenwidth() * 0.4)
@@ -267,9 +264,8 @@ class View(Toplevel):
         self.wm_iconbitmap(filing.get_path("favicon.ico"))
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = drawing.Drawing(parent=self, data=data)  # View is the parent
+        self.drawing = drawing.Drawing(parent=self, **data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])
         self.destroy()
-
