@@ -56,17 +56,17 @@ def get_exceptions(instance_attributes):
     exceptions = ('Type', 'Labels', )
     design_type = instance_attributes.get('type').lower()
     try:
-        if design_type == DESIGNS[0].lower():
-            exceptions += ('Width', )
-        elif design_type == DESIGNS[1].lower():
+        if design_type == "scale":
+            exceptions += ('Width', 'Start', 'Finish', 'X', 'Y', 'Rank')
+        elif design_type == "row":
             exceptions += ()
-        elif design_type == DESIGNS[2].lower():
+        elif design_type == "task":
             exceptions += ()
-        elif design_type == DESIGNS[3].lower():
+        elif design_type == "milestone":
             exceptions += ()
-        elif design_type == DESIGNS[4].lower():
+        elif design_type == "relationship":
             exceptions += ()
-        elif design_type == DESIGNS[5].lower():
+        elif design_type == "curtain":
             exceptions += ()
         else:
             pass

@@ -20,9 +20,10 @@ class Loader:
             sheet = self.workbook[sheet_name]
             sheet_headers = sheet[1]
             mapping = get_mapping(sheet_name, sheet_headers)
-            for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                item = GLOBALS.get(design)()
-                if design == 'Scale':
+            if design == 'Scale':
+                y = 0
+                for count, sheet_row in enumerate(sheet.iter_rows(min_row=2, values_only=True)):
+                    item = GLOBALS.get(design)()
                     item.type = item.type
                     item.labels = ""
                     item.width = self.chart.width
@@ -30,20 +31,37 @@ class Loader:
                     item.start = self.chart.start
                     item.finish = self.chart.finish
                     item.interval = sheet_row[mapping.get('INTERVAL')]
-                elif design == 'Row':
-                    pass
-                elif design == 'Task':
-                    pass
-                elif design == 'Milestone':
-                    pass
-                elif design == 'Relationship':
-                    pass
-                elif design == 'Curtain':
-                    pass
-                else:
-                    logging.debug(f"{design} data class not recognised.")
-                    raise ValueError(design)
-                items += item,
+                    item.rank = count
+                    item.x = 0
+                    item.y = y
+                    item.fill = sheet_row[mapping.get('FILL')]
+                    item.border_color = sheet_row[mapping.get('BORDER COLOR')]
+                    item.border_width = sheet_row[mapping.get('BORDER WIDTH')]
+                    y += item.height
+                    items += item,
+            elif design == 'Row':
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = GLOBALS.get(design)()
+                    items += item,
+            elif design == 'Task':
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = GLOBALS.get(design)()
+                    items += item,
+            elif design == 'Milestone':
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = GLOBALS.get(design)()
+                    items += item,
+            elif design == 'Relationship':
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = GLOBALS.get(design)()
+                    items += item,
+            elif design == 'Curtain':
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = GLOBALS.get(design)()
+                    items += item,
+            else:
+                logging.debug(f"{design} data class not recognised.")
+                raise ValueError(design)
         return items
 
 
@@ -53,7 +71,7 @@ def get_mapping(sheet_name, sheet_headers):
     for header in sheet_headers:
         if header.value:
             key = header.value
-            key = key.replace(" ", "_")
+            # key = key.replace(" ", "_")
             key = key.strip()
             key = key.upper()
             value = header.column - 1  # needs to be 0 indexed

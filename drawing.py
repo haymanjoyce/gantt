@@ -15,17 +15,9 @@ class Drawing(Canvas):
         self.draw_chart()
 
     def draw_chart(self):
-        self.draw_placeholder()
+        self.config(width=self.chart.width, height=self.chart.height, background="#eee")
         self.pack()
-
-    def draw_placeholder(self):
-        width = 800
-        height = 600
-        self.config(width=width, height=height)
-        self.create_rectangle(0, 0, width, height, fill="#ff0000")
-        self.create_rectangle(0, 0, width // 2, height // 2, fill="#0000ff")
-        self.create_rectangle(0, 0, width // 3, height // 3, fill="#00ff00")
-        self.create_rectangle(0, 0, width // 4, height // 4, fill="#ff0000")
+        self.draw_scales()
 
     # PRIMITIVES
 
@@ -33,8 +25,7 @@ class Drawing(Canvas):
         pass
 
     def draw_rectangle(self, x1, y1, x2, x3, **options):
-        print(options)
-        self.create_rectangle(x1, y1, x2, x3, options)
+        pass
 
     def draw_diamond(self):
         pass
@@ -50,80 +41,83 @@ class Drawing(Canvas):
 
     # SCALES
 
-    def draw_scale(self):
-        pass
-
     def draw_scales(self):
+        items = [item for item in self.items if item.type == 'scale']
+        # items.sort(key=lambda item: item.rank)
+        for item in items:
+            self.draw_scale(item)
+
+    def draw_scale(self, item):
+        self.create_rectangle(item.x, item.y, item.width, item.height, fill=item.fill, outline=item.border_color, width=item.border_width)
+
+    def draw_period_labels(self):
         pass
 
     def draw_period_label(self):
         pass
 
-    def draw_period_labels(self):
-        pass
-
     # ROWS
 
-    def draw_row(self):
-        pass
-
-    def draw_row_name(self):
-        pass
-
     def draw_rows(self):
+        pass
+
+    def draw_row(self):
         pass
 
     def draw_row_names(self):
         pass
 
-    # TASKS
-
-    def draw_task(self, start, finish, **options):
+    def draw_row_name(self):
         pass
+
+    # TASKS
 
     def draw_tasks(self):
         pass
 
-    def draw_task_name(self):
+    def draw_task(self, start, finish, **options):
         pass
 
     def draw_task_names(self):
         pass
 
-    # MILESTONES
-
-    def draw_milestone(self):
+    def draw_task_name(self):
         pass
+
+    # MILESTONES
 
     def draw_milestones(self):
         pass
 
-    def draw_milestone_name(self):
+    def draw_milestone(self):
         pass
 
     def draw_milestone_names(self):
         pass
 
-    # RELATIONSHIPS
-
-    def draw_relationship(self):
+    def draw_milestone_name(self):
         pass
+
+    # RELATIONSHIPS
 
     def draw_relationships(self):
         pass
 
-    # CURTAINS
-
-    def draw_curtain(self):
+    def draw_relationship(self):
         pass
+
+    # CURTAINS
 
     def draw_curtains(self):
         pass
 
-    # BARS
-
-    def draw_bar(self):
+    def draw_curtain(self):
         pass
 
+    # BARS
+
     def draw_bars(self):
+        pass
+
+    def draw_bar(self):
         pass

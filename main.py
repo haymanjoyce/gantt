@@ -9,7 +9,8 @@
 # TODO try except statements for case where destination file open
 # TODO complete drawing module
 # TODO complete dataset module
-# TODO use scale item to draw something
+# TODO offset x and y based on border_width and limit border_width based on width and height
+# TODO change attributes to match create_rectangle (x0, y0, x1, y1)
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -57,20 +57,15 @@ class Scale:
     labels = attrib(default="")
     width = attrib(default=800)
     height = attrib(default=100)
-    start = attrib(default=datetime.datetime.today())
-    _finish = attrib(default=None)
+    start = attrib(default=None)
+    finish = attrib(default=None)
     _interval = attrib(default="days")
-
-    @property
-    def finish(self):
-        return self._finish
-
-    @finish.setter
-    def finish(self, value):
-        if value:
-            self._finish = value
-        else:
-            self._finish = self.start + datetime.timedelta(20)
+    rank = attrib(default=0)
+    x = attrib(default=0)
+    y = attrib(default=0)
+    fill = attrib(default="red")
+    border_color = attrib(default="black")
+    border_width = attrib(default="1")
 
     @property
     def interval(self):
