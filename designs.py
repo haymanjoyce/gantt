@@ -2,6 +2,7 @@
 
 import datetime
 import logging
+import math
 
 from attr import attrs, attrib, Factory
 
@@ -16,10 +17,20 @@ class Chart:
 
     type = attrib(default="chart")
     settings = attrib(default=Factory(filing.get_config_data))
+    x = attrib()
+    y = attrib()
     width = attrib()
     height = attrib()
     start = attrib()
     finish = attrib()
+
+    @x.default
+    def default_x(self):
+        return 0
+
+    @y.default
+    def default_y(self):
+        return 0
 
     @width.default
     def default_width(self):
@@ -65,7 +76,7 @@ class Scale:
     y = attrib(default=0)
     fill = attrib(default="red")
     border_color = attrib(default="black")
-    border_width = attrib(default="1")
+    _border_width = attrib(default=0.0)
 
     @property
     def interval(self):
@@ -89,6 +100,20 @@ class Scale:
         else:
             logging.error(f'Do not understand interval value, "{value}".')
             # raise ValueError(value)
+
+    @property
+    def border_width(self):
+        return self._border_width
+
+    @border_width.setter
+    def border_width(self, value):
+        max_width = float(self.width) * 0.5
+        max_height = float(self.height) * 0.5
+        smallest = sorted([max_width, max_height])[0]
+        if value > smallest:
+            self._border_width = abs(int(smallest - 1))
+        else:
+            self._border_width = abs(int(value))
 
 
 @attrs

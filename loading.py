@@ -21,7 +21,7 @@ class Loader:
             sheet_headers = sheet[1]
             mapping = get_mapping(sheet_name, sheet_headers)
             if design == 'Scale':
-                y = 0
+                y = self.chart.y
                 for count, sheet_row in enumerate(sheet.iter_rows(min_row=2, values_only=True)):
                     item = GLOBALS.get(design)()
                     item.type = item.type
@@ -32,7 +32,7 @@ class Loader:
                     item.finish = self.chart.finish
                     item.interval = sheet_row[mapping.get('INTERVAL')]
                     item.rank = count
-                    item.x = 0
+                    item.x = self.chart.x
                     item.y = y
                     item.fill = sheet_row[mapping.get('FILL')]
                     item.border_color = sheet_row[mapping.get('BORDER COLOR')]

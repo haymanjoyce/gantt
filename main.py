@@ -7,10 +7,13 @@
 # TODO develop a Windows installer
 # TODO try statement for all processes so breaks gracefully
 # TODO try except statements for case where destination file open
+# TODO break gracefully if run fails
+# TODO test spreadsheet for negative values
 # TODO complete drawing module
 # TODO complete dataset module
 # TODO offset x and y based on border_width and limit border_width based on width and height
-# TODO break gracefully if run with absent fields
+# TODO debug max border width
+
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
