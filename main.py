@@ -10,7 +10,7 @@
 # TODO complete drawing module
 # TODO complete dataset module
 # TODO offset x and y based on border_width and limit border_width based on width and height
-# TODO change attributes to match create_rectangle (x0, y0, x1, y1)
+# TODO break gracefully if run with absent fields
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

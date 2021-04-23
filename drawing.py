@@ -24,8 +24,10 @@ class Drawing(Canvas):
     def draw_text(self):
         pass
 
-    def draw_rectangle(self, x1, y1, x2, x3, **options):
-        pass
+    def draw_rectangle(self, x, y, rect_width, rect_height, **options):  # parameter "width" reserved for defining border width
+        x1 = x + rect_width
+        y1 = y + rect_height
+        self.create_rectangle(x, y, x1, y1, options)
 
     def draw_diamond(self):
         pass
@@ -43,12 +45,12 @@ class Drawing(Canvas):
 
     def draw_scales(self):
         items = [item for item in self.items if item.type == 'scale']
-        # items.sort(key=lambda item: item.rank)
+        # items.sort(key=lambda item: item.rank, reverse=True)
         for item in items:
             self.draw_scale(item)
 
     def draw_scale(self, item):
-        self.create_rectangle(item.x, item.y, item.width, item.height, fill=item.fill, outline=item.border_color, width=item.border_width)
+        self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.fill, outline=item.border_color, width=item.border_width)
 
     def draw_period_labels(self):
         pass
