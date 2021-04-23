@@ -11,8 +11,7 @@
 # TODO test spreadsheet for negative values
 # TODO complete drawing module
 # TODO complete dataset module
-# TODO offset x and y based on border_width and limit border_width based on width and height
-# TODO debug max border width
+# TODO set min height or width of rectangle as 5
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
