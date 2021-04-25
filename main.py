@@ -9,9 +9,7 @@
 # TODO try except statements for case where destination file open
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
-# TODO complete drawing module
-# TODO complete dataset module
-# TODO set min height or width of rectangle as 5
+# TODO height and width values to take into account border width
 
 
 # MANUAL OS ENVIRONMENT INSTALLS
