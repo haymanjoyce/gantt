@@ -26,19 +26,20 @@ class Drawing(Canvas):
         pass
 
     def draw_rectangle(self, x, y, rect_width, rect_height, **options):  # parameter "width" reserved for defining border width
+        fill = options.get('fill')
+        outline = options.get('outline')
         border_width = options.get('width')
-        if border_width <= 0.5:
-            x1 = x + rect_width
-            y1 = y + rect_height
-        else:
-            even_border_width = math.ceil(border_width / 2.0) * 2
-            options['width'] = even_border_width
-            half_border_width = even_border_width / 2
-            x = x + half_border_width
-            y = y + half_border_width
-            x1 = x + rect_width - even_border_width
-            y1 = y + rect_height - even_border_width
-        self.create_rectangle(x, y, x1, y1, options)
+        if border_width < 1:
+            outline = fill
+            border_width = 2
+        even_border_width = math.ceil(border_width / 2.0) * 2
+        half_border_width = even_border_width / 2
+        x = x + half_border_width
+        y = y + half_border_width
+        x1 = x + rect_width - even_border_width
+        y1 = y + rect_height - even_border_width
+        print(even_border_width)
+        self.create_rectangle(x, y, x1, y1, fill=fill, outline=outline, width=even_border_width)
 
     def draw_diamond(self):
         pass

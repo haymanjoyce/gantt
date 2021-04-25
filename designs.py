@@ -67,7 +67,7 @@ class Scale:
     type = attrib(default="scale")
     labels = attrib(default="")
     width = attrib(default=800)
-    height = attrib(default=100)
+    _height = attrib(default=100)
     start = attrib(default=None)
     finish = attrib(default=None)
     _interval = attrib(default="days")
@@ -107,13 +107,26 @@ class Scale:
 
     @border_width.setter
     def border_width(self, value):
-        max_width = float(self.width) * 0.5
-        max_height = float(self.height) * 0.5
+        """Outline width must be a bit less than half shortest rectangle dimension."""
+        max_width = float(self.width) * 0.4
+        max_height = float(self.height) * 0.4
         smallest = sorted([max_width, max_height])[0]
         if value > smallest:
-            self._border_width = abs(int(smallest - 1))
+            self._border_width = abs(int(smallest))
         else:
             self._border_width = abs(int(value))
+
+    @property
+    def height(self):
+        return self._height
+
+    @height.setter
+    def height(self, value):
+        """Must be high enough to accommodate outline and a bit of fill."""
+        if value < 6:
+            self._height = 6
+        else:
+            self._height = value
 
 
 @attrs
