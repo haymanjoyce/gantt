@@ -107,12 +107,15 @@ class Scale:
 
     @border_width.setter
     def border_width(self, value):
-        """Outline width must be a bit less than half shortest rectangle dimension."""
         max_width = float(self.width) * 0.4
         max_height = float(self.height) * 0.4
-        smallest = sorted([max_width, max_height])[0]
-        if value > smallest:
-            self._border_width = abs(int(smallest))
+        shortest = sorted([max_width, max_height])[0]
+        value = math.ceil(value / 2.0) * 2  # for tidy rendering we need even numbers
+        if value > shortest:  # outline width must be a bit less than half shortest rectangle dimension
+            self._border_width = abs(int(shortest))
+        elif value < 1:  # cases under 1 treated as zero but outline still visible when 0
+            self._border_width = 2
+            self.border_color = self.fill
         else:
             self._border_width = abs(int(value))
 
