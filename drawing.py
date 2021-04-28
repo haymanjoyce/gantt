@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import math
 
 from tkinter import Canvas
 
@@ -12,7 +11,7 @@ class Drawing(Canvas):
 
         self.parent = parent
         self.chart = data.get('chart')
-        self.items = data.get('items')
+        self.items = data.get('features')
         self.draw_chart()
 
     def draw_chart(self):

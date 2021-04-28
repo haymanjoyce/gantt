@@ -9,9 +9,8 @@
 # TODO try except statements for case where destination file open
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
-# TODO height and width values to take into account border width
-# TODO x, y, x0, y0 values
-
+# TODO all homemade modules should be imported in from x import y pattern
+# TODO rebuild Rectangle
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -5,8 +5,8 @@ import logging
 from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
 
-from designs import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
-from designs import DESIGNS
+from features import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
+from features import FEATURES
 
 GLOBALS = globals()
 
@@ -16,7 +16,7 @@ def create_template(field_name_dict):
     workbook.remove(workbook.active)
     header = NamedStyle(name="header")
     header.font = Font(bold=True)
-    for key, value in field_name_dict.items():
+    for key, value in field_name_dict.features():
         workbook.create_sheet(key)
         workbook[key].append(value)
         for cell in workbook[key][1]:
@@ -27,7 +27,7 @@ def create_template(field_name_dict):
 def get_field_name_dict():
     field_name_dict = {}
     try:
-        for class_name in DESIGNS:
+        for class_name in FEATURES:
             data_class_instance = GLOBALS.get(class_name)()
             field_names = get_field_names(data_class_instance)
             sheet_name = class_name + 's'
