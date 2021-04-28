@@ -10,6 +10,7 @@
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
 # TODO height and width values to take into account border width
+# TODO x, y, x0, y0 values
 
 
 # MANUAL OS ENVIRONMENT INSTALLS

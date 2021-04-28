@@ -66,17 +66,17 @@ class Scale:
 
     type = attrib(default="scale")
     labels = attrib(default="")
-    width = attrib(default=800)
-    _height = attrib(default=100)
+    rank = attrib(default=0)
     start = attrib(default=None)
     finish = attrib(default=None)
-    _interval = attrib(default="days")
-    rank = attrib(default=0)
     x = attrib(default=0)
     y = attrib(default=0)
+    width = attrib(default=800)
+    height = attrib(default=100)
     fill = attrib(default="red")
     border_color = attrib(default="black")
-    _border_width = attrib(default=0.0)
+    border_width = attrib(default=0.0)
+    _interval = attrib(default="days")
 
     @property
     def interval(self):
@@ -100,36 +100,6 @@ class Scale:
         else:
             logging.error(f'Do not understand interval value, "{value}".')
             # raise ValueError(value)
-
-    @property
-    def border_width(self):
-        return self._border_width
-
-    @border_width.setter
-    def border_width(self, value):
-        max_width = float(self.width) * 0.4
-        max_height = float(self.height) * 0.4
-        shortest = sorted([max_width, max_height])[0]
-        value = math.ceil(value / 2.0) * 2  # for tidy rendering we need even numbers
-        if value > shortest:  # outline width must be a bit less than half shortest rectangle dimension
-            self._border_width = abs(int(shortest))
-        elif value < 1:  # cases under 1 treated as zero but outline still visible when 0
-            self._border_width = 2
-            self.border_color = self.fill
-        else:
-            self._border_width = abs(int(value))
-
-    @property
-    def height(self):
-        return self._height
-
-    @height.setter
-    def height(self, value):
-        """Must be high enough to accommodate outline and a bit of fill."""
-        if value < 6:
-            self._height = 6
-        else:
-            self._height = value
 
 
 @attrs

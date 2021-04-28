@@ -32,7 +32,6 @@ class Drawing(Canvas):
         y = y + half_border_width
         x1 = x + rect_width - border_width
         y1 = y + rect_height - border_width
-        print(border_width)
         self.create_rectangle(x, y, x1, y1, options)
 
     def draw_diamond(self):
