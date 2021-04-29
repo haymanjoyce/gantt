@@ -10,7 +10,7 @@
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
 # TODO all homemade modules should be imported in from x import y pattern
-# TODO rebuild Rectangle
+# TODO rebuild Rectangle - remove width and height or make private
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

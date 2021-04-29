@@ -33,6 +33,27 @@ class Drawing(Canvas):
         y1 = y + rect_height - border_width
         self.create_rectangle(x, y, x1, y1, options)
 
+        # value = abs(int(value))  # ensure value is a positive integer
+        # even_border_width = math.ceil(value / 2) * 2  # for tidy rendering we need even numbers
+        # available_width = self.width - (even_border_width * 2)
+        # available_height = self.height - (even_border_width * 2)
+        # available_space = sorted([available_width, available_height])[0]
+        # if even_border_width >= available_space:
+        #     even_border_width = math.ceil(available_space / 2) * 2
+        # if value < 1:  # under 1 treated as zero but outline still visible when 0 so hidden with fill color
+        #     self._border_width = 2
+        #     self.x += 1
+        #     self.y += 1
+        #     self.x0 = self.x + self.width - 2
+        #     self.y0 = self.y + self.height - 2
+        #     self.border_color = self.fill
+        # else:
+        #     self._border_width = even_border_width
+        #     self.x += even_border_width / 2
+        #     self.y += even_border_width / 2
+        #     self.x0 = self.x + self.width - even_border_width
+        #     self.y0 = self.y + self.height - even_border_width
+
     def draw_diamond(self):
         pass
 
