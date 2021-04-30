@@ -4,18 +4,23 @@ import logging
 
 from tkinter import Canvas
 
+from filing import get_config_data
+
+from settings import Settings
+
 
 class Drawing(Canvas):
-    def __init__(self, parent, **data):
+    def __init__(self, parent, data):
         super(Drawing, self).__init__(parent)
 
         self.parent = parent
-        self.chart = data.get('chart')
-        self.items = data.get('features')
+        self.items = data
+        self.settings = Settings()
         self.draw_chart()
 
     def draw_chart(self):
-        self.config(width=self.chart.width, height=self.chart.height, background="#eee")
+        settings = get_config_data()
+        self.config(width=self.settings.width, height=self.settings.height, background="#eee")
         self.pack()
         self.draw_scales()
 

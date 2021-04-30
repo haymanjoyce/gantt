@@ -2,16 +2,18 @@
 
 import logging
 
-from features import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
+from features import Scale, Row, Task, Milestone, Relationship, Curtain
 from features import FEATURES
+
+from settings import Settings
 
 GLOBALS = globals()
 
 
 class Parser:
-    def __init__(self, workbook, chart):
+    def __init__(self, workbook):
         self.workbook = workbook
-        self.chart = chart
+        self.settings = Settings()
 
     def load_items(self):
         features = tuple()
@@ -21,18 +23,18 @@ class Parser:
             sheet_headers = sheet[1]
             mapping = get_mapping(sheet_name, sheet_headers)
             if feature_type == 'Scale':
-                y = self.chart.y
+                y = self.settings.y
                 for count, sheet_row in enumerate(sheet.iter_rows(min_row=2, values_only=True)):
                     feature = GLOBALS.get(feature_type)()
                     feature.type = feature.type
                     feature.labels = ""
-                    feature.width = self.chart.width
+                    feature.width = self.settings.width
                     feature.height = sheet_row[mapping.get('HEIGHT')]
-                    feature.start = self.chart.start
-                    feature.finish = self.chart.finish
+                    feature.start = self.settings.start
+                    feature.finish = self.settings.finish
                     feature.interval = sheet_row[mapping.get('INTERVAL')]
                     feature.rank = count
-                    feature.x = self.chart.x
+                    feature.x = self.settings.x
                     feature.y = y
                     feature.fill = sheet_row[mapping.get('FILL')]
                     feature.border_color = sheet_row[mapping.get('BORDER COLOR')]

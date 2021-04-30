@@ -8,7 +8,6 @@ from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT,
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
-import features
 import filing
 import parsing
 import checks
@@ -16,7 +15,7 @@ import dialogues
 import drawing
 import utils
 import template
-from chart import Chart
+from settings import Settings
 
 
 class App(Tk):
@@ -224,11 +223,11 @@ class Controls(Frame):
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        new_chart = Chart()
-        chart_features = parsing.Parser(workbook, new_chart).load_items()
+        # new_chart = Chart()
+        chart_features = parsing.Parser(workbook).load_items()
         if self.view:
             self.view.destroy()
-        self.view = View(parent=self.parent, chart=new_chart, features=chart_features)  # App is the parent
+        self.view = View(parent=self.parent, data=chart_features)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
         filing.append_log(f'\n')
         self.refresh_scroller()
@@ -254,7 +253,7 @@ class Controls(Frame):
 
 class View(Toplevel):
     """This is the parent of Canvas.  It determines image size (i.e. the Canvas does not do so)."""
-    def __init__(self, parent, **data):
+    def __init__(self, parent, data):
         super(View, self).__init__(parent)
 
         self.win_x = int(self.winfo_screenwidth() * 0.4)
@@ -265,7 +264,7 @@ class View(Toplevel):
         self.wm_iconbitmap(filing.get_path("favicon.ico"))
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = drawing.Drawing(parent=self, **data)  # View is the parent
+        self.drawing = drawing.Drawing(self, data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])

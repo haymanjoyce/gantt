@@ -5,7 +5,7 @@ import logging
 from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
 
-from features import Scale, Row, Task, Milestone, Relationship, Curtain  # import all will bring in logging
+from features import Scale, Row, Task, Milestone, Relationship, Curtain
 from features import FEATURES
 
 GLOBALS = globals()

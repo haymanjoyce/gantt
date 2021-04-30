@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
 import datetime
 
 from attr import attrs, attrib, Factory
@@ -9,10 +8,9 @@ import filing
 
 
 @attrs
-class Chart:
+class Settings:
 
-    type = attrib(default="chart")
-    settings = attrib(default=Factory(filing.get_config_data))
+    config_data = attrib(default=Factory(filing.get_config_data))
     x = attrib()
     y = attrib()
     width = attrib()
@@ -30,28 +28,28 @@ class Chart:
 
     @width.default
     def default_width(self):
-        if self.settings.get('width'):
-            return int(self.settings['width'])
+        if self.config_data.get('width'):
+            return int(self.config_data['width'])
         else:
             return 800
 
     @height.default
     def default_height(self):
-        if self.settings.get('height'):
-            return int(self.settings['height'])
+        if self.config_data.get('height'):
+            return int(self.config_data['height'])
         else:
             return 600
 
     @start.default
     def default_start(self):
-        if self.settings.get('start'):
-            return datetime.datetime.strptime(self.settings['start'], '%Y/%m/%d')
+        if self.config_data.get('start'):
+            return datetime.datetime.strptime(self.config_data['start'], '%Y/%m/%d')
         else:
             return datetime.datetime.today()
 
     @finish.default
     def default_finish(self):
-        if self.settings.get('finish'):
-            return datetime.datetime.strptime(self.settings['finish'], '%Y/%m/%d')
+        if self.config_data.get('finish'):
+            return datetime.datetime.strptime(self.config_data['finish'], '%Y/%m/%d')
         else:
             return self.start + datetime.timedelta(20)

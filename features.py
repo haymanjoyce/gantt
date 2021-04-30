@@ -5,7 +5,7 @@ import logging
 from attr import attrs, attrib
 
 
-FEATURES = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')  # excludes Chart
+FEATURES = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')
 
 
 @attrs
