@@ -10,7 +10,7 @@
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
 # TODO all homemade modules should be imported in from x import y pattern
-# TODO review use of settings in interface
+# TODO refactor use of settings in interface
 # TODO rebuild draw_rectangle
 
 # MANUAL OS ENVIRONMENT INSTALLS

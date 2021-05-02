@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import math
 
 from tkinter import Canvas
 
@@ -19,7 +20,6 @@ class Drawing(Canvas):
         self.draw_chart()
 
     def draw_chart(self):
-        settings = get_config_data()
         self.config(width=self.settings.width, height=self.settings.height, background="#eee")
         self.pack()
         self.draw_scales()
@@ -30,34 +30,40 @@ class Drawing(Canvas):
         pass
 
     def draw_rectangle(self, x, y, rect_width, rect_height, **options):  # parameter "width" reserved for defining border width
-        border_width = options.get('width')
-        half_border_width = border_width / 2
-        x = x + half_border_width
-        y = y + half_border_width
-        x1 = x + rect_width - border_width
-        y1 = y + rect_height - border_width
-        self.create_rectangle(x, y, x1, y1, options)
 
-        # value = abs(int(value))  # ensure value is a positive integer
-        # even_border_width = math.ceil(value / 2) * 2  # for tidy rendering we need even numbers
-        # available_width = self.width - (even_border_width * 2)
-        # available_height = self.height - (even_border_width * 2)
-        # available_space = sorted([available_width, available_height])[0]
-        # if even_border_width >= available_space:
-        #     even_border_width = math.ceil(available_space / 2) * 2
-        # if value < 1:  # under 1 treated as zero but outline still visible when 0 so hidden with fill color
-        #     self._border_width = 2
-        #     self.x += 1
-        #     self.y += 1
-        #     self.x0 = self.x + self.width - 2
-        #     self.y0 = self.y + self.height - 2
-        #     self.border_color = self.fill
-        # else:
-        #     self._border_width = even_border_width
-        #     self.x += even_border_width / 2
-        #     self.y += even_border_width / 2
-        #     self.x0 = self.x + self.width - even_border_width
-        #     self.y0 = self.y + self.height - even_border_width
+        # get border width as positive integer
+        border_width = abs(int(options.get('width')))
+
+        # necessary hack because 0 width borders still render
+        if border_width == 0:
+            options['outline'] = options.get('fill')
+
+        # set border width to less than available fill space
+        max_width = int(rect_width) / 2
+        max_height = int(rect_height) / 2
+        max_border = sorted([max_height, max_width])[0] - 4
+        print(max_border)
+        if border_width > max_border:
+            border_width = max_border
+
+        # set min border to 2 (smallest even number)
+        if border_width < 2:
+            border_width = 2
+
+        # set border width to even number
+        if border_width % 2 == 1:
+            border_width = math.ceil(border_width / 2) * 2
+
+        # update the dictionary
+        options['width'] = border_width
+
+        # convert height and width to x0 and y0
+        half_border_width = border_width / 2
+        x1 = x + half_border_width
+        y1 = y + half_border_width
+        x2 = x + rect_width - border_width
+        y2 = y + rect_height - border_width
+        self.create_rectangle(x1, y1, x2, y2, options)
 
     def draw_diamond(self):
         pass
