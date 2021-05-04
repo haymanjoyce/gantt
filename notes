@@ -40,6 +40,15 @@ VALIDATION ARGUMENTS
 %V = the type of validation that triggered the callback (key, focusin, focusout, forced)
 %W = the tk name of the widget
 
+VECTOR GRAPHICS
+
+Rectangle A: 0,0 20,10
+Rectangle B: 0,10 20,20
+A and B share line 0,10 20,10
+
+Borders bleed
+Experimented with limiting border to boundaries but did not seem to work so accepting the bleed
+
 FUTURE DEVELOPMENT
 
 Develop own grid interface

@@ -11,7 +11,7 @@
 # TODO test spreadsheet for negative values
 # TODO all homemade modules should be imported in from x import y pattern
 # TODO refactor use of settings in interface
-# TODO rebuild draw_rectangle
+# TODO draw scale
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

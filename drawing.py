@@ -17,9 +17,6 @@ class Drawing(Canvas):
         self.parent = parent
         self.items = data
         self.settings = Settings()
-        self.draw_chart()
-
-    def draw_chart(self):
         self.config(width=self.settings.width, height=self.settings.height, background="#eee")
         self.pack()
         self.draw_scales()
@@ -29,40 +26,11 @@ class Drawing(Canvas):
     def draw_text(self):
         pass
 
-    def draw_rectangle(self, x, y, rect_width, rect_height, **options):  # parameter "width" reserved for defining border width
-
-        # get border width as positive integer
-        border_width = abs(int(options.get('width')))
-
-        # necessary hack because 0 width borders still render
-        if border_width == 0:
-            options['outline'] = options.get('fill')
-
-        # set border width to less than available fill space
-        max_width = int(rect_width) / 2
-        max_height = int(rect_height) / 2
-        max_border = sorted([max_height, max_width])[0] - 4
-        print(max_border)
-        if border_width > max_border:
-            border_width = max_border
-
-        # set min border to 2 (smallest even number)
-        if border_width < 2:
-            border_width = 2
-
-        # set border width to even number
-        if border_width % 2 == 1:
-            border_width = math.ceil(border_width / 2) * 2
-
-        # update the dictionary
-        options['width'] = border_width
-
-        # convert height and width to x0 and y0
-        half_border_width = border_width / 2
-        x1 = x + half_border_width
-        y1 = y + half_border_width
-        x2 = x + rect_width - border_width
-        y2 = y + rect_height - border_width
+    def draw_rectangle(self, x, y, rect_width, rect_height, **options):
+        x1 = x
+        y1 = y
+        x2 = x + rect_width
+        y2 = y + rect_height
         self.create_rectangle(x1, y1, x2, y2, options)
 
     def draw_diamond(self):
