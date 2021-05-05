@@ -11,7 +11,9 @@
 # TODO test spreadsheet for negative values
 # TODO all homemade modules should be imported in from x import y pattern
 # TODO refactor use of settings in interface
+# TODO form validation such that finish cannot be less than start
 # TODO draw scale
+# TODO scales are black and white only (branding)
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
