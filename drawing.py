@@ -62,7 +62,6 @@ class Drawing(Canvas):
 
         current_date = item.start
 
-        current_day = current_date.day
         current_month = current_date.month
         current_year = current_date.year
 
@@ -79,6 +78,11 @@ class Drawing(Canvas):
                 self.draw_rectangle(day_x, item.y, self.pixels_per_day, item.height, **options)
                 day_x += self.pixels_per_day
 
+                height_offset = item.height / 2
+                text_height = item.y + height_offset
+                self.create_text(day_x, text_height, text="ABC", anchor="w", tag="test_name")
+                self.tag_raise("test_name")
+
             elif item.interval == 'MONTHS':
                 if current_month == current_date.month:
                     days_in_month += 1
@@ -93,7 +97,6 @@ class Drawing(Canvas):
                 if current_year == current_date.year:
                     days_in_year += 1
                 else:
-                    print(days_in_year)
                     year_width = days_in_year * self.pixels_per_day
                     self.draw_rectangle(year_x, item.y, year_width, item.height, **options)
                     year_x += days_in_year * self.pixels_per_day
@@ -104,12 +107,6 @@ class Drawing(Canvas):
                 raise ValueError(item.interval)
 
             current_date += datetime.timedelta(days=1)
-
-    def draw_period_labels(self):
-        pass
-
-    def draw_period_label(self):
-        pass
 
     # ROWS
 

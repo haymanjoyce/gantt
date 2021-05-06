@@ -14,6 +14,7 @@
 # TODO form validation such that finish cannot be less than start
 # TODO draw scale
 # TODO scales are black and white only (branding)
+# TODO refactor scales
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
