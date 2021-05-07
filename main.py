@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 
 # TODO option for user to email error message back to me
-# TODO better presentation on scroller (line spaces and titles)
-# TODO loading Ghostscript with the programme (ref: https://www.biopdf.com/guide/detecting_ghostscript.php)
+# TODO better presentation on scroller text (i.e. line spaces and titles)
+# TODO loading Ghostscript with the programme (like https://www.biopdf.com/guide/detecting_ghostscript.php)
 # TODO warning if Ghostscript not installed
 # TODO develop a Windows installer
-# TODO try statement for all processes so breaks gracefully
-# TODO try except statements for case where destination file open
+# TODO try except statement for all processes so breaks gracefully
+# TODO try except statements for case where destination file already open
 # TODO break gracefully if run fails
 # TODO test spreadsheet for negative values
-# TODO all homemade modules should be imported in from x import y pattern
+# TODO all homemade modules should be imported using "from x import y" pattern
 # TODO refactor use of settings in interface
 # TODO form validation such that finish cannot be less than start
-# TODO draw scale
-# TODO scales are black and white only (branding)
-# TODO refactor scales
+# TODO add options to scales (font color, font size, font type, alternating (e.g. black white))
+# TODO add ability to define custom date formats
+# TODO improve scales such that they show end interval
+# TODO add more scale types (weeks, quarters, half years)
+# TODO NEXT: draw rows
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
