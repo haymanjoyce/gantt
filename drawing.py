@@ -54,8 +54,11 @@ class Drawing(Canvas):
     def draw_scales(self):
         items = [item for item in self.items if item.type == 'scale']
         # items.sort(key=lambda item: item.rank, reverse=True)
+        y = self.settings.y
         for item in items:
+            item.y = y
             self.draw_scale(item)
+            y += item.height
 
     def draw_scale(self, item):
         options = {'fill': item.fill, 'outline': item.border_color, 'width': item.border_width}
@@ -79,8 +82,8 @@ class Drawing(Canvas):
                 day_x += self.pixels_per_day
 
                 height_offset = item.height / 2
-                text_height = item.y + height_offset
-                self.create_text(day_x, text_height, text="ABC", anchor="w", tag="test_name")
+                text_y = item.y + height_offset
+                self.create_text(day_x, text_y, text="ABC", anchor="w", tag="test_name")
                 self.tag_raise("test_name")
 
             elif item.interval == 'MONTHS':
