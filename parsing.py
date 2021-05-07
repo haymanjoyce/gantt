@@ -4,10 +4,7 @@ import logging
 
 from features import Scale, Row, Task, Milestone, Relationship, Curtain
 from features import FEATURES
-
 from settings import Settings
-
-GLOBALS = globals()
 
 
 class Parser:
@@ -16,53 +13,46 @@ class Parser:
         self.settings = Settings()
 
     def load_items(self):
-        features = tuple()
+        items = tuple()
         for feature_type in FEATURES:
             sheet_name = feature_type + 's'
             sheet = self.workbook[sheet_name]
             sheet_headers = sheet[1]
-            mapping = get_mapping(sheet_name, sheet_headers)
-            if feature_type == 'Scale':
-                for count, sheet_row in enumerate(sheet.iter_rows(min_row=2, values_only=True)):
-                    feature = GLOBALS.get(feature_type)()
-                    # feature.type
-                    feature.labels = ""
-                    feature.width = self.settings.width
-                    feature.height = sheet_row[mapping.get('HEIGHT')]
-                    feature.start = self.settings.start
-                    feature.finish = self.settings.finish
-                    feature.interval = sheet_row[mapping.get('INTERVAL')]
-                    feature.rank = count
-                    feature.x = self.settings.x
-                    # feature.y
-                    feature.fill = sheet_row[mapping.get('FILL')]
-                    feature.border_color = sheet_row[mapping.get('BORDER COLOR')]
-                    feature.border_width = sheet_row[mapping.get('BORDER WIDTH')]
-                    features += feature,
-            elif feature_type == 'Row':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    feature = GLOBALS.get(feature_type)()
-                    features += feature,
-            elif feature_type == 'Task':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    feature = GLOBALS.get(feature_type)()
-                    features += feature,
-            elif feature_type == 'Milestone':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    feature = GLOBALS.get(feature_type)()
-                    features += feature,
-            elif feature_type == 'Relationship':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    feature = GLOBALS.get(feature_type)()
-                    features += feature,
-            elif feature_type == 'Curtain':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    feature = GLOBALS.get(feature_type)()
-                    features += feature,
-            else:
-                logging.debug(f"{feature_type} data class not recognised.")
-                raise ValueError(feature_type)
-        return features
+            sheet_mapping = get_mapping(sheet_name, sheet_headers)
+            for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                if feature_type == 'Scale':
+                    item = self.load_scale(sheet_row, sheet_mapping)
+                    items += item,
+                elif feature_type == 'Row':
+                    pass
+                elif feature_type == 'Task':
+                    pass
+                elif feature_type == 'Milestone':
+                    pass
+                elif feature_type == 'Relationship':
+                    pass
+                elif feature_type == 'Curtain':
+                    pass
+                else:
+                    raise ValueError(feature_type)
+        return items
+
+    def load_scale(self, sheet_row, sheet_mapping):
+        item = Scale()
+        # item.type
+        item.labels = ""
+        item.width = self.settings.width
+        item.height = sheet_row[sheet_mapping.get('HEIGHT')]
+        item.start = self.settings.start
+        item.finish = self.settings.finish
+        item.interval = sheet_row[sheet_mapping.get('INTERVAL')]
+        # item.rank
+        item.x = self.settings.x
+        # item.y
+        item.fill = sheet_row[sheet_mapping.get('FILL')]
+        item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
+        item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
+        return item
 
 
 def get_mapping(sheet_name, sheet_headers):
