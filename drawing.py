@@ -24,9 +24,6 @@ class Drawing(Canvas):
 
     # SHAPES
 
-    def draw_text(self):
-        pass
-
     def draw_rectangle(self, x, y, rect_width, rect_height, **options):
         x1 = x
         y1 = y
@@ -58,25 +55,27 @@ class Drawing(Canvas):
             y += item.height
 
     def draw_scale(self, item):
-        options = {'fill': item.fill, 'outline': item.border_color, 'width': item.border_width}
+        common_options = {'fill': item.fill, 'outline': item.border_color, 'width': item.border_width}
+        common_tag = "scale_text"
         if item.interval == 'DAYS':
-            self.draw_days(item, options)
+            self.draw_days(item, common_options, common_tag)
         elif item.interval == 'MONTHS':
-            self.draw_months(item, options)
+            self.draw_months(item, common_options)
         elif item.interval == 'YEARS':
-            self.draw_years(item, options)
+            self.draw_years(item, common_options)
         else:
             raise ValueError(item.interval)
+        self.tag_raise(common_tag)  # raises all scale text above rectangles
 
-    def draw_days(self, item, options):
+    def draw_days(self, item, options, tag):
         current_date = item.start
         x = item.x
         height_offset = item.height / 2
         for day in range(1, self.total_days + 1):  # indexed from 1
             self.draw_rectangle(x, item.y, self.pixels_per_day, item.height, **options)
             text_y = item.y + height_offset
-            self.create_text(x, text_y, text="ABC", anchor="w", tag="test_name")
-            self.tag_raise("test_name")
+            label = current_date.strftime("%d")
+            self.create_text(x, text_y, text=label, anchor="w", tag=tag)
             x += self.pixels_per_day
             current_date += datetime.timedelta(days=1)
 
@@ -84,14 +83,14 @@ class Drawing(Canvas):
         current_date = item.start
         current_month = current_date.month
         days_in_month = 0
-        month_x = item.x
+        x = item.x
         for day in range(1, self.total_days + 1):  # indexed from 1
             if current_month == current_date.month:
                 days_in_month += 1
             else:
                 month_width = days_in_month * self.pixels_per_day
-                self.draw_rectangle(month_x, item.y, month_width, item.height, **options)
-                month_x += days_in_month * self.pixels_per_day
+                self.draw_rectangle(x, item.y, month_width, item.height, **options)
+                x += days_in_month * self.pixels_per_day
                 current_month = current_date.month
                 days_in_month = 1  # we start at one to capture first iteration
             current_date += datetime.timedelta(days=1)
@@ -100,14 +99,14 @@ class Drawing(Canvas):
         current_date = item.start
         current_year = current_date.year
         days_in_year = 0
-        year_x = item.x
+        x = item.x
         for day in range(1, self.total_days + 1):  # indexed from 1
             if current_year == current_date.year:
                 days_in_year += 1
             else:
                 year_width = days_in_year * self.pixels_per_day
-                self.draw_rectangle(year_x, item.y, year_width, item.height, **options)
-                year_x += days_in_year * self.pixels_per_day
+                self.draw_rectangle(x, item.y, year_width, item.height, **options)
+                x += days_in_year * self.pixels_per_day
                 current_year = current_date.year
                 days_in_year = 1
             current_date += datetime.timedelta(days=1)
