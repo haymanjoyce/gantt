@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 import logging
-import math
 import datetime
 
 from tkinter import Canvas
-
-from filing import get_config_data
 
 from settings import Settings
 
@@ -62,53 +59,57 @@ class Drawing(Canvas):
 
     def draw_scale(self, item):
         options = {'fill': item.fill, 'outline': item.border_color, 'width': item.border_width}
+        if item.interval == 'DAYS':
+            self.draw_days(item, options)
+        elif item.interval == 'MONTHS':
+            self.draw_months(item, options)
+        elif item.interval == 'YEARS':
+            self.draw_years(item, options)
+        else:
+            raise ValueError(item.interval)
 
+    def draw_days(self, item, options):
         current_date = item.start
-
-        current_month = current_date.month
-        current_year = current_date.year
-
-        days_in_month = 0
-        days_in_year = 0
-
-        day_x = item.x
-        month_x = item.x
-        year_x = item.x
-
+        x = item.x
+        height_offset = item.height / 2
         for day in range(1, self.total_days + 1):  # indexed from 1
+            self.draw_rectangle(x, item.y, self.pixels_per_day, item.height, **options)
+            text_y = item.y + height_offset
+            self.create_text(x, text_y, text="ABC", anchor="w", tag="test_name")
+            self.tag_raise("test_name")
+            x += self.pixels_per_day
+            current_date += datetime.timedelta(days=1)
 
-            if item.interval == 'DAYS':
-                self.draw_rectangle(day_x, item.y, self.pixels_per_day, item.height, **options)
-                day_x += self.pixels_per_day
-
-                height_offset = item.height / 2
-                text_y = item.y + height_offset
-                self.create_text(day_x, text_y, text="ABC", anchor="w", tag="test_name")
-                self.tag_raise("test_name")
-
-            elif item.interval == 'MONTHS':
-                if current_month == current_date.month:
-                    days_in_month += 1
-                else:
-                    month_width = days_in_month * self.pixels_per_day
-                    self.draw_rectangle(month_x, item.y, month_width, item.height, **options)
-                    month_x += days_in_month * self.pixels_per_day
-                    current_month = current_date.month
-                    days_in_month = 1  # we start at one to capture first iteration
-
-            elif item.interval == 'YEARS':
-                if current_year == current_date.year:
-                    days_in_year += 1
-                else:
-                    year_width = days_in_year * self.pixels_per_day
-                    self.draw_rectangle(year_x, item.y, year_width, item.height, **options)
-                    year_x += days_in_year * self.pixels_per_day
-                    current_year = current_date.year
-                    days_in_year = 1
-
+    def draw_months(self, item, options):
+        current_date = item.start
+        current_month = current_date.month
+        days_in_month = 0
+        month_x = item.x
+        for day in range(1, self.total_days + 1):  # indexed from 1
+            if current_month == current_date.month:
+                days_in_month += 1
             else:
-                raise ValueError(item.interval)
+                month_width = days_in_month * self.pixels_per_day
+                self.draw_rectangle(month_x, item.y, month_width, item.height, **options)
+                month_x += days_in_month * self.pixels_per_day
+                current_month = current_date.month
+                days_in_month = 1  # we start at one to capture first iteration
+            current_date += datetime.timedelta(days=1)
 
+    def draw_years(self, item, options):
+        current_date = item.start
+        current_year = current_date.year
+        days_in_year = 0
+        year_x = item.x
+        for day in range(1, self.total_days + 1):  # indexed from 1
+            if current_year == current_date.year:
+                days_in_year += 1
+            else:
+                year_width = days_in_year * self.pixels_per_day
+                self.draw_rectangle(year_x, item.y, year_width, item.height, **options)
+                year_x += days_in_year * self.pixels_per_day
+                current_year = current_date.year
+                days_in_year = 1
             current_date += datetime.timedelta(days=1)
 
     # ROWS

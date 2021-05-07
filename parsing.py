@@ -23,7 +23,6 @@ class Parser:
             sheet_headers = sheet[1]
             mapping = get_mapping(sheet_name, sheet_headers)
             if feature_type == 'Scale':
-                # y = self.settings.y
                 for count, sheet_row in enumerate(sheet.iter_rows(min_row=2, values_only=True)):
                     feature = GLOBALS.get(feature_type)()
                     # feature.type
@@ -39,7 +38,6 @@ class Parser:
                     feature.fill = sheet_row[mapping.get('FILL')]
                     feature.border_color = sheet_row[mapping.get('BORDER COLOR')]
                     feature.border_width = sheet_row[mapping.get('BORDER WIDTH')]
-                    # y += feature.height
                     features += feature,
             elif feature_type == 'Row':
                 for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
