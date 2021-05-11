@@ -16,7 +16,7 @@ def create_template(field_name_dict):
     workbook.remove(workbook.active)
     header = NamedStyle(name="header")
     header.font = Font(bold=True)
-    for key, value in field_name_dict.features():
+    for key, value in field_name_dict.items():
         workbook.create_sheet(key)
         workbook[key].append(value)
         for cell in workbook[key][1]:
@@ -53,20 +53,20 @@ def get_field_names(data_class_instance):
 
 
 def get_exceptions(instance_attributes):
-    exceptions = ('Type', 'Labels', )
-    design_type = instance_attributes.get('type').lower()
+    exceptions = ('Type', 'Labels', 'Sheet row')
+    feature_type = instance_attributes.get('type').lower()
     try:
-        if design_type == "scale":
+        if feature_type == "scale":
             exceptions += ('Width', 'Start', 'Finish', 'X', 'Y', 'Rank')
-        elif design_type == "row":
+        elif feature_type == "row":
             exceptions += ()
-        elif design_type == "task":
+        elif feature_type == "task":
             exceptions += ()
-        elif design_type == "milestone":
+        elif feature_type == "milestone":
             exceptions += ()
-        elif design_type == "relationship":
+        elif feature_type == "relationship":
             exceptions += ()
-        elif design_type == "curtain":
+        elif feature_type == "curtain":
             exceptions += ()
         else:
             pass

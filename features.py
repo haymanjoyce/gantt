@@ -13,6 +13,7 @@ class Scale:
 
     type = attrib(default="scale")
     labels = attrib(default="")
+    sheet_row = attrib(default="")
     rank = attrib(default=0)
     start = attrib(default=None)
     finish = attrib(default=None)
@@ -54,7 +55,8 @@ class Row:
 
     type = attrib(default="row")
     labels = attrib(default="")
-    row_number = attrib(default=0)
+    sheet_row = attrib(default=0)
+    key = attrib(default=0)
     height = attrib(default=20)
     fill = attrib(default="")
     text = attrib(default="")
@@ -68,8 +70,9 @@ class Task:
 
     type = attrib(default="task")
     labels = attrib(default="")
-    id = attrib(default=None)
-    parent_row = attrib(default=None)
+    sheet_row = attrib(default=None)
+    key = attrib(default=None)
+    parent = attrib(default=None)
     start = attrib(default=None)
     finish = attrib(default=None)
     fill = attrib(default=None)
@@ -89,8 +92,9 @@ class Milestone:
 
     type = attrib(default="milestone")
     labels = attrib(default="")
-    id = attrib(default=None)
-    parent_row = attrib(default=None)
+    sheet_row = attrib(default=None)
+    key = attrib(default=None)
+    parent = attrib(default=None)
     date = attrib(default=None)
     fill = attrib(default=None)
     text = attrib(default="")
@@ -110,6 +114,7 @@ class Relationship:
 
     type = attrib(default="relationship")
     labels = attrib(default="")
+    sheet_row = attrib(default=None)
     source = attrib(default="")
     destination = attrib(default="")
     width = attrib(default="")
@@ -121,6 +126,7 @@ class Curtain:
 
     type = attrib(default="curtain")
     labels = attrib(default="")
+    sheet_row = attrib(default=None)
     start = attrib(default="")
     finish = attrib(default="")
     fill = attrib(default="")
@@ -131,6 +137,7 @@ class Bar:
 
     type = attrib(default="bar")
     labels = attrib(default="")
+    sheet_row = attrib(default=None)
     date = attrib(default="")
     color = attrib(default="")
     width = attrib(default="")
