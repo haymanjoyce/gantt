@@ -17,6 +17,8 @@ class Settings:
     height = attrib()
     start = attrib()
     finish = attrib()
+    rows = attrib()
+    show_rows = attrib()
 
     @x.default
     def default_x(self):
@@ -53,3 +55,17 @@ class Settings:
             return datetime.datetime.strptime(self.config_data['finish'], '%Y/%m/%d')
         else:
             return self.start + datetime.timedelta(20)
+
+    @rows.default
+    def default_rows(self):
+        if self.config_data.get('rows'):
+            return int(self.config_data.get('rows'))
+        else:
+            return 1
+
+    @show_rows.default
+    def default_show_rows(self):
+        if self.config_data.get('show_rows'):
+            return bool(self.config_data.get('show_rows'))
+        else:
+            return False

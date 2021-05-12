@@ -5,9 +5,6 @@ import logging
 from attr import attrs, attrib
 
 
-FEATURES = ('Scale', 'Row', 'Task', 'Milestone', 'Relationship', 'Curtain')
-
-
 @attrs
 class Scale:
 
@@ -104,7 +101,6 @@ class Milestone:
     text_anchor = attrib(default="")
     text_align = attrib(default="")
     text_adjust = attrib(default="")
-
     bar_layer = attrib(default=None)
     text_layer = attrib(default=None)
 
@@ -142,3 +138,17 @@ class Bar:
     color = attrib(default="")
     width = attrib(default="")
 
+
+@attrs
+class Group:
+
+    type = attrib(default="group")
+    labels = attrib(default="")
+    sheet_row = attrib(default=0)
+    key = attrib(default=0)
+    height = attrib(default=20)
+    fill = attrib(default="")
+    text = attrib(default="")
+    font_color = attrib(default="")
+    font_size = attrib(default=10)
+    font_style = attrib(default="")

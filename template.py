@@ -5,8 +5,7 @@ import logging
 from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
 
-from features import Scale, Row, Task, Milestone, Relationship, Curtain
-from features import FEATURES
+from features import Scale, Task, Relationship, Curtain, Bar, Group
 
 GLOBALS = globals()
 
@@ -26,11 +25,12 @@ def create_template(field_name_dict):
 
 def get_field_name_dict():
     field_name_dict = {}
+    features = ('Scale', 'Task', 'Relationship', 'Curtain', 'Bar', 'Group')
     try:
-        for class_name in FEATURES:
-            data_class_instance = GLOBALS.get(class_name)()
+        for feature in features:
+            data_class_instance = GLOBALS.get(feature)()
             field_names = get_field_names(data_class_instance)
-            sheet_name = class_name + 's'
+            sheet_name = feature + 's'
             field_name_dict.setdefault(sheet_name, field_names)
     except TypeError:
         logging.debug("Trying to call class that does not exist.")

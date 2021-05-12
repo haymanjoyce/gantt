@@ -11,12 +11,15 @@
 # TODO test spreadsheet for negative values
 # TODO all homemade modules should be imported using "from x import y" pattern
 # TODO refactor use of settings in interface
+# TODO handle case where total scale height exceeds chart and row height
 # TODO form validation such that finish cannot be less than start
 # TODO add options to scales (font color, font size, font type, alternating (e.g. black white))
 # TODO add ability to define custom date formats
 # TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
-# TODO NEXT: draw rows
+# TODO add groups (from row a to row b)
+# TODO rows to settings as something you draw on top of
+# TODO tasks and milestones on same sheet
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -2,8 +2,7 @@
 
 import logging
 
-from features import Scale, Row, Task, Milestone, Relationship, Curtain
-from features import FEATURES
+from features import Scale, Task, Relationship, Curtain, Bar, Group
 from settings import Settings
 
 
@@ -14,7 +13,8 @@ class Parser:
 
     def load_items(self):
         items = tuple()
-        for feature_type in FEATURES:
+        features = ('Scale', 'Task', 'Relationship', 'Curtain', 'Bar', 'Group')
+        for feature_type in features:
             sheet_name = feature_type + 's'
             sheet = self.workbook[sheet_name]
             sheet_headers = sheet[1]
@@ -23,17 +23,15 @@ class Parser:
                 for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
                     item = self.load_scale(sheet_row, sheet_mapping)
                     items += item,
-            elif sheet_name == 'Rows':
-                for sheet_row in sheet.iter_rows(min_row=2):
-                    item = self.load_row(sheet_row, sheet_mapping)
-                    items += item,
             elif sheet_name == 'Tasks':
-                pass
-            elif sheet_name == 'Milestones':
                 pass
             elif sheet_name == 'Relationships':
                 pass
             elif sheet_name == 'Curtains':
+                pass
+            elif sheet_name == 'Bars':
+                pass
+            elif sheet_name == 'Groups':
                 pass
             else:
                 raise ValueError(sheet_name)
@@ -54,20 +52,6 @@ class Parser:
         item.fill = sheet_row[sheet_mapping.get('FILL')]
         item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
         item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
-        return item
-
-    def load_row(self, sheet_row, sheet_mapping):
-        item = Row()
-        # item.type
-        item.labels = ""
-        item.sheet_row = sheet_row[0].row  # row number attribute of cell, not row
-        item.key = sheet_row[sheet_mapping.get('KEY')].value
-        item.height = sheet_row[sheet_mapping.get('HEIGHT')].value
-        item.fill = sheet_row[sheet_mapping.get('FILL')].value
-        item.text = sheet_row[sheet_mapping.get('TEXT')].value
-        item.font_color = sheet_row[sheet_mapping.get('FONT COLOR')].value
-        item.font_size = sheet_row[sheet_mapping.get('FONT SIZE')].value
-        item.font_style = sheet_row[sheet_mapping.get('FONT STYLE')].value
         return item
 
 

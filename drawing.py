@@ -124,17 +124,16 @@ class Drawing(Canvas):
     # ROWS
 
     def draw_rows(self):
-        items = [item for item in self.items if item.type == 'row']
         y = self.first_row
-        for item in items:
-            item.y = y
-            self.draw_row(item)
-            y += item.height
+        total_rows = self.settings.rows
+        for row in range(0, total_rows):
+            self.draw_row(y)
+            y += 20
         return y
 
-    def draw_row(self, item):
-        options = {'fill': item.fill, 'outline': 'black', 'width': 1}
-        self.draw_rectangle(self.settings.x, item.y, self.settings.width, item.height, **options)
+    def draw_row(self, y):
+        options = {'outline': 'black', 'width': 1}
+        self.draw_rectangle(self.settings.x, y, self.settings.width, 20, **options)
 
     def draw_row_names(self):
         pass
