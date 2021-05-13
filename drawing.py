@@ -21,6 +21,7 @@ class Drawing(Canvas):
         self.total_days = self.time_delta.days + 1  # range inclusive of end dates
         self.pixels_per_day = self.settings.width / self.total_days
         self.first_row = self.draw_scales()  # y for first row
+        self.remaining_space = self.settings.height - self.first_row
         self.draw_rows()
 
     # SHAPES
@@ -132,7 +133,7 @@ class Drawing(Canvas):
         return y
 
     def draw_row(self, y):
-        options = {'outline': 'black', 'width': 1}
+        options = {'outline': 'grey', 'width': 0.5}
         self.draw_rectangle(self.settings.x, y, self.settings.width, 20, **options)
 
     def draw_row_names(self):

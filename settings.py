@@ -18,7 +18,9 @@ class Settings:
     start = attrib()
     finish = attrib()
     rows = attrib()
+    row_height = attrib()
     show_rows = attrib()
+    show_row_nums = attrib()
 
     @x.default
     def default_x(self):
@@ -63,9 +65,23 @@ class Settings:
         else:
             return 1
 
+    @row_height.default
+    def default_row_height(self):
+        if self.config_data.get('row_height'):
+            return int(self.config_data.get('row_height'))
+        else:
+            return 10
+
     @show_rows.default
     def default_show_rows(self):
         if self.config_data.get('show_rows'):
             return bool(self.config_data.get('show_rows'))
+        else:
+            return False
+
+    @show_row_nums.default
+    def default_show_row_nums(self):
+        if self.config_data.get('show_row_nums'):
+            return bool(self.config_data.get('show_row_nums'))
         else:
             return False

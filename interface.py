@@ -4,7 +4,7 @@ import logging
 import datetime
 
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext, Checkbutton, IntVar
-from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST
+from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST, GROOVE
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
@@ -15,7 +15,6 @@ import dialogues
 import drawing
 import utils
 import template
-from settings import Settings
 
 
 class App(Tk):
@@ -56,6 +55,7 @@ class Controls(Frame):
         self.check_count = 0
         self.run_count = 0
         self.show_rows = IntVar()
+        self.show_row_nums = IntVar()
 
         self.v_cmd_1 = (self.register(self.field_validation_1), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         self.v_cmd_2 = (self.register(self.field_validation_2), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
@@ -65,7 +65,8 @@ class Controls(Frame):
         self.lbl_finish = Label(self, text="Timescale finish:")
         self.lbl_width = Label(self, text="Chart width:")
         self.lbl_height = Label(self, text="Chart height:")
-        self.lbl_rows = Label(self, text="Number of rows:")
+        self.lbl_num_rows = Label(self, text="Number of rows:")
+        self.lbl_row_height = Label(self, text="Row height:")
         self.lbl_source = Label(self, text="Source file:")
 
         self.ent_start = DateEntry(self, date_pattern='yyyy/MM/dd', relief="groove")
@@ -73,10 +74,13 @@ class Controls(Frame):
 
         self.ent_width = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_1)
         self.ent_height = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_1)
-        self.ent_rows = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_3)
+        self.ent_num_rows = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_3)
+        self.ent_row_height = Entry(self, relief="groove", validate="key", validatecommand=self.v_cmd_3)
         self.ent_filepath = Entry(self, text="", relief="groove", validate="key", validatecommand=self.v_cmd_2)
 
-        self.check_rows = Checkbutton(self, text="Show rows", variable=self.show_rows, onvalue=1, offvalue=0)
+        self.check_frame = Frame(self, relief=GROOVE, border=1)
+        self.check_show_rows = Checkbutton(self.check_frame, text="Show rows", variable=self.show_rows, onvalue=1, offvalue=0)
+        self.check_show_row_nums = Checkbutton(self.check_frame, text="Show row numbers", variable=self.show_row_nums, onvalue=1, offvalue=0)
 
         self.btn_select = Button(self, text="Select workbook", command=self.on_select, relief="groove")
         self.btn_check = Button(self, text="Check workbook", command=self.on_check, relief="groove")
@@ -119,7 +123,9 @@ class Controls(Frame):
 
     @staticmethod
     def field_validation_3(*args):
-        if len(args[2]) > 3:
+        if args[2] == str(0):
+            return False
+        elif len(args[2]) > 3:
             return False
         elif args[2].isdigit():
             return True
@@ -141,21 +147,28 @@ class Controls(Frame):
         self.lbl_height.grid(row=2, column=1, sticky="w", pady=(0, 0), padx=(5, 0))
         self.ent_height.grid(row=3, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
 
-        self.lbl_rows.grid(row=4, column=0, sticky="w", pady=(0, 0), padx=(0, 5))
-        self.ent_rows.grid(row=5, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
+        self.lbl_num_rows.grid(row=4, column=0, sticky="w", pady=(0, 0), padx=(0, 5))
+        self.ent_num_rows.grid(row=5, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
 
-        self.check_rows.grid(row=5, column=1, sticky="w", pady=(0, 0), padx=(5, 0))
+        self.lbl_row_height.grid(row=4, column=1, sticky="w", pady=(0, 0), padx=(5, 0))
+        self.ent_row_height.grid(row=5, column=1, sticky="nsew", pady=(0, 5), padx=(5, 0))
 
-        self.lbl_source.grid(row=6, column=0, columnspan=2, sticky="w")
-        self.ent_filepath.grid(row=7, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_select.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_check.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_run.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.scroller.grid(row=11, column=0, columnspan=2, pady=(0, 5))
-        self.btn_copy.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_image.grid(row=13, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_postscript.grid(row=14, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_template.grid(row=15, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
+        self.check_frame.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=(5, 5), padx=(0, 0))
+
+        self.check_show_rows.grid(sticky="w", pady=(0, 0), padx=(0, 0))
+        self.check_show_row_nums.grid(sticky="w", pady=(0, 0), padx=(0, 0))
+
+        self.lbl_source.grid(row=7, column=0, columnspan=2, sticky="w")
+        self.ent_filepath.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 5), ipady=2)
+
+        self.btn_select.grid(row=9, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_check.grid(row=10, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_run.grid(row=11, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.scroller.grid(row=12, column=0, columnspan=2, pady=(0, 5))
+        self.btn_copy.grid(row=13, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_image.grid(row=14, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_postscript.grid(row=15, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_template.grid(row=16, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
     def bind_widgets(self):
         self.ent_finish.bind('<FocusIn>', self.check_start)
@@ -190,31 +203,47 @@ class Controls(Frame):
         else:
             self.settings["width"] = 800
             logging.info("Default chart width used.")
+            self.refresh_scroller()
         if height:
             self.settings["height"] = height
         else:
             self.settings["height"] = 600
             logging.info("Default chart height used.")
+            self.refresh_scroller()
 
-        rows = self.ent_rows.get()
+        rows = self.ent_num_rows.get()
         if rows:
             self.settings["rows"] = rows
         else:
             self.settings.setdefault("rows", 1)
             logging.info("Default number of rows used.")
+            self.refresh_scroller()
+        row_height = self.ent_row_height.get()
+        if row_height:
+            self.settings["row_height"] = row_height
+        else:
+            self.settings.setdefault("row_height", 10)
+            logging.info("Default row height used.")
+            self.refresh_scroller()
 
         self.settings["show_rows"] = self.show_rows.get()
+        self.settings["show_row_nums"] = self.show_row_nums.get()
 
     def insert_form_data(self):
         self.ent_start.set_date(self.settings.get("start", datetime.date.today().strftime('%Y/%m/%d')))
         self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
         self.ent_width.insert(0, self.settings.get("width", 800))
         self.ent_height.insert(0, self.settings.get("height", 600))
-        self.ent_rows.insert(0, self.settings.get("rows", 1))
+        self.ent_num_rows.insert(0, self.settings.get("rows", 1))
+        self.ent_row_height.insert(0, self.settings.get("row_height", 10))
         if self.settings.get("show_rows", 1):
-            self.check_rows.select()
+            self.check_show_rows.select()
         else:
-            self.check_rows.deselect()
+            self.check_show_rows.deselect()
+        if self.settings.get("show_row_nums", 1):
+            self.check_show_row_nums.select()
+        else:
+            self.check_show_row_nums.deselect()
 
     def set_select(self, file_source=None):
         if file_source:

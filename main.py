@@ -20,6 +20,9 @@
 # TODO add groups (from row a to row b)
 # TODO rows to settings as something you draw on top of
 # TODO tasks and milestones on same sheet
+# TODO show row numbers
+# TODO auto-calculate row height
+# TODO settings option to determine row height
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
