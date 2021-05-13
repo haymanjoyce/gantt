@@ -211,11 +211,11 @@ class Controls(Frame):
             logging.info("Default chart height used.")
             self.refresh_scroller()
 
-        rows = self.ent_num_rows.get()
-        if rows:
-            self.settings["rows"] = rows
+        num_rows = self.ent_num_rows.get()
+        if num_rows:
+            self.settings["num_rows"] = num_rows
         else:
-            self.settings.setdefault("rows", 1)
+            self.settings.setdefault("num_rows", 1)
             logging.info("Default number of rows used.")
             self.refresh_scroller()
         row_height = self.ent_row_height.get()
@@ -234,7 +234,7 @@ class Controls(Frame):
         self.ent_finish.set_date(self.settings.get("finish", (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y/%m/%d')))
         self.ent_width.insert(0, self.settings.get("width", 800))
         self.ent_height.insert(0, self.settings.get("height", 600))
-        self.ent_num_rows.insert(0, self.settings.get("rows", 1))
+        self.ent_num_rows.insert(0, self.settings.get("num_rows", 1))
         self.ent_row_height.insert(0, self.settings.get("row_height", 10))
         if self.settings.get("show_rows", 1):
             self.check_show_rows.select()

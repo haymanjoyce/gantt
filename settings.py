@@ -17,7 +17,7 @@ class Settings:
     height = attrib()
     start = attrib()
     finish = attrib()
-    rows = attrib()
+    num_rows = attrib()
     row_height = attrib()
     show_rows = attrib()
     show_row_nums = attrib()
@@ -58,10 +58,10 @@ class Settings:
         else:
             return self.start + datetime.timedelta(20)
 
-    @rows.default
-    def default_rows(self):
-        if self.config_data.get('rows'):
-            return int(self.config_data.get('rows'))
+    @num_rows.default
+    def default_num_rows(self):
+        if self.config_data.get('num_rows'):
+            return int(self.config_data.get('num_rows'))
         else:
             return 1
 

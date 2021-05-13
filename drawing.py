@@ -15,13 +15,15 @@ class Drawing(Canvas):
         self.parent = parent
         self.items = data
         self.settings = Settings()
-        self.config(width=self.settings.width, height=self.settings.height, background="#eee")
+        self.config(width=self.settings.width, height=self.settings.height, background="#fff")
         self.pack()
         self.time_delta = (self.settings.finish - self.settings.start)
         self.total_days = self.time_delta.days + 1  # range inclusive of end dates
         self.pixels_per_day = self.settings.width / self.total_days
         self.first_row = self.draw_scales()  # y for first row
         self.remaining_space = self.settings.height - self.first_row
+        self.max_row_height = self.remaining_space / self.settings.num_rows
+        self.row_height = self.limit_row_height()
         self.draw_rows()
 
     # SHAPES
@@ -124,23 +126,33 @@ class Drawing(Canvas):
 
     # ROWS
 
+    def limit_row_height(self):
+        if self.settings.row_height > self.max_row_height:
+            return self.max_row_height
+        else:
+            return self.settings.row_height
+
     def draw_rows(self):
         y = self.first_row
-        total_rows = self.settings.rows
-        for row in range(0, total_rows):
-            self.draw_row(y)
-            y += 20
+        count = 1
+        for row in range(0, self.settings.num_rows):
+            if self.settings.show_rows:
+                self.draw_row(y)
+            if self.settings.show_row_nums:
+                self.draw_row_num(y, count)
+            y += self.row_height
+            count += 1
         return y
 
     def draw_row(self, y):
         options = {'outline': 'grey', 'width': 0.5}
-        self.draw_rectangle(self.settings.x, y, self.settings.width, 20, **options)
+        self.draw_rectangle(self.settings.x, y, self.settings.width, self.row_height, **options)
 
-    def draw_row_names(self):
-        pass
-
-    def draw_row_name(self):
-        pass
+    def draw_row_num(self, y, label):
+        x = self.settings.x + 30
+        offset = self.row_height / 2
+        y += offset
+        self.create_text(x, y, text=label, anchor="e")
 
     # TASKS
 
