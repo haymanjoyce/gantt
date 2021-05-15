@@ -37,7 +37,7 @@ def get_config_data():
 def save_config_data(data):
     with open(get_path(CONFIG_FILE), "w") as file:
         file.write(json.dumps(data))
-    logging.debug("Configuration data saved.")
+    # logging.debug("Configuration data saved.")
 
 
 def wipe_config_file():

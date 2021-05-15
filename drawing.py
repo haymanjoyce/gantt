@@ -27,7 +27,6 @@ class Drawing(Canvas):
         self.row_locations = self.draw_rows()
         self.tasks = self.load_task_locations()
         self.draw_tasks()
-        print(self.tasks)
 
     # SHAPES
 
@@ -163,22 +162,22 @@ class Drawing(Canvas):
 
     def load_task_locations(self):
         tasks = [item for item in self.items if item.type == 'task']
+        unhomed = 0
         for task in tasks:
             if task.row in self.row_locations.keys():
                 task.y = self.row_locations[task.row]
+            else:
+                task.y = self.first_row
+                unhomed += 1
+        if unhomed:
+            logging.warning(f"{unhomed} unhomed task(s) assigned to first row.")
         return tasks
 
     def draw_tasks(self):
-        pass
-
-    def draw_task(self, start, finish, **options):
-        pass
-
-    def draw_task_names(self):
-        pass
-
-    def draw_task_name(self):
-        pass
+        for task in self.tasks:
+            # args = (0, task.y, 100, self.row_height)
+            self.draw_rectangle(0, task.y, 100, self.row_height, fill='red', tag='tasks')
+        self.tag_lower('tasks')
 
     # RELATIONSHIPS
 
