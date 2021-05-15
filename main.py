@@ -17,12 +17,7 @@
 # TODO add ability to define custom date formats
 # TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
-# TODO add groups (from row a to row b)
-# TODO rows to settings as something you draw on top of
-# TODO tasks and milestones on same sheet
-# TODO show row numbers
-# TODO auto-calculate row height
-# TODO settings option to determine row height
+# TODO tasks
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

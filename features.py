@@ -47,20 +47,20 @@ class Scale:
             # raise ValueError(value)
 
 
-@attrs
-class Row:
-
-    type = attrib(default="row")
-    labels = attrib(default="")
-    sheet_row = attrib(default=0)
-    key = attrib(default=0)
-    height = attrib(default=20)
-    fill = attrib(default="")
-    text = attrib(default="")
-    font_color = attrib(default="")
-    font_size = attrib(default=10)
-    font_style = attrib(default="")
-
+# @attrs
+# class Row:
+#
+#     type = attrib(default="row")
+#     labels = attrib(default="")
+#     sheet_row = attrib(default=0)
+#     key = attrib(default=0)
+#     height = attrib(default=20)
+#     fill = attrib(default="")
+#     text = attrib(default="")
+#     font_color = attrib(default="")
+#     font_size = attrib(default=10)
+#     font_style = attrib(default="")
+#
 
 @attrs
 class Task:
@@ -69,9 +69,11 @@ class Task:
     labels = attrib(default="")
     sheet_row = attrib(default=None)
     key = attrib(default=None)
-    parent = attrib(default=None)
+    row = attrib(default=None)
     start = attrib(default=None)
     finish = attrib(default=None)
+    x = attrib(default=None)
+    y = attrib(default=None)
     fill = attrib(default=None)
     text = attrib(default="")
     font_color = attrib(default="")
@@ -84,25 +86,25 @@ class Task:
     text_layer = attrib(default=None)
 
 
-@attrs
-class Milestone:
-
-    type = attrib(default="milestone")
-    labels = attrib(default="")
-    sheet_row = attrib(default=None)
-    key = attrib(default=None)
-    parent = attrib(default=None)
-    date = attrib(default=None)
-    fill = attrib(default=None)
-    text = attrib(default="")
-    font_color = attrib(default="")
-    font_size = attrib(default=10)
-    font_style = attrib(default="")
-    text_anchor = attrib(default="")
-    text_align = attrib(default="")
-    text_adjust = attrib(default="")
-    bar_layer = attrib(default=None)
-    text_layer = attrib(default=None)
+# @attrs
+# class Milestone:
+#
+#     type = attrib(default="milestone")
+#     labels = attrib(default="")
+#     sheet_row = attrib(default=None)
+#     key = attrib(default=None)
+#     parent = attrib(default=None)
+#     date = attrib(default=None)
+#     fill = attrib(default=None)
+#     text = attrib(default="")
+#     font_color = attrib(default="")
+#     font_size = attrib(default=10)
+#     font_style = attrib(default="")
+#     text_anchor = attrib(default="")
+#     text_align = attrib(default="")
+#     text_adjust = attrib(default="")
+#     bar_layer = attrib(default=None)
+#     text_layer = attrib(default=None)
 
 
 @attrs

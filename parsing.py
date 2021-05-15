@@ -24,7 +24,9 @@ class Parser:
                     item = self.load_scale(sheet_row, sheet_mapping)
                     items += item,
             elif sheet_name == 'Tasks':
-                pass
+                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+                    item = self.load_task(sheet_row, sheet_mapping)
+                    items += item,
             elif sheet_name == 'Relationships':
                 pass
             elif sheet_name == 'Curtains':
@@ -52,6 +54,11 @@ class Parser:
         item.fill = sheet_row[sheet_mapping.get('FILL')]
         item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
         item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
+        return item
+
+    def load_task(self, sheet_row, sheet_mapping):
+        item = Task()
+        item.row = sheet_row[sheet_mapping.get('ROW')]
         return item
 
 

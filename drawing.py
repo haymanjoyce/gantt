@@ -23,8 +23,11 @@ class Drawing(Canvas):
         self.first_row = self.draw_scales()  # y for first row
         self.remaining_space = self.settings.height - self.first_row
         self.max_row_height = self.remaining_space / self.settings.num_rows
-        self.row_height = self.limit_row_height()
-        self.draw_rows()
+        self.row_height = self.cap_row_height()
+        self.row_locations = self.draw_rows()
+        self.tasks = self.load_task_locations()
+        self.draw_tasks()
+        print(self.tasks)
 
     # SHAPES
 
@@ -126,7 +129,7 @@ class Drawing(Canvas):
 
     # ROWS
 
-    def limit_row_height(self):
+    def cap_row_height(self):
         if self.settings.row_height > self.max_row_height:
             return self.max_row_height
         else:
@@ -135,14 +138,16 @@ class Drawing(Canvas):
     def draw_rows(self):
         y = self.first_row
         count = 1
+        row_locations = dict()
         for row in range(0, self.settings.num_rows):
             if self.settings.show_rows:
                 self.draw_row(y)
             if self.settings.show_row_nums:
                 self.draw_row_num(y, count)
+            row_locations.setdefault(count, y)
             y += self.row_height
             count += 1
-        return y
+        return row_locations
 
     def draw_row(self, y):
         options = {'outline': 'grey', 'width': 0.5}
@@ -156,6 +161,13 @@ class Drawing(Canvas):
 
     # TASKS
 
+    def load_task_locations(self):
+        tasks = [item for item in self.items if item.type == 'task']
+        for task in tasks:
+            if task.row in self.row_locations.keys():
+                task.y = self.row_locations[task.row]
+        return tasks
+
     def draw_tasks(self):
         pass
 
@@ -166,20 +178,6 @@ class Drawing(Canvas):
         pass
 
     def draw_task_name(self):
-        pass
-
-    # MILESTONES
-
-    def draw_milestones(self):
-        pass
-
-    def draw_milestone(self):
-        pass
-
-    def draw_milestone_names(self):
-        pass
-
-    def draw_milestone_name(self):
         pass
 
     # RELATIONSHIPS
@@ -204,4 +202,9 @@ class Drawing(Canvas):
         pass
 
     def draw_bar(self):
+        pass
+
+    # GROUPS
+
+    def draw_groups(self):
         pass
