@@ -49,6 +49,17 @@ A and B share line 0,10 20,10
 Borders bleed
 Experimented with limiting border to boundaries but did not seem to work so accepting the bleed
 
+INTELLIGENCE V CONTROL
+
+Choice to make less of planning tool and more of drawing tool where, for example:
+ - You have Tasks with bars and text, or Bars and Text
+ - You have Relationships with Source and Destination IDs, or Connections where the user has fine control over end points
+
+I decided to go for control over intelligence:
+ - First, target user is me and I want control over intelligence
+ - Second, you can use Excel to do the intelligent stuff
+ - Third, I can add intelligent stuff later, supplementing or replacing
+
 FUTURE DEVELOPMENT
 
 Develop own grid interface

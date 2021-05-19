@@ -42,7 +42,7 @@ class Parser:
     def load_scale(self, sheet_row, sheet_mapping):
         item = Scale()
         # item.type
-        item.labels = ""
+        item.tags = ""
         item.width = self.settings.width
         item.height = sheet_row[sheet_mapping.get('HEIGHT')]
         item.start = self.settings.start

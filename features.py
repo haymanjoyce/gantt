@@ -9,19 +9,26 @@ from attr import attrs, attrib
 class Scale:
 
     type = attrib(default="scale")
-    labels = attrib(default="")
+    tags = attrib(default="")
     sheet_row = attrib(default="")
-    rank = attrib(default=0)
+    layer = attrib(default=None)
+    key = attrib(default=0)
+
+    order = attrib(default=0)
+
     start = attrib(default=None)
     finish = attrib(default=None)
+    _interval = attrib(default="days")
+
     x = attrib(default=0)
     y = attrib(default=0)
+
     width = attrib(default=800)
     height = attrib(default=100)
+
     fill = attrib(default="red")
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
-    _interval = attrib(default="days")
 
     @property
     def interval(self):
@@ -47,74 +54,84 @@ class Scale:
             # raise ValueError(value)
 
 
-# @attrs
-# class Row:
-#
-#     type = attrib(default="row")
-#     labels = attrib(default="")
-#     sheet_row = attrib(default=0)
-#     key = attrib(default=0)
-#     height = attrib(default=20)
-#     fill = attrib(default="")
-#     text = attrib(default="")
-#     font_color = attrib(default="")
-#     font_size = attrib(default=10)
-#     font_style = attrib(default="")
-#
+@attrs
+class Row:
+
+    type = attrib(default="row")
+    tags = attrib(default="")
+    sheet_row = attrib(default=0)
+    layer = attrib(default=None)
+    key = attrib(default=0)
+
+    height = attrib(default=20)
+    fill = attrib(default="")
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)
+
 
 @attrs
 class Task:
 
     type = attrib(default="task")
-    labels = attrib(default="")
+    tags = attrib(default="")
     sheet_row = attrib(default=None)
+    layer = attrib(default=None)
     key = attrib(default=None)
+
     row = attrib(default=None)
     start = attrib(default=None)
     finish = attrib(default=None)
+    height = attrib(default=None)
+    adjust = attrib(default=None)
+
     x = attrib(default=None)
     y = attrib(default=None)
+
     fill = attrib(default=None)
-    text = attrib(default="")
-    font_color = attrib(default="")
-    font_size = attrib(default=10)
-    font_style = attrib(default="")
-    text_anchor = attrib(default="")
-    text_align = attrib(default="")
-    text_adjust = attrib(default="")
-    bar_layer = attrib(default=None)
-    text_layer = attrib(default=None)
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)
 
 
-# @attrs
-# class Milestone:
-#
-#     type = attrib(default="milestone")
-#     labels = attrib(default="")
-#     sheet_row = attrib(default=None)
-#     key = attrib(default=None)
-#     parent = attrib(default=None)
-#     date = attrib(default=None)
-#     fill = attrib(default=None)
-#     text = attrib(default="")
-#     font_color = attrib(default="")
-#     font_size = attrib(default=10)
-#     font_style = attrib(default="")
-#     text_anchor = attrib(default="")
-#     text_align = attrib(default="")
-#     text_adjust = attrib(default="")
-#     bar_layer = attrib(default=None)
-#     text_layer = attrib(default=None)
+@attrs
+class Connection:
+
+    type = attrib(default="connection")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    from_row = attrib(default=None)
+    from_date = attrib(default=None)
+    from_adjust = attrib(default=None)
+    from_arrow = attrib(default=None)
+
+    to_row = attrib(default=None)
+    to_date = attrib(default=None)
+    to_adjust = attrib(default=None)
+    to_arrow = attrib(default=None)
+
+    from_x = attrib(default=None)
+    from_y = attrib(default=None)
+    to_x = attrib(default=None)
+    to_y = attrib(default=None)
+
+    width = attrib(default=0.0)
+    color = attrib(default="black")
 
 
 @attrs
 class Relationship:
 
     type = attrib(default="relationship")
-    labels = attrib(default="")
+    tags = attrib(default="")
     sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
     source = attrib(default="")
     destination = attrib(default="")
+
     width = attrib(default="")
     color = attrib(default="")
 
@@ -123,10 +140,14 @@ class Relationship:
 class Curtain:
 
     type = attrib(default="curtain")
-    labels = attrib(default="")
+    tags = attrib(default="")
     sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
     start = attrib(default="")
     finish = attrib(default="")
+
     fill = attrib(default="")
 
 
@@ -134,23 +155,82 @@ class Curtain:
 class Bar:
 
     type = attrib(default="bar")
-    labels = attrib(default="")
+    tags = attrib(default="")
     sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
     date = attrib(default="")
-    color = attrib(default="")
+
     width = attrib(default="")
+    color = attrib(default="")
 
 
 @attrs
 class Group:
 
     type = attrib(default="group")
-    labels = attrib(default="")
-    sheet_row = attrib(default=0)
-    key = attrib(default=0)
-    height = attrib(default=20)
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    from_row = attrib(default=None)
+    to_row = attrib(default=None)
+
     fill = attrib(default="")
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)
+
+
+@attrs
+class Text:
+
+    type = attrib(default="text")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    row = attrib(default=None)
+    date = attrib(default=None)
+
+    x = attrib(default=None)
+    y = attrib(default=None)
+
     text = attrib(default="")
-    font_color = attrib(default="")
-    font_size = attrib(default=10)
-    font_style = attrib(default="")
+
+    x_nudge = attrib(default="")
+    y_nudge = attrib(default="")
+
+    color = attrib(default="")
+    size = attrib(default=10)
+    style = attrib(default="")
+    weight = attrib(default="")
+
+    anchor = attrib(default="")
+
+    rotation = attrib(default="")
+
+    width = attrib(default="")
+    alignment = attrib(default="")
+
+
+@attrs
+class Box:
+
+    type = attrib(default="box")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    x = attrib(default=None)
+    y = attrib(default=None)
+
+    width = attrib(default=None)
+    height = attrib(default=None)
+
+    fill = attrib(default="")
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)

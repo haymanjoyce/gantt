@@ -17,7 +17,11 @@
 # TODO add ability to define custom date formats
 # TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
-# TODO tasks
+# TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
+# TODO separate calculation from drawing; so all data class values calculated in processing module
+# TODO separate text from tasks, changing tasks to bars
+# TODO change label attribute to tag in data classes
+# TODO recreate Row class
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
