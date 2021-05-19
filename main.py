@@ -22,6 +22,7 @@
 # TODO separate text from tasks, changing tasks to bars
 # TODO change label attribute to tag in data classes
 # TODO recreate Row class
+# TODO make template module dumber
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
