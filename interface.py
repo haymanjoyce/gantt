@@ -262,7 +262,7 @@ class Controls(Frame):
 
     def on_check(self):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        field_name_dict = template.get_field_name_dict()
+        field_name_dict = template.TEMPLATE
         self.check_count += 1
         filing.append_log(f'CHECK #{self.check_count}\n')
         checks.check_merged_cells(workbook)
@@ -301,8 +301,7 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def on_template(self):
-        field_name_dict = template.get_field_name_dict()
-        workbook = template.create_template(field_name_dict)
+        workbook = template.create_workbook(template.TEMPLATE)
         dialogues.export_workbook(workbook)
         self.refresh_scroller()
 

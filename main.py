@@ -23,6 +23,7 @@
 # TODO change label attribute to tag in data classes
 # TODO recreate Row class
 # TODO make template module dumber
+# TODO fix bugs with checks
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
