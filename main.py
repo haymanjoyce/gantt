@@ -19,11 +19,7 @@
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
 # TODO separate calculation from drawing; so all data class values calculated in processing module
-# TODO separate text from tasks, changing tasks to bars
-# TODO change label attribute to tag in data classes
-# TODO recreate Row class
-# TODO make template module dumber
-# TODO fix bugs with checks
+# TODO review and correct all parsing
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
