@@ -7,14 +7,8 @@ from openpyxl.styles import NamedStyle, Font
 
 TEMPLATE = {
     "Scales": ("Intervals", "Height", "Fill", "Border Width", "Border Color"),
-    "Tasks": ("Key", "Row", "Start", "Finish", "Fill", "Border Width", "Border Color", "Layer"),
-    "Connections": ("Temp", ),
-    "Relationships": ("Temp", ),
-    "Curtains": ("Temp", ),
-    "Bars": ("Temp", ),
-    "Groups": ("Temp", ),
-    "Text": ("Temp", ),
-    "Box": ("Temp", ),
+    "Bars": ("Row", "Start", "Finish", "Fill", "Border Width", "Border Color", "Layer"),
+    "Labels": ("Temp", ),
 }
 
 

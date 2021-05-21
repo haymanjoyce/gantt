@@ -2,7 +2,7 @@
 
 import logging
 
-from features import Scale, Task, Relationship, Curtain, Bar, Group
+from features import Scale, Bar, Label
 from settings import Settings
 
 
@@ -13,7 +13,7 @@ class Parser:
 
     def load_items(self):
         items = tuple()
-        features = ('Scale', 'Task', 'Relationship', 'Curtain', 'Bar', 'Group')
+        features = ('Scale', 'Bar', 'Label', )
         for feature_type in features:
             sheet_name = feature_type + 's'
             sheet = self.workbook[sheet_name]
@@ -23,17 +23,11 @@ class Parser:
                 for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
                     item = self.load_scale(sheet_row, sheet_mapping)
                     items += item,
-            elif sheet_name == 'Tasks':
+            elif sheet_name == 'Bars':
                 for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
                     item = self.load_task(sheet_row, sheet_mapping)
                     items += item,
-            elif sheet_name == 'Relationships':
-                pass
-            elif sheet_name == 'Curtains':
-                pass
-            elif sheet_name == 'Bars':
-                pass
-            elif sheet_name == 'Groups':
+            elif sheet_name == 'Labels':
                 pass
             else:
                 raise ValueError(sheet_name)
@@ -57,7 +51,7 @@ class Parser:
         return item
 
     def load_task(self, sheet_row, sheet_mapping):
-        item = Task()
+        item = Bar()
         item.row = sheet_row[sheet_mapping.get('ROW')]
         return item
 

@@ -20,6 +20,7 @@
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
 # TODO separate calculation from drawing; so all data class values calculated in processing module
 # TODO review and correct all parsing
+# TODO sample data dict to populate template with sample data in dev mode
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -70,9 +70,9 @@ class Row:
 
 
 @attrs
-class Task:
+class Bar:
 
-    type = attrib(default="task")
+    type = attrib(default="bar")
     tags = attrib(default="")
     sheet_row = attrib(default=None)
     layer = attrib(default=None)
@@ -93,100 +93,9 @@ class Task:
 
 
 @attrs
-class Connection:
+class Label:
 
-    type = attrib(default="connection")
-    tags = attrib(default="")
-    sheet_row = attrib(default=None)
-    layer = attrib(default=None)
-    key = attrib(default=None)
-
-    from_row = attrib(default=None)
-    from_date = attrib(default=None)
-    from_adjust = attrib(default=None)
-    from_arrow = attrib(default=None)
-
-    to_row = attrib(default=None)
-    to_date = attrib(default=None)
-    to_adjust = attrib(default=None)
-    to_arrow = attrib(default=None)
-
-    from_x = attrib(default=None)
-    from_y = attrib(default=None)
-    to_x = attrib(default=None)
-    to_y = attrib(default=None)
-
-    width = attrib(default=0.0)
-    color = attrib(default="black")
-
-
-@attrs
-class Relationship:
-
-    type = attrib(default="relationship")
-    tags = attrib(default="")
-    sheet_row = attrib(default=None)
-    layer = attrib(default=None)
-    key = attrib(default=None)
-
-    source = attrib(default="")
-    destination = attrib(default="")
-
-    width = attrib(default="")
-    color = attrib(default="")
-
-
-@attrs
-class Curtain:
-
-    type = attrib(default="curtain")
-    tags = attrib(default="")
-    sheet_row = attrib(default=None)
-    layer = attrib(default=None)
-    key = attrib(default=None)
-
-    start = attrib(default="")
-    finish = attrib(default="")
-
-    fill = attrib(default="")
-
-
-@attrs
-class Bar:
-
-    type = attrib(default="bar")
-    tags = attrib(default="")
-    sheet_row = attrib(default=None)
-    layer = attrib(default=None)
-    key = attrib(default=None)
-
-    date = attrib(default="")
-
-    width = attrib(default="")
-    color = attrib(default="")
-
-
-@attrs
-class Group:
-
-    type = attrib(default="group")
-    tags = attrib(default="")
-    sheet_row = attrib(default=None)
-    layer = attrib(default=None)
-    key = attrib(default=None)
-
-    from_row = attrib(default=None)
-    to_row = attrib(default=None)
-
-    fill = attrib(default="")
-    border_color = attrib(default="black")
-    border_width = attrib(default=0.0)
-
-
-@attrs
-class Text:
-
-    type = attrib(default="text")
+    type = attrib(default="label")
     tags = attrib(default="")
     sheet_row = attrib(default=None)
     layer = attrib(default=None)
@@ -217,6 +126,86 @@ class Text:
 
 
 @attrs
+class Connector:
+
+    type = attrib(default="connector")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    from_row = attrib(default=None)
+    from_date = attrib(default=None)
+    from_adjust = attrib(default=None)
+    from_arrow = attrib(default=None)
+
+    to_row = attrib(default=None)
+    to_date = attrib(default=None)
+    to_adjust = attrib(default=None)
+    to_arrow = attrib(default=None)
+
+    from_x = attrib(default=None)
+    from_y = attrib(default=None)
+    to_x = attrib(default=None)
+    to_y = attrib(default=None)
+
+    width = attrib(default=0.0)
+    color = attrib(default="black")
+
+
+@attrs
+class Pipe:
+
+    type = attrib(default="bar")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    date = attrib(default="")
+
+    width = attrib(default="")
+    color = attrib(default="")
+
+
+@attrs
+class Line:
+    pass
+
+
+@attrs
+class Curtain:
+
+    type = attrib(default="curtain")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    start = attrib(default="")
+    finish = attrib(default="")
+
+    fill = attrib(default="")
+
+
+@attrs
+class Group:
+
+    type = attrib(default="group")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    from_row = attrib(default=None)
+    to_row = attrib(default=None)
+
+    fill = attrib(default="")
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)
+
+
+@attrs
 class Box:
 
     type = attrib(default="box")
@@ -234,3 +223,24 @@ class Box:
     fill = attrib(default="")
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
+
+
+@attrs
+class Task:
+    pass
+
+
+@attrs
+class Relationship:
+
+    type = attrib(default="relationship")
+    tags = attrib(default="")
+    sheet_row = attrib(default=None)
+    layer = attrib(default=None)
+    key = attrib(default=None)
+
+    source = attrib(default="")
+    destination = attrib(default="")
+
+    width = attrib(default="")
+    color = attrib(default="")
