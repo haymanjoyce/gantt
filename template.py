@@ -11,6 +11,18 @@ TEMPLATE = {
     "Labels": ("Temp", ),
 }
 
+SAMPLE = {
+    "Scales": (['y', 20, 'red', 1, 'black'],
+               ['m', 15, 'blue', 1, 'black'],
+               ['d', 10, 'green', 1, 'black']),
+    "Bars": ([1, ],
+             [2, ],
+             [3, ]),
+    "Labels": (['temp', ],
+               ['temp', ],
+               ['temp', ]),
+}
+
 
 def create_workbook(data):
     workbook = Workbook()
@@ -22,4 +34,12 @@ def create_workbook(data):
         workbook[key].append(value)
         for cell in workbook[key][1]:
             cell.style = header
+    return workbook
+
+
+def populate_workbook(workbook, data):
+    for key, value in data.items():
+        sheet = workbook[key]
+        for row in value:
+            sheet.append(row)
     return workbook
