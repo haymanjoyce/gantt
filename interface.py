@@ -280,7 +280,7 @@ class Controls(Frame):
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         # new_chart = Chart()
-        chart_features = parsing.Parser(workbook).load_items()
+        chart_features = parsing.load_items(workbook)
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=chart_features)  # App is the parent

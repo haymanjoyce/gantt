@@ -3,56 +3,47 @@
 import logging
 
 from features import Scale, Bar, Label
-from settings import Settings
+
+GLOBALS = globals()
 
 
-class Parser:
-    def __init__(self, workbook):
-        self.workbook = workbook
-        self.settings = Settings()
+def load_scale(sheet_row, sheet_mapping):
+    item = Scale()
+    item.interval = sheet_row[sheet_mapping.get('INTERVAL')]
+    item.height = sheet_row[sheet_mapping.get('HEIGHT')]
+    item.fill = sheet_row[sheet_mapping.get('FILL')]
+    item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
+    item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
+    return item
 
-    def load_items(self):
-        items = tuple()
-        sheet_names = ('Scales', 'Bars', 'Labels', )
-        for sheet_name in sheet_names:
-            sheet = self.workbook[sheet_name]
-            sheet_headers = sheet[1]
-            sheet_mapping = get_mapping(sheet_name, sheet_headers)
-            if sheet_name == 'Scales':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    item = self.load_scale(sheet_row, sheet_mapping)
-                    items += item,
-            elif sheet_name == 'Bars':
-                for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    item = self.load_bar(sheet_row, sheet_mapping)
-                    items += item,
-            elif sheet_name == 'Labels':
-                pass
-            else:
-                raise ValueError(sheet_name)
-        return items
 
-    def load_scale(self, sheet_row, sheet_mapping):
-        item = Scale()
-        # item.type
-        item.tags = ""
-        item.width = self.settings.width
-        item.height = sheet_row[sheet_mapping.get('HEIGHT')]
-        item.start = self.settings.start
-        item.finish = self.settings.finish
-        item.interval = sheet_row[sheet_mapping.get('INTERVAL')]
-        # item.rank
-        item.x = self.settings.x
-        # item.y
-        item.fill = sheet_row[sheet_mapping.get('FILL')]
-        item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
-        item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
-        return item
+def load_bar(sheet_row, sheet_mapping):
+    item = Bar()
+    item.row = sheet_row[sheet_mapping.get('ROW')]
+    return item
 
-    def load_bar(self, sheet_row, sheet_mapping):
-        item = Bar()
-        item.row = sheet_row[sheet_mapping.get('ROW')]
-        return item
+
+def load_label(sheet_row, sheet_mapping):
+    item = Label()
+    return item
+
+
+LOADERS = {'Scales': GLOBALS['load_scale'],
+           'Bars': GLOBALS['load_bar'],
+           'Labels': GLOBALS['load_label'],
+           }
+
+
+def load_items(workbook):
+    items = tuple()
+    for sheet_name, loader in LOADERS.items():
+        sheet = workbook[sheet_name]
+        sheet_headers = sheet[1]
+        sheet_mapping = get_mapping(sheet_name, sheet_headers)
+        for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
+            item = loader(sheet_row, sheet_mapping)
+            items += item,
+    return items
 
 
 def get_mapping(sheet_name, sheet_headers):
