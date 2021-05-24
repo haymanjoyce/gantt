@@ -6,15 +6,15 @@ from openpyxl import Workbook
 from openpyxl.styles import NamedStyle, Font
 
 TEMPLATE = {
-    "Scales": ("Intervals", "Height", "Fill", "Border Width", "Border Color"),
+    "Scales": ("Interval", "Height", "Fill", "Border Width", "Border Color"),
     "Bars": ("Row", "Start", "Finish", "Fill", "Border Width", "Border Color", "Layer"),
     "Labels": ("Temp", ),
 }
 
 SAMPLE = {
-    "Scales": (['y', 20, 'red', 1, 'black'],
-               ['m', 15, 'blue', 1, 'black'],
-               ['d', 10, 'green', 1, 'black']),
+    "Scales": (['y', 40, 'red', 1, 'black'],
+               ['m', 30, 'blue', 1, 'black'],
+               ['d', 20, 'green', 0.5, 'black']),
     "Bars": ([1, ],
              [2, ],
              [3, ]),

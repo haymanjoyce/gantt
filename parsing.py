@@ -13,9 +13,8 @@ class Parser:
 
     def load_items(self):
         items = tuple()
-        features = ('Scale', 'Bar', 'Label', )
-        for feature_type in features:
-            sheet_name = feature_type + 's'
+        sheet_names = ('Scales', 'Bars', 'Labels', )
+        for sheet_name in sheet_names:
             sheet = self.workbook[sheet_name]
             sheet_headers = sheet[1]
             sheet_mapping = get_mapping(sheet_name, sheet_headers)
@@ -25,7 +24,7 @@ class Parser:
                     items += item,
             elif sheet_name == 'Bars':
                 for sheet_row in sheet.iter_rows(min_row=2, values_only=True):
-                    item = self.load_task(sheet_row, sheet_mapping)
+                    item = self.load_bar(sheet_row, sheet_mapping)
                     items += item,
             elif sheet_name == 'Labels':
                 pass
@@ -50,7 +49,7 @@ class Parser:
         item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
         return item
 
-    def load_task(self, sheet_row, sheet_mapping):
+    def load_bar(self, sheet_row, sheet_mapping):
         item = Bar()
         item.row = sheet_row[sheet_mapping.get('ROW')]
         return item
