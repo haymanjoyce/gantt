@@ -19,6 +19,8 @@
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
 # TODO separate calculation from drawing; so all data class values calculated in processing module
+# TODO at cleaning module, removing cleaning from features module
+# TODO auto attrib in features module, minimising annotation
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

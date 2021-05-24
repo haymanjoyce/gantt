@@ -20,13 +20,13 @@ class Drawing(Canvas):
         self.time_delta = (self.settings.finish - self.settings.start)
         self.total_days = self.time_delta.days + 1  # range inclusive of end dates
         self.pixels_per_day = self.settings.width / self.total_days
-        self.first_row = self.draw_scales()  # y for first row
-        self.remaining_space = self.settings.height - self.first_row
-        self.max_row_height = self.remaining_space / self.settings.num_rows
-        self.row_height = self.cap_row_height()
-        self.row_locations = self.draw_rows()
-        self.tasks = self.load_task_locations()
-        self.draw_tasks()
+        # self.first_row = self.draw_scales()  # y for first row
+        # self.remaining_space = self.settings.height - self.first_row
+        # self.max_row_height = self.remaining_space / self.settings.num_rows
+        # self.row_height = self.cap_row_height()
+        # self.row_locations = self.draw_rows()
+        # self.tasks = self.load_task_locations()
+        # self.draw_tasks()
 
     # SHAPES
 
