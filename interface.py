@@ -8,8 +8,9 @@ from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT,
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
+import cleaning
 import filing
-import parsing
+import loading
 import checks
 import dialogues
 import drawing
@@ -279,11 +280,11 @@ class Controls(Frame):
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        # new_chart = Chart()
-        chart_features = parsing.load_items(workbook)
+        items = loading.load_items(workbook)
+        items = cleaning.clean_interval_fields(items)
         if self.view:
             self.view.destroy()
-        self.view = View(parent=self.parent, data=chart_features)  # App is the parent
+        self.view = View(parent=self.parent, data=items)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
         filing.append_log(f'\n')
         self.refresh_scroller()
