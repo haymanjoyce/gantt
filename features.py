@@ -49,12 +49,12 @@ class Bar:
     start = attrib(default=None)
     finish = attrib(default=None)
     height = attrib(default=None)
-    adjust = attrib(default=None)
     x = attrib(default=None)
     y = attrib(default=None)
+    nudge = attrib(default=None)
     fill = attrib(default=None)
     border_color = attrib(default="black")
-    border_width = attrib(default=0.0)
+    border_width = attrib(default=0.5)
 
 
 @attrs

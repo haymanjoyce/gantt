@@ -19,7 +19,16 @@ def load_scale(sheet_row, sheet_mapping):
 
 def load_bar(sheet_row, sheet_mapping):
     item = Bar()
+    item.key = sheet_row[sheet_mapping.get('KEY')]
     item.row = sheet_row[sheet_mapping.get('ROW')]
+    item.start = sheet_row[sheet_mapping.get('START')]
+    item.finish = sheet_row[sheet_mapping.get('FINISH')]
+    item.fill = sheet_row[sheet_mapping.get('FILL')]
+    item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
+    item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
+    item.layer = sheet_row[sheet_mapping.get('LAYER')]
+    item.height = sheet_row[sheet_mapping.get('HEIGHT')]
+    item.nudge = sheet_row[sheet_mapping.get('NUDGE')]
     return item
 
 

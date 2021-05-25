@@ -21,6 +21,8 @@
 # TODO separate calculation from drawing; so all data class values calculated in processing module
 # TODO at cleaning module, removing cleaning from features module
 # TODO auto attrib in features module, minimising annotation
+# TODO sample dates to be interpreted as dates by Excel
+# TODO clean date fields
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
