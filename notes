@@ -29,7 +29,7 @@ Decided to work with Openpyxl instead of Pandas
 Workbook class not extensible (consensus on Stack Overflow)
 Dropped class housing methods as most methods static
 
-VALIDATION ARGUMENTS
+FORM VALIDATION ARGUMENTS
 
 %d = type of action (1=insert, 0=delete, -1 for others)
 %i = index of char string to be inserted/deleted, or -1
@@ -44,9 +44,9 @@ VECTOR GRAPHICS
 
 Rectangle A: 0,0 20,10
 Rectangle B: 0,10 20,20
-A and B share line 0,10 20,10
+Note that A and B share line 0,10 20,10
 
-Borders bleed
+Note that borders bleed
 Experimented with limiting border to boundaries but did not seem to work so accepting the bleed
 
 INTELLIGENCE V CONTROL
@@ -64,6 +64,6 @@ FUTURE DEVELOPMENT
 
 Develop own grid interface
 Changes to data dynamically update image
-Develop scheduling capability of data objects
+Develop scheduling capability of dataclass objects
 User can define header row
 Multiple task and milestone sheets

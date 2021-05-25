@@ -14,6 +14,7 @@ import loading
 import checks
 import dialogues
 import drawing
+import processing
 import utils
 import template
 
@@ -281,7 +282,8 @@ class Controls(Frame):
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         items = loading.load_items(workbook)
-        items = cleaning.clean_interval_fields(items)
+        items = cleaning.Cleaning(items).items
+        items = processing.Processing(items).items
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=items)  # App is the parent

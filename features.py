@@ -10,10 +10,6 @@ class Scale:
 
     type = attrib(default="scale")
     tags = attrib(default="")
-    sheet_row = attrib(default="")
-    layer = attrib(default=None)
-    key = attrib(default=0)
-    order = attrib(default=0)
     start = attrib(default=None)
     finish = attrib(default=None)
     interval = attrib(default="days")
@@ -31,13 +27,15 @@ class Row:
 
     type = attrib(default="row")
     tags = attrib(default="")
-    sheet_row = attrib(default=0)
     layer = attrib(default=None)
     key = attrib(default=0)
+    x = attrib(default=0)
+    y = attrib(default=0)
+    width = attrib(default=800)
     height = attrib(default=20)
     fill = attrib(default="")
-    border_color = attrib(default="black")
-    border_width = attrib(default=0.0)
+    border_color = attrib(default="grey")
+    border_width = attrib(default=0.5)
 
 
 @attrs
@@ -45,7 +43,6 @@ class Bar:
 
     type = attrib(default="bar")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     row = attrib(default=None)
@@ -65,7 +62,6 @@ class Label:
 
     type = attrib(default="label")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     row = attrib(default=None)
@@ -90,7 +86,6 @@ class Connector:
 
     type = attrib(default="connector")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     from_row = attrib(default=None)
@@ -114,7 +109,6 @@ class Pipe:
 
     type = attrib(default="bar")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     date = attrib(default="")
@@ -132,7 +126,6 @@ class Curtain:
 
     type = attrib(default="curtain")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     start = attrib(default="")
@@ -145,7 +138,6 @@ class Group:
 
     type = attrib(default="group")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     from_row = attrib(default=None)
@@ -160,7 +152,6 @@ class Box:
 
     type = attrib(default="box")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     x = attrib(default=None)
@@ -182,7 +173,6 @@ class Relationship:
 
     type = attrib(default="relationship")
     tags = attrib(default="")
-    sheet_row = attrib(default=None)
     layer = attrib(default=None)
     key = attrib(default=None)
     source = attrib(default="")
