@@ -9,7 +9,7 @@ from attr import attrs, attrib
 class Scale:
 
     type = attrib(default="scale")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     start = attrib(default=None)
     finish = attrib(default=None)
     interval = attrib(default="days")
@@ -23,10 +23,15 @@ class Scale:
 
 
 @attrs
+class Interval:
+    pass
+
+
+@attrs
 class Row:
 
     type = attrib(default="row")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=0)
     x = attrib(default=0)
@@ -42,7 +47,7 @@ class Row:
 class Bar:
 
     type = attrib(default="bar")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     row = attrib(default=None)
@@ -62,7 +67,7 @@ class Bar:
 class Label:
 
     type = attrib(default="label")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     row = attrib(default=None)
@@ -86,7 +91,7 @@ class Label:
 class Connector:
 
     type = attrib(default="connector")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     from_row = attrib(default=None)
@@ -109,7 +114,7 @@ class Connector:
 class Pipe:
 
     type = attrib(default="bar")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     date = attrib(default="")
@@ -126,7 +131,7 @@ class Line:
 class Curtain:
 
     type = attrib(default="curtain")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     start = attrib(default="")
@@ -138,7 +143,7 @@ class Curtain:
 class Group:
 
     type = attrib(default="group")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     from_row = attrib(default=None)
@@ -152,7 +157,7 @@ class Group:
 class Box:
 
     type = attrib(default="box")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     x = attrib(default=None)
@@ -173,7 +178,7 @@ class Task:
 class Relationship:
 
     type = attrib(default="relationship")
-    tags = attrib(default="")
+    tags = attrib(default=tuple())
     layer = attrib(default=None)
     key = attrib(default=None)
     source = attrib(default="")

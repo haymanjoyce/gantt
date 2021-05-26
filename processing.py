@@ -48,6 +48,7 @@ class Processing:
             row.y = y
             row.width = self.settings.width
             row.height = self.row_height
+            row.layer = 1
             self.items += row,
             y += self.row_height
 
@@ -62,8 +63,11 @@ class Processing:
                 bar.finish = self.settings.start
 
             # cleaning
-            if not int(bar.row):
+            if not bar.row:
                 bar.row = 1
+
+            if not bar.layer:
+                bar.layer = 1
 
             # destined for cleaning
             if bar.start < self.settings.start:
@@ -79,6 +83,8 @@ class Processing:
             if bar.height:
                 if bar.height > self.row_height:
                     bar.height = self.row_height
+            else:
+                bar.height = self.row_height
 
             # processing
             if bar.nudge:
@@ -87,9 +93,11 @@ class Processing:
                 if bar.nudge < (self.row_height * -1):
                     bar.nudge = (self.row_height * -1)
 
-            bar.x = (bar.start - self.settings.start) * self.pixels_per_day
+            delta_x = bar.start - self.settings.start
+            bar.x = delta_x.days * self.pixels_per_day
 
-            bar.width = (bar.finish - bar.start) * self.pixels_per_day
+            delta_width = bar.finish - bar.start
+            bar.width = delta_width.days * self.pixels_per_day
 
             # bar y, reference row and then factor nudge
             bar.y = [item.y for item in self.items if item.type == 'row' if item.key == bar.row][0]
