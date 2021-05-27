@@ -304,8 +304,9 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def on_template(self):
-        workbook = template.create_workbook(template.TEMPLATE)
-        workbook = template.populate_workbook(workbook, template.SAMPLE)
+        workbook = template.create_template(template.TEMPLATE)
+        workbook = template.populate_template(workbook, template.SAMPLE)
+        workbook = template.reformat_dates(workbook)
         dialogues.export_workbook(workbook)
         self.refresh_scroller()
 
