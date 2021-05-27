@@ -14,7 +14,7 @@
 # TODO handle case where total scale height exceeds chart and row height
 # TODO form validation such that finish cannot be less than start
 # TODO add options to scales (font color, font size, font type, alternating (e.g. black white))
-# TODO add ability to define custom date formats
+# TODO apply date format used in Excel (interpret Excel to Python)
 # TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
@@ -35,7 +35,7 @@
 
 import logging
 import interface
-from filing import get_path
+from filer import get_path
 
 
 if __name__ == '__main__':

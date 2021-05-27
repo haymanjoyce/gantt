@@ -4,13 +4,13 @@ import datetime
 
 from attr import attrs, attrib, Factory
 
-import filing
+import filer
 
 
 @attrs
 class Settings:
 
-    config_data = attrib(default=Factory(filing.get_config_data))
+    config_data = attrib(default=Factory(filer.get_config_data))
     x = attrib()
     y = attrib()
     width = attrib()

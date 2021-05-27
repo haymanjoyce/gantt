@@ -8,15 +8,16 @@ from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT,
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
-import cleaning
-import filing
-import loading
-import checks
+import cleaner
+import filer
+import loader
+import checker
 import dialogues
-import drawing
-import processing
+import drawer
+import processor
 import utils
 import template
+from interpreter import Interpreter
 
 
 class App(Tk):
@@ -28,13 +29,13 @@ class App(Tk):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap(filing.get_path("favicon.ico"))
+        self.wm_iconbitmap(filer.get_path("favicon.ico"))
         self.controls = Controls(self)
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.mainloop()
 
     def on_close(self):
-        filing.wipe_log()
+        filer.wipe_log()
         try:
             self.quit()
         except RuntimeError:
@@ -53,7 +54,7 @@ class Controls(Frame):
         self.parent = parent  # App is the parent
         self.view = None  # for View (i.e. TopLevel) instance, parent of Chart (i.e. Canvas) instance
         self.file_source = None  # for path to user's Excel spreadsheet
-        self.settings = filing.get_config_data()
+        self.settings = filer.get_config_data()
         self.check_count = 0
         self.run_count = 0
         self.show_rows = IntVar()
@@ -266,29 +267,30 @@ class Controls(Frame):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         reference = template.TEMPLATE
         self.check_count += 1
-        filing.append_log(f'CHECK #{self.check_count}\n')
-        checks.check_merged_cells(workbook)
-        checks.check_sheets_exist(workbook, reference)
-        checks.check_header_rows_exist(workbook)
-        checks.check_header_rows(workbook, reference)
-        checks.check_misspelled_headers(workbook, reference)
-        filing.append_log(f'\n')
+        filer.append_log(f'CHECK #{self.check_count}\n')
+        checker.check_merged_cells(workbook)
+        checker.check_sheets_exist(workbook, reference)
+        checker.check_header_rows_exist(workbook)
+        checker.check_header_rows(workbook, reference)
+        checker.check_misspelled_headers(workbook, reference)
+        filer.append_log(f'\n')
         self.refresh_scroller()
 
     def on_run(self):
         self.run_count += 1
-        filing.append_log(f'RUN #{self.run_count}\n')
+        filer.append_log(f'RUN #{self.run_count}\n')
         self.get_form_data()
-        filing.save_config_data(self.settings)
+        filer.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        items = loading.load_items(workbook)
-        items = cleaning.Cleaning(items).items
-        items = processing.Processing(items).items
+        items = loader.load_items(workbook)
+        items = Interpreter(items).items
+        items = cleaner.Cleaner(items).items
+        items = processor.Processor(items).items
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=items)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
-        filing.append_log(f'\n')
+        filer.append_log(f'\n')
         self.refresh_scroller()
 
     def on_copy(self):
@@ -325,7 +327,7 @@ class Controls(Frame):
 
     def refresh_scroller(self):
         self.wipe_scroller()
-        log = filing.get_log()
+        log = filer.get_log()
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, log)
         self.scroller.configure(state=DISABLED)  # readable
@@ -342,10 +344,10 @@ class View(Toplevel):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap(filing.get_path("favicon.ico"))
+        self.wm_iconbitmap(filer.get_path("favicon.ico"))
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = drawing.Drawing(self, data)  # View is the parent
+        self.drawing = drawer.Drawer(self, data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])

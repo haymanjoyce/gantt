@@ -67,3 +67,12 @@ def check_misspelled_headers(workbook, reference):
                 issues += 1
     if issues == 0:
         logging.info(f"No misspelled fields.")
+
+
+def check_date_field_formats():
+    pass
+
+
+def numbers_in_number_fields():
+    pass
+

@@ -3,12 +3,12 @@
 import logging
 
 
-class Cleaning:
+class Interpreter:
     def __init__(self, data):
         self.items = data
-        self.clean_interval_fields()
+        self.interpret_intervals()
 
-    def clean_interval_fields(self):
+    def interpret_intervals(self):
         scales = [item for item in self.items if item.type == 'scale']
         for scale in scales:
             value = str(scale.interval).lower()

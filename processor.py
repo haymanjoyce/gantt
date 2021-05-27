@@ -7,7 +7,7 @@ from settings import Settings
 from features import Row
 
 
-class Processing:
+class Processor:
     def __init__(self, data):
         self.items = data
         self.settings = Settings()
