@@ -56,37 +56,12 @@ class Processor:
         bars = [item for item in self.items if item.type == 'bar']
         for bar in bars:
 
-            # some of this might be better placed in cleaning
-            if not isinstance(bar.start, self.settings.start.__class__):
-                bar.start = self.settings.start
-            if not isinstance(bar.finish, self.settings.start.__class__):
-                bar.finish = self.settings.start
-
-            # cleaning
-            if not bar.row:
-                bar.row = 1
-
-            if not bar.layer:
-                bar.layer = 1
-
-            # destined for cleaning
-            if bar.start < self.settings.start:
-                bar.start = self.settings.start
-            if bar.start > self.settings.finish:
-                bar.finish = self.settings.finish
-            if bar.finish < self.settings.start:
-                bar.finish = self.settings.start
-            if bar.finish > self.settings.finish:
-                bar.finish = self.settings.finish
-
-            # calculated here, not cleaning
             if bar.height:
                 if bar.height > self.row_height:
                     bar.height = self.row_height
             else:
                 bar.height = self.row_height
 
-            # processing
             if bar.nudge:
                 if bar.nudge > self.row_height:
                     bar.nudge = self.row_height
@@ -94,13 +69,11 @@ class Processor:
                     bar.nudge = (self.row_height * -1)
 
             delta_x = bar.start - self.settings.start
-            bar.x = delta_x.days * self.pixels_per_day
-
             delta_width = bar.finish - bar.start
-            bar.width = delta_width.days * self.pixels_per_day
 
-            # bar y, reference row and then factor nudge
+            bar.x = delta_x.days * self.pixels_per_day
             bar.y = [item.y for item in self.items if item.type == 'row' if item.key == bar.row][0]
+            bar.width = delta_width.days * self.pixels_per_day
 
             if bar.nudge:
                 bar.y += bar.nudge

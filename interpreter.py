@@ -25,5 +25,5 @@ class Interpreter:
             elif value in ['years', 'year', 'yrs', 'yr', 'y']:
                 scale.interval = 'YEARS'
             else:
-                logging.error(f'Do not understand interval value, "{value}".')
+                logging.error(f'Cannot interpret interval value, "{value}".')
                 # raise ValueError(value)

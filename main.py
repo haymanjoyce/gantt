@@ -18,8 +18,6 @@
 # TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
-# TODO clean date fields
-# TODO move field cleaning in processing to cleaning
 # TODO do Intervals
 
 # MANUAL OS ENVIRONMENT INSTALLS
@@ -35,7 +33,7 @@
 
 import logging
 import interface
-from filer import get_path
+from filing import get_path
 
 
 if __name__ == '__main__':
