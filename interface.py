@@ -12,7 +12,7 @@ import filing
 import loading
 import checker
 import dialogues
-import drawer
+import painter
 import utils
 import templating
 from interpreter import Interpreter
@@ -294,15 +294,15 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.view.drawing)
+        utils.copy_to_clipboard(self.view.image)
         self.refresh_scroller()
 
     def on_save(self):
-        dialogues.save_image(self.view.drawing)
+        dialogues.save_image(self.view.image)
         self.refresh_scroller()
 
     def on_postscript(self):
-        dialogues.save_postscript(self.view.drawing)
+        dialogues.save_postscript(self.view.image)
         self.refresh_scroller()
 
     def on_template(self):
@@ -347,7 +347,7 @@ class View(Toplevel):
         self.wm_iconbitmap(filing.get_path("favicon.ico"))
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.drawing = drawer.Drawer(self, data)  # View is the parent
+        self.image = painter.Painter(self, data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])

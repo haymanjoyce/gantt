@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+# TODO option to download as SVG file
 # TODO option for user to email error message back to me
 # TODO better presentation on scroller text (i.e. line spaces and titles)
 # TODO loading Ghostscript with the programme (like https://www.biopdf.com/guide/detecting_ghostscript.php)
@@ -15,11 +16,11 @@
 # TODO form validation such that finish cannot be less than start
 # TODO add options to scales (font color, font size, font type, alternating (e.g. black white))
 # TODO apply date format used in Excel (interpret Excel to Python)
-# TODO improve scales such that they show end interval
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
-# TODO do Intervals
-# TODO debug bars showing up as single lines (milestone?)
+# TODO debug bars showing up as single lines on very short timelines
+# TODO finish other features (MVP)
+# TODO set levels
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

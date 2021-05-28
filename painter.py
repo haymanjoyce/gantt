@@ -8,9 +8,9 @@ from tkinter import Canvas
 from settings import Settings
 
 
-class Drawer(Canvas):
+class Painter(Canvas):
     def __init__(self, parent, data):
-        super(Drawer, self).__init__(parent)
+        super(Painter, self).__init__(parent)
 
         self.parent = parent
         self.items = data
@@ -48,13 +48,16 @@ class Drawer(Canvas):
         items = [item for item in self.items if item.type == 'interval']
         for item in items:
             self.draw_interval(item)
+            self.draw_interval_label(item)
 
     def draw_interval(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
                             outline=item.border_color, width=item.border_width, tag=item.type)
 
     def draw_interval_label(self, item):
-        pass
+        y = item.y + (item.height / 2)
+        text = item.date.strftime(item.format)
+        self.create_text(item.x, y, text=text, anchor="w")
 
     # ROWS
 

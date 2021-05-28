@@ -33,6 +33,7 @@ class Interval:
     fill = attrib(default="red")
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
+    format = attrib(default="")
 
 
 @attrs
