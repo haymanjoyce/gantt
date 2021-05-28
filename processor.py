@@ -2,9 +2,10 @@
 
 import logging
 
-from settings import Settings
+from datetime import timedelta
 
-from features import Row
+from settings import Settings
+from features import Row, Interval
 
 
 class Processor:
@@ -16,6 +17,7 @@ class Processor:
         self.pixels_per_day = self.settings.width / self.total_days
         self.first_row = self.set_scales()
         self.row_height = self.get_row_height()
+        self.set_intervals()
         self.set_rows()
         self.set_bars()
 
@@ -30,6 +32,21 @@ class Processor:
             scale.finish = self.settings.finish
             y += scale.height
         return y  # first row
+
+    def set_intervals(self):
+        scales = [item for item in self.items if item.type == 'scale']
+        for scale in scales:
+            for day in range(0, self.total_days):
+                interval = Interval()
+                interval.date = scale.start + timedelta(day)
+                interval.x = day * self.pixels_per_day
+                interval.y = scale.y
+                interval.width = self.pixels_per_day
+                interval.height = scale.height
+                interval.border_width = scale.border_width
+                interval.border_color = scale.border_color
+                interval.fill = scale.fill
+                self.items += interval,
 
     def get_row_height(self):
         row_space = self.settings.height - self.first_row

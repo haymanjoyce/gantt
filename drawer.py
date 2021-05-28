@@ -17,9 +17,9 @@ class Drawer(Canvas):
         self.settings = Settings()
         self.config(width=self.settings.width, height=self.settings.height, background="#fff")
         self.pack()
-        self.draw_scales()
         self.draw_rows()
         self.draw_bars()
+        self.draw_intervals()
 
     # SHAPES
 
@@ -42,22 +42,21 @@ class Drawer(Canvas):
     def draw_arrow(self):
         pass
 
-    # FEATURES
-
-    def draw_scales(self):
-        items = [item for item in self.items if item.type == 'scale']
-        for item in items:
-            self.draw_scale(item)
-
-    def draw_scale(self, item):
-        self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width)
+    # SCALES
 
     def draw_intervals(self):
-        pass
+        items = [item for item in self.items if item.type == 'interval']
+        for item in items:
+            self.draw_interval(item)
 
     def draw_interval(self, item):
+        self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
+                            outline=item.border_color, width=item.border_width, tag=item.type)
+
+    def draw_interval_label(self, item):
         pass
+
+    # ROWS
 
     def draw_rows(self):
         items = [item for item in self.items if item.type == 'row']
@@ -67,12 +66,14 @@ class Drawer(Canvas):
 
     def draw_row(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width)
+                            outline=item.border_color, width=item.border_width, tag=item.type)
 
     def draw_row_label(self, item):
         x = item.x + 20  # not proportional to width
         y = item.y + (item.height / 2)
         self.create_text(x, y, text=item.key, anchor="e")
+
+    # BARS
 
     def draw_bars(self):
         items = [item for item in self.items if item.type == 'bar']
@@ -81,4 +82,4 @@ class Drawer(Canvas):
 
     def draw_bar(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width)
+                            outline=item.border_color, width=item.border_width, tag=item.type)

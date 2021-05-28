@@ -24,7 +24,17 @@ class Scale:
 
 @attrs
 class Interval:
-    pass
+
+    type = attrib(default="interval")
+    tags = attrib(default=tuple())
+    date = attrib(default=None)
+    x = attrib(default=0)
+    y = attrib(default=0)
+    width = attrib(default=800)
+    height = attrib(default=100)
+    fill = attrib(default="red")
+    border_color = attrib(default="black")
+    border_width = attrib(default=0.0)
 
 
 @attrs
