@@ -15,7 +15,6 @@ import dialogues
 import painter
 import utils
 import templating
-from interpreter import Interpreter
 from cleaner import Cleaner
 from processor import Processor
 
@@ -284,7 +283,6 @@ class Controls(Frame):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         items = loading.load_items(workbook)
         items = Cleaner(items).items
-        items = Interpreter(items).items
         items = Processor(items).items
         if self.view:
             self.view.destroy()

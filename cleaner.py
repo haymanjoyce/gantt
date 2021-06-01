@@ -17,6 +17,8 @@ class Cleaner:
 
     def clean_items(self):
         for item in self.items:
+            if hasattr(item, 'interval'):
+                self.clean_interval_value(item)
             if hasattr(item, 'start'):
                 self.clean_start_value(item)
             if hasattr(item, 'finish'):
@@ -27,6 +29,25 @@ class Cleaner:
                 self.clean_layer_value(item)
             if hasattr(item, 'justify'):
                 self.clean_justify_value(item)
+
+    @staticmethod
+    def clean_interval_value(item):
+        value = str(item.interval).strip().lower()
+        if value in ['days', 'day', 'd', '', 'none']:
+            item.interval = 'DAYS'  # default interval
+        elif value in ['weeks', 'week', 'wk', 'w']:
+            item.interval = 'WEEKS'
+        elif value in ['months', 'mon', 'month', 'm']:
+            item.interval = 'MONTHS'
+        elif value in ['quarters', 'quarts', 'qts', 'q']:
+            item.interval = 'QUARTERS'
+        elif value in ['halves', 'half', 'halfs', 'halve', 'h']:
+            item.interval = 'HALVES'
+        elif value in ['years', 'year', 'yrs', 'yr', 'y']:
+            item.interval = 'YEARS'
+        else:
+            logging.info(f'INTERVAL value in {item.type.upper()}S not recognised.')
+            item.interval = 'DAYS'
 
     def clean_start_value(self, item):
         if not isinstance(item.start, datetime.today().__class__):
@@ -56,14 +77,15 @@ class Cleaner:
 
     @staticmethod
     def clean_justify_value(item):
-        if not item.justify:
+        value = str(item.justify).upper().strip()
+        if not value:
             item.justify = LEFT
-        elif item.justify.upper().strip() in ['L', 'LT', 'LF', 'LFT', 'LEFT']:
+        elif value in ['L', 'LT', 'LF', 'LFT', 'LEFT']:
             item.justify = LEFT
-        elif item.justify.upper().strip() in ['R', 'RT', 'RGHT', 'RIGHT']:
+        elif value in ['R', 'RT', 'RGHT', 'RIGHT']:
             item.justify = RIGHT
-        elif item.justify.upper().strip() in ['C', 'CT', 'CR', 'CTR', 'CNTR', 'CENTR', 'CENTER', 'CENTRE', 'M', 'MID', 'MIDL', 'MIDDLE']:
+        elif value in ['C', 'CT', 'CR', 'CTR', 'CNTR', 'CENTR', 'CENTER', 'CENTRE', 'M', 'MID', 'MIDL', 'MIDDLE']:
             item.justify = CENTER
         else:
-            logging.info(f'Value for JUSTIFY for {item.type.upper()} not recognised.')
+            logging.info(f'JUSTIFY value in {item.type.upper()}S not recognised.')
             item.justify = LEFT

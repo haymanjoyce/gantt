@@ -20,7 +20,8 @@
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
 # TODO debug case where user able to enter in settings finish date before start unchallenged
 # TODO create function that loads tk font args into create text
-# TODO bring interpreter module into cleaner
+# TODO clean up cleaner where code repeated (supply args, don't use self)
+# TODO use match case in cleaner
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
