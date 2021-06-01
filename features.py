@@ -75,7 +75,6 @@ class Label:
 
     type = attrib(default="label")
     layer = attrib(default=None)
-    key = attrib(default=None)
     row = attrib(default=None)
     date = attrib(default=None)
     x = attrib(default=None)
@@ -85,12 +84,12 @@ class Label:
     y_nudge = attrib(default="")
     color = attrib(default="")
     size = attrib(default=10)
-    style = attrib(default="")
+    font = attrib(default="")
     weight = attrib(default="")
     anchor = attrib(default="")
     rotation = attrib(default="")
     width = attrib(default="")
-    alignment = attrib(default="")
+    justify = attrib(default="")
 
 
 @attrs

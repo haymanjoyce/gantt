@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This module is for loading Excel (i.e. user) data into data classes."""
+
 import logging
 
 from features import Scale, Bar, Label
@@ -34,6 +36,20 @@ def load_bar(sheet_row, sheet_mapping):
 
 def load_label(sheet_row, sheet_mapping):
     item = Label()
+    item.layer = sheet_row[sheet_mapping.get('LAYER')]
+    item.row = sheet_row[sheet_mapping.get('ROW')]
+    item.date = sheet_row[sheet_mapping.get('DATE')]
+    item.text = sheet_row[sheet_mapping.get('TEXT')]
+    item.x_nudge = sheet_row[sheet_mapping.get('X NUDGE')]
+    item.y_nudge = sheet_row[sheet_mapping.get('Y NUDGE')]
+    item.color = sheet_row[sheet_mapping.get('COLOR')]
+    item.size = sheet_row[sheet_mapping.get('SIZE')]
+    item.font = sheet_row[sheet_mapping.get('FONT')]
+    item.weight = sheet_row[sheet_mapping.get('WEIGHT')]
+    item.anchor = sheet_row[sheet_mapping.get('ANCHOR')]
+    item.rotation = sheet_row[sheet_mapping.get('ROTATION')]
+    item.width = sheet_row[sheet_mapping.get('WIDTH')]
+    item.justify = sheet_row[sheet_mapping.get('JUSTIFY')]
     return item
 
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This module is for interpreting attribute values provided by the user."""
+
 import logging
 
 

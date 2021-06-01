@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""""This module is for, where required, calculating and/or adding data class attribute values."""
+
 import logging
 
 from datetime import timedelta
@@ -21,6 +23,7 @@ class Processor:
         self.set_intervals()
         self.set_rows()
         self.set_bars()
+        self.set_labels()
 
     def set_scales(self):
         scales = [item for item in self.items if item.type == 'scale']
@@ -171,3 +174,20 @@ class Processor:
 
             if bar.nudge:
                 bar.y += bar.nudge
+
+    def set_labels(self):
+        labels = [item for item in self.items if item.type == 'label']
+        for label in labels:
+
+            delta_x = label.date - self.settings.start
+            label.x = delta_x.days * self.pixels_per_day
+
+            label.y = [item.y for item in self.items if item.type == 'row' if item.key == label.row][0]
+            baseline_offset = self.row_height / 2
+            label.y += baseline_offset  # aligns text to middle of row by default
+
+            if label.x_nudge:
+                label.x += label.x_nudge
+
+            if label.y_nudge:
+                label.y += label.y_nudge

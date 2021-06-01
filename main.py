@@ -18,9 +18,9 @@
 # TODO apply date format used in Excel (interpret Excel to Python)
 # TODO add more scale types (weeks, quarters, half years)
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
-# TODO debug bars showing up as single lines on very short timelines
-# TODO finish other features (MVP)
-# TODO set levels
+# TODO debug case where user able to enter in settings finish date before start unchallenged
+# TODO create function that loads tk font args into create text
+# TODO bring interpreter module into cleaner
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

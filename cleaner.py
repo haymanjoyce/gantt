@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
+"""This module is for cleaning data class attribute values."""
+
 import logging
 from datetime import datetime
+from tkinter import LEFT, RIGHT, CENTER
 
 from settings import Settings
 
@@ -22,6 +25,8 @@ class Cleaner:
                 self.clean_row_value(item)
             if hasattr(item, 'layer'):
                 self.clean_layer_value(item)
+            if hasattr(item, 'justify'):
+                self.clean_justify_value(item)
 
     def clean_start_value(self, item):
         if not isinstance(item.start, datetime.today().__class__):
@@ -48,3 +53,17 @@ class Cleaner:
     def clean_layer_value(item):
         if not item.layer:
             item.layer = 1
+
+    @staticmethod
+    def clean_justify_value(item):
+        if not item.justify:
+            item.justify = LEFT
+        elif item.justify.upper().strip() in ['L', 'LT', 'LF', 'LFT', 'LEFT']:
+            item.justify = LEFT
+        elif item.justify.upper().strip() in ['R', 'RT', 'RGHT', 'RIGHT']:
+            item.justify = RIGHT
+        elif item.justify.upper().strip() in ['C', 'CT', 'CR', 'CTR', 'CNTR', 'CENTR', 'CENTER', 'CENTRE', 'M', 'MID', 'MIDL', 'MIDDLE']:
+            item.justify = CENTER
+        else:
+            logging.info(f'Value for JUSTIFY for {item.type.upper()} not recognised.')
+            item.justify = LEFT

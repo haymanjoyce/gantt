@@ -20,6 +20,7 @@ class Painter(Canvas):
         self.draw_rows()
         self.draw_bars()
         self.draw_intervals()
+        self.draw_labels()
 
     # SHAPES
 
@@ -72,7 +73,7 @@ class Painter(Canvas):
                             outline=item.border_color, width=item.border_width, tag=item.type)
 
     def draw_row_label(self, item):
-        x = item.x + 20  # not proportional to width
+        x = item.x + 20  # note, not proportional to width
         y = item.y + (item.height / 2)
         self.create_text(x, y, text=item.key, anchor="e")
 
@@ -86,3 +87,14 @@ class Painter(Canvas):
     def draw_bar(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
                             outline=item.border_color, width=item.border_width, tag=item.type)
+
+    # LABELS
+
+    def draw_labels(self):
+        items = [item for item in self.items if item.type == 'label']
+        for item in items:
+            self.draw_label(item)
+
+    def draw_label(self, item):
+        self.create_text(item.x, item.y, text=item.text, anchor=item.anchor, font=item.font, justify=item.justify,
+                         width=item.width, fill=item.color)

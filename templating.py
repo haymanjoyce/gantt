@@ -44,7 +44,7 @@ def reformat_dates(workbook):
 TEMPLATE = {
     "Scales": ("Interval", "Height", "Fill", "Border Width", "Border Color"),
     "Bars": ("Key", "Row", "Start", "Finish", "Fill", "Border Width", "Border Color", "Layer", "Height", "Nudge"),
-    "Labels": ("Temp",),
+    "Labels": ("Row", "Date", "Text", "X Nudge", "Y Nudge", "Anchor", "Layer", "Rotation", "Width", "Justify", "Color", "Size", "Font", "Weight"),
 }
 
 SAMPLE = {
@@ -54,8 +54,8 @@ SAMPLE = {
     "Bars": ([1, 1, to_date_object("21 Dec 20"), to_date_object("5 Jan 21"), "red", 0.5, "black"],
              [2, 3, to_date_object("21 Dec 20"), to_date_object("5 Jan 21"), "red", 0.5, "black", 1, 20],
              [3, 5, to_date_object("21 Dec 20"), to_date_object("5 Jan 21"), "red", 0.5, "black", 1, 20, -5]),
-    "Labels": (['temp', ],
-               ['temp', ],
-               ['temp', ]),
+    "Labels": ([1, to_date_object("21 Dec 20"), 'one', ],
+               [2, to_date_object("5 Jan 21"), 'two', ],
+               [3, to_date_object("1 Jan 21"), 'three', ]),
 }
 
