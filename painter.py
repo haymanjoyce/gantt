@@ -4,6 +4,8 @@ import logging
 import datetime
 
 from tkinter import Canvas
+from tkinter.font import Font
+from tkinter.font import BOLD, NORMAL
 
 from settings import Settings
 
@@ -42,6 +44,33 @@ class Painter(Canvas):
 
     def draw_arrow(self):
         pass
+
+    def draw_text(self, x, y, text='', anchor='', color='', width=None, justify=None, font=None):
+
+        # size = None, bold = False, italics = False, underline = False, overstrike = False)
+
+        # if size:
+        #     size = 0 - size  # negative denotes pixels
+        # if font:
+        #     family = font
+        # else:
+        #     family = ''
+        # if bold:
+        #     weight = BOLD
+        # else:
+        #     weight = NORMAL
+        # if italics:
+        #     slant = BOLD
+        # else:
+        #     slant = NORMAL
+        #
+        # font_options = {'family': family, 'size': size, 'weight': weight, 'slant': slant, 'underline': int(underline),
+        # 'overstrike': int(overstrike)}
+        # font_object = Font(font_options)
+
+        text_options = {'text': text, 'anchor': anchor, 'color': color, 'width': width, 'justify': justify, 'font': font}
+
+        self.create_text(x, y, **text_options)
 
     # SCALES
 
@@ -96,5 +125,5 @@ class Painter(Canvas):
             self.draw_label(item)
 
     def draw_label(self, item):
-        self.create_text(item.x, item.y, text=item.text, anchor=item.anchor, font=item.font, justify=item.justify,
-                         width=item.width, fill=item.color)
+        self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
+                       justify=item.justify, font=None)
