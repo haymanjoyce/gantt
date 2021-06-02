@@ -9,12 +9,12 @@ from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
 import filing
-import loading
 import checker
 import dialogues
 import painter
 import utils
 import templating
+from loader import Loader
 from cleaner import Cleaner
 from processor import Processor
 
@@ -281,7 +281,7 @@ class Controls(Frame):
         self.get_form_data()
         filing.save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        items = loading.load_items(workbook)
+        items = Loader(workbook).items
         items = Cleaner(items).items
         items = Processor(items).items
         if self.view:
