@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This module is for cleaning data class attribute values."""
+"""This module is for cleaning data class fields."""
 
 import logging
 from datetime import datetime
@@ -8,27 +8,27 @@ from tkinter import LEFT, RIGHT, CENTER
 
 from settings import Settings
 
+SETTINGS = Settings()
+
 
 class Cleaner:
     def __init__(self, data):
         self.items = data
-        self.settings = Settings()
+        self.assignments = {
+            'interval': self.clean_interval_value,
+            'start': self.clean_start_value,
+            'finish': self.clean_finish_value,
+            'row': self.clean_row_value,
+            'layer': self.clean_layer_value,
+            'justify': self.clean_justify_value,
+        }
         self.clean_items()
 
     def clean_items(self):
         for item in self.items:
-            if hasattr(item, 'interval'):
-                self.clean_interval_value(item)
-            if hasattr(item, 'start'):
-                self.clean_start_value(item)
-            if hasattr(item, 'finish'):
-                self.clean_finish_value(item)
-            if hasattr(item, 'row'):
-                self.clean_row_value(item)
-            if hasattr(item, 'layer'):
-                self.clean_layer_value(item)
-            if hasattr(item, 'justify'):
-                self.clean_justify_value(item)
+            for field, cleaner in self.assignments.items():
+                if hasattr(item, field):
+                    cleaner(item)
 
     @staticmethod
     def clean_interval_value(item):
@@ -49,21 +49,23 @@ class Cleaner:
             logging.info(f'INTERVAL value in {item.type.upper()}S not recognised.')
             item.interval = 'DAYS'
 
-    def clean_start_value(self, item):
+    @staticmethod
+    def clean_start_value(item):
         if not isinstance(item.start, datetime.today().__class__):
-            item.start = self.settings.start
-        if item.start < self.settings.start:
-            item.start = self.settings.start
-        if item.start > self.settings.finish:
-            item.start = self.settings.finish
+            item.start = SETTINGS.start
+        if item.start < SETTINGS.start:
+            item.start = SETTINGS.start
+        if item.start > SETTINGS.finish:
+            item.start = SETTINGS.finish
 
-    def clean_finish_value(self, item):
+    @staticmethod
+    def clean_finish_value(item):
         if not isinstance(item.finish, datetime.today().__class__):
-            item.finish = self.settings.finish
-        if item.finish < self.settings.start:
-            item.finish = self.settings.start
-        if item.finish > self.settings.finish:
-            item.finish = self.settings.finish
+            item.finish = SETTINGS.finish
+        if item.finish < SETTINGS.start:
+            item.finish = SETTINGS.start
+        if item.finish > SETTINGS.finish:
+            item.finish = SETTINGS.finish
 
     @staticmethod
     def clean_row_value(item):
