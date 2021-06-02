@@ -3,20 +3,24 @@
 import logging
 import datetime
 
-from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext, Checkbutton, IntVar
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST, GROOVE
+
+from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext, Checkbutton, IntVar
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
 
-import filing
-import checker
-import dialogues
-import painter
-import utils
-import templating
+from templating import TEMPLATE, SAMPLE
+
+from dialogues import save_image, save_postscript, get_file_name, export_workbook
+from filing import get_path, get_config_data, save_config_data, wipe_config_file, get_log, wipe_log, append_log
+from utils import copy_to_clipboard
+from templating import create_template, populate_template, to_date_object, reformat_dates
+from checker import check_date_field_formats, check_merged_cells, check_header_rows, check_header_rows_exist, check_sheets_exist, check_misspelled_headers
+
 from loader import Loader
 from cleaner import Cleaner
 from processor import Processor
+from painter import Painter
 
 
 class App(Tk):
@@ -28,13 +32,13 @@ class App(Tk):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap(filing.get_path("favicon.ico"))
+        self.wm_iconbitmap(get_path("favicon.ico"))
         self.controls = Controls(self)
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.mainloop()
 
     def on_close(self):
-        filing.wipe_log()
+        wipe_log()
         try:
             self.quit()
         except RuntimeError:
@@ -53,7 +57,7 @@ class Controls(Frame):
         self.parent = parent  # App is the parent
         self.view = None  # for View (i.e. TopLevel) instance, parent of Chart (i.e. Canvas) instance
         self.file_source = None  # for path to user's Excel spreadsheet
-        self.settings = filing.get_config_data()
+        self.settings = get_config_data()
         self.check_count = 0
         self.run_count = 0
         self.show_rows = IntVar()
@@ -259,27 +263,27 @@ class Controls(Frame):
             self.set_button_states([1, 0, 0, 0, 0, 0, 1])
 
     def on_select(self):
-        self.file_source = dialogues.get_file_name(self.file_source)
+        self.file_source = get_file_name(self.file_source)
         self.set_select(self.file_source)
 
     def on_check(self):
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
-        reference = templating.TEMPLATE
+        reference = TEMPLATE
         self.check_count += 1
-        filing.append_log(f'CHECK #{self.check_count}\n')
-        checker.check_merged_cells(workbook)
-        checker.check_sheets_exist(workbook, reference)
-        checker.check_header_rows_exist(workbook)
-        checker.check_header_rows(workbook, reference)
-        checker.check_misspelled_headers(workbook, reference)
-        filing.append_log(f'\n')
+        append_log(f'CHECK #{self.check_count}\n')
+        check_merged_cells(workbook)
+        check_sheets_exist(workbook, reference)
+        check_header_rows_exist(workbook)
+        check_header_rows(workbook, reference)
+        check_misspelled_headers(workbook, reference)
+        append_log(f'\n')
         self.refresh_scroller()
 
     def on_run(self):
         self.run_count += 1
-        filing.append_log(f'RUN #{self.run_count}\n')
+        append_log(f'RUN #{self.run_count}\n')
         self.get_form_data()
-        filing.save_config_data(self.settings)
+        save_config_data(self.settings)
         workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
         items = Loader(workbook).items
         items = Cleaner(items).items
@@ -288,26 +292,26 @@ class Controls(Frame):
             self.view.destroy()
         self.view = View(parent=self.parent, data=items)  # App is the parent
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
-        filing.append_log(f'Run {self.run_count} complete.\n\n')
+        append_log(f'Run {self.run_count} complete.\n\n')
         self.refresh_scroller()
 
     def on_copy(self):
-        utils.copy_to_clipboard(self.view.image)
+        copy_to_clipboard(self.view.image)
         self.refresh_scroller()
 
     def on_save(self):
-        dialogues.save_image(self.view.image)
+        save_image(self.view.image)
         self.refresh_scroller()
 
     def on_postscript(self):
-        dialogues.save_postscript(self.view.image)
+        save_postscript(self.view.image)
         self.refresh_scroller()
 
     def on_template(self):
-        workbook = templating.create_template(templating.TEMPLATE)
-        workbook = templating.populate_template(workbook, templating.SAMPLE)
-        workbook = templating.reformat_dates(workbook)
-        dialogues.export_workbook(workbook)
+        workbook = create_template(TEMPLATE)
+        workbook = populate_template(workbook, SAMPLE)
+        workbook = reformat_dates(workbook)
+        export_workbook(workbook)
         self.refresh_scroller()
 
     def set_button_states(self, states=None):
@@ -325,7 +329,7 @@ class Controls(Frame):
 
     def refresh_scroller(self):
         self.wipe_scroller()
-        log = filing.get_log()
+        log = get_log()
         self.scroller.configure(state=NORMAL)  # writable
         self.scroller.insert(END, log)
         self.scroller.configure(state=DISABLED)  # readable
@@ -342,10 +346,10 @@ class View(Toplevel):
         self.geometry(f'+{self.win_x}+{self.win_y}')  # w, h, x, y
         self.resizable(False, False)
         self.title("Gantt Page")
-        self.wm_iconbitmap(filing.get_path("favicon.ico"))
+        self.wm_iconbitmap(get_path("favicon.ico"))
         self.parent = parent
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.image = painter.Painter(self, data)  # View is the parent
+        self.image = Painter(self, data)  # View is the parent
 
     def on_close(self):
         self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])
