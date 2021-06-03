@@ -79,15 +79,16 @@ class Cleaner:
 
     @staticmethod
     def clean_justify_value(item):
-        value = str(item.justify).upper().strip()
-        if not value:
-            item.justify = LEFT
-        elif value in ['L', 'LT', 'LF', 'LFT', 'LEFT']:
-            item.justify = LEFT
-        elif value in ['R', 'RT', 'RGHT', 'RIGHT']:
-            item.justify = RIGHT
-        elif value in ['C', 'CT', 'CR', 'CTR', 'CNTR', 'CENTR', 'CENTER', 'CENTRE', 'M', 'MID', 'MIDL', 'MIDDLE']:
-            item.justify = CENTER
+        if item.justify:
+            value = str(item.justify).upper().strip()
+            if value in ['L', 'LT', 'LF', 'LFT', 'LEFT', '']:
+                item.justify = LEFT
+            elif value in ['R', 'RT', 'RGHT', 'RIGHT']:
+                item.justify = RIGHT
+            elif value in ['C', 'CT', 'CR', 'CTR', 'CNTR', 'CENTR', 'CENTER', 'CENTRE', 'M', 'MID', 'MIDL', 'MIDDLE']:
+                item.justify = CENTER
+            else:
+                logging.info(f'JUSTIFY value in {item.type.upper()}S not recognised.')
+                item.justify = LEFT
         else:
-            logging.info(f'JUSTIFY value in {item.type.upper()}S not recognised.')
             item.justify = LEFT

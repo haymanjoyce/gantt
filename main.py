@@ -19,7 +19,6 @@
 # TODO use polygon to create box rounding (like https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners)
 # TODO debug case where user able to enter in settings finish date before start unchallenged
 # TODO make default text size proportional to scale and row height
-# TODO add new attributes to Label
 # TODO in Painter replace usage of create_text with draw_text
 # TODO set all defaults to None in features except type attribute
 

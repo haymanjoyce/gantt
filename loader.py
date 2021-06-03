@@ -81,9 +81,12 @@ class Loader:
         item.color = sheet_row[sheet_mapping.get('COLOR')]
         item.size = sheet_row[sheet_mapping.get('SIZE')]
         item.font = sheet_row[sheet_mapping.get('FONT')]
-        item.weight = sheet_row[sheet_mapping.get('WEIGHT')]
         item.anchor = sheet_row[sheet_mapping.get('ANCHOR')]
         item.rotation = sheet_row[sheet_mapping.get('ROTATION')]
         item.width = sheet_row[sheet_mapping.get('WIDTH')]
         item.justify = sheet_row[sheet_mapping.get('JUSTIFY')]
+        item.weight = sheet_row[sheet_mapping.get('BOLD')]
+        item.weight = sheet_row[sheet_mapping.get('ITALIC')]
+        item.weight = sheet_row[sheet_mapping.get('UNDERLINE')]
+        item.weight = sheet_row[sheet_mapping.get('STRIKETHROUGH')]
         return item
