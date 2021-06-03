@@ -4,8 +4,9 @@ import logging
 import datetime
 
 from tkinter import Canvas
+from tkinter.constants import *
 from tkinter.font import Font
-from tkinter.font import BOLD, NORMAL
+from tkinter.font import BOLD, NORMAL, ITALIC, ROMAN
 
 from settings import Settings
 
@@ -45,30 +46,41 @@ class Painter(Canvas):
     def draw_arrow(self):
         pass
 
-    def draw_text(self, x, y, text='', anchor='', color='', width=None, justify=None, font=None):
+    def draw_text(self, x, y, text='', anchor=CENTER, color='black', width=None, justify=None,
+                  font=None, size=None, bold=False, italic=False, underline=False, strikethrough=False):
 
-        # size = None, bold = False, italics = False, underline = False, overstrike = False)
+        font_object = Font()
+        # font_object = nametofont('TkFixedFont')  # caused global change
 
-        # if size:
-        #     size = 0 - size  # negative denotes pixels
-        # if font:
-        #     family = font
-        # else:
-        #     family = ''
-        # if bold:
-        #     weight = BOLD
-        # else:
-        #     weight = NORMAL
-        # if italics:
-        #     slant = BOLD
-        # else:
-        #     slant = NORMAL
-        #
-        # font_options = {'family': family, 'size': size, 'weight': weight, 'slant': slant, 'underline': int(underline),
-        # 'overstrike': int(overstrike)}
-        # font_object = Font(font_options)
+        family = font  # name change
+        weight = bold
+        slant = italic
+        underline = int(underline)  # int required as argument
+        overstrike = int(strikethrough)
 
-        text_options = {'text': text, 'anchor': anchor, 'color': color, 'width': width, 'justify': justify, 'font': font}
+        if size:
+            size = 0 - size  # negative denotes pixels
+        else:
+            # size = font_object.actual()['size']  # does not return global default
+            size = -12  # unable to find global default
+
+        if weight:
+            weight = BOLD
+        else:
+            weight = NORMAL
+
+        if slant:
+            slant = ITALIC
+        else:
+            slant = ROMAN
+
+        font_options = {'family': family, 'size': size, 'weight': weight, 'slant': slant, 'underline': underline,
+                        'overstrike': overstrike}
+
+        font_object.config(**font_options)
+
+        text_options = {'text': text, 'anchor': anchor, 'fill': color, 'width': width, 'justify': justify,
+                        'font': font_object}
 
         self.create_text(x, y, **text_options)
 
@@ -126,4 +138,4 @@ class Painter(Canvas):
 
     def draw_label(self, item):
         self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
-                       justify=item.justify, font=None)
+                       justify=item.justify)
