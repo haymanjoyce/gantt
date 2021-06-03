@@ -20,7 +20,8 @@
 # TODO debug case where user able to enter in settings finish date before start unchallenged
 # TODO make default text size proportional to scale and row height
 # TODO in Painter replace usage of create_text with draw_text
-# TODO set all defaults to None in features except type attribute
+# TODO debug show rows and row numbers not working - Painter needs to check settings
+# TODO Connector
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

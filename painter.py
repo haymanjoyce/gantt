@@ -46,8 +46,8 @@ class Painter(Canvas):
     def draw_arrow(self):
         pass
 
-    def draw_text(self, x, y, text='', anchor=CENTER, color='black', width=None, justify=None,
-                  font=None, size=None, bold=False, italic=False, underline=False, strikethrough=False):
+    def draw_text(self, x, y, text='', anchor=CENTER, color='black', width=None, justify=None, tag=None, font=None,
+                  size=None, bold=False, italic=False, underline=False, strikethrough=False):
 
         font_object = Font()
         # font_object = nametofont('TkFixedFont')  # caused global change
@@ -79,7 +79,7 @@ class Painter(Canvas):
 
         font_object.config(**font_options)
 
-        text_options = {'text': text, 'anchor': anchor, 'fill': color, 'width': width, 'justify': justify,
+        text_options = {'text': text, 'anchor': anchor, 'fill': color, 'width': width, 'justify': justify, 'tag': tag,
                         'font': font_object}
 
         self.create_text(x, y, **text_options)
@@ -138,4 +138,5 @@ class Painter(Canvas):
 
     def draw_label(self, item):
         self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
-                       justify=item.justify)
+                       justify=item.justify, tag=item.type, font=item.font, bold=item.bold, italic=item.italic,
+                       underline=item.underline, strikethrough=item.strikethrough)

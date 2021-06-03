@@ -87,12 +87,12 @@ class Label:
     justify = attrib(default=None)
     rotation = attrib(default=None)
     font = attrib(default=None)
-    color = attrib(default=None)
-    size = attrib(default=None)
-    bold = attrib(default=None)
-    italic = attrib(default=None)
-    underline = attrib(default=None)
-    strikethrough = attrib(default=None)
+    color = attrib(default='black')
+    size = attrib(default=12)
+    bold = attrib(default=False)
+    italic = attrib(default=False)
+    underline = attrib(default=False)
+    strikethrough = attrib(default=False)
 
 
 @attrs
