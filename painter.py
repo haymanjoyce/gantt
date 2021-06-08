@@ -41,13 +41,13 @@ class Painter(Canvas):
     def draw_circle(self):
         pass
 
-    def draw_line(self):
-        pass
+    def draw_line(self, *points, arrow=LAST, arrow_shape=(8, 10, 3), capstyle=BUTT, dash=(), color='black',
+                  joinstyle=ROUND, smooth=FALSE, tags='', width=1):
+        options = {'arrow': arrow, 'arrowshape': arrow_shape, 'capstyle': capstyle, 'dash': dash, 'fill': color,
+                   'joinstyle': joinstyle, 'smooth': smooth, 'tags': tags, 'width': width}
+        self.create_line(points, **options)
 
-    def draw_arrow(self):
-        pass
-
-    def draw_text(self, x, y, text='', anchor=CENTER, color='black', width=None, justify=None, tag=None, font=None,
+    def draw_text(self, x, y, text='', anchor=CENTER, color='black', width=None, justify=None, tags=None, font=None,
                   size=None, bold=False, italic=False, underline=False, strikethrough=False):
 
         font_object = Font()
@@ -80,7 +80,7 @@ class Painter(Canvas):
 
         font_object.config(**font_options)
 
-        text_options = {'text': text, 'anchor': anchor, 'fill': color, 'width': width, 'justify': justify, 'tag': tag,
+        text_options = {'text': text, 'anchor': anchor, 'fill': color, 'width': width, 'justify': justify, 'tags': tags,
                         'font': font_object}
 
         self.create_text(x, y, **text_options)
@@ -95,7 +95,7 @@ class Painter(Canvas):
 
     def draw_interval(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tag=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.type)
 
     def draw_interval_label(self, item):
         y = item.y + (item.height / 2)
@@ -114,7 +114,7 @@ class Painter(Canvas):
 
     def draw_row(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tag=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.type)
 
     def draw_row_label(self, item):
         x = item.x + 20  # note, not proportional to width
@@ -130,7 +130,7 @@ class Painter(Canvas):
 
     def draw_bar(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tag=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.type)
 
     # LABELS
 
@@ -141,7 +141,7 @@ class Painter(Canvas):
 
     def draw_label(self, item):
         self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
-                       justify=item.justify, tag=item.type, font=item.font, bold=item.bold, italic=item.italic,
+                       justify=item.justify, tags=item.type, font=item.font, bold=item.bold, italic=item.italic,
                        underline=item.underline, strikethrough=item.strikethrough)
 
     # CONNECTORS
@@ -152,4 +152,11 @@ class Painter(Canvas):
             self.draw_connector(item)
 
     def draw_connector(self, item):
-        self.create_line(item.from_x, item.from_y, item.to_x, item.to_y)
+        point_1 = item.from_x, item.from_y
+        point_2 = item.shaft_x, item.from_y
+        point_3 = item.shaft_x, item.to_y
+        point_4 = item.to_x, item.to_y
+
+        points = point_1 + point_2 + point_3 + point_4
+
+        self.draw_line(points, color=item.color, width=item.width)

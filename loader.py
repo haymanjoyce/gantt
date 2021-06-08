@@ -106,4 +106,5 @@ class Loader:
         item.width = sheet_row[sheet_mapping.get('WIDTH')]
         item.color = sheet_row[sheet_mapping.get('COLOR')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        item.shaft_nudge = sheet_row[sheet_mapping.get('SHAFT NUDGE')]
         return item

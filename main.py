@@ -20,13 +20,11 @@
 # TODO debug case where user able to enter in settings finish date before start unchallenged
 # TODO make default text size proportional to scale and row height
 # TODO in Painter replace usage of create_text with draw_text
-# TODO clean connector fields
-# TODO place connector ends middle of row
-# TODO apply connector nudge values
-# TODO dog leg lines
-# TODO apply arrow head
-# TODO apply width and color
-# TODO examine all create_line arguments available
+# TODO check for and clean blank rows
+# TODO check for and clean blank cells (to avoid type errors)
+# TODO check for and clean references to rows that do no exist
+# TODO finish connectors, passing all args to draw_line
+
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

@@ -202,10 +202,20 @@ class Processor:
 
             from_x_delta = connector.from_date - self.settings.start
             connector.from_x = from_x_delta.days * self.pixels_per_day
+            connector.from_x += connector.from_nudge
 
-            from_y_delta = connector.to_date - self.settings.start
-            connector.to_x = from_y_delta.days * self.pixels_per_day
+            to_x_delta = connector.to_date - self.settings.start
+            connector.to_x = to_x_delta.days * self.pixels_per_day
+            connector.to_x += connector.to_nudge
 
-            connector.from_y = [row.y for row in rows if connector.from_row == row.key][0]
+            halfway = (connector.to_x - connector.from_x) / 2
+            connector.shaft_x = connector.from_x + halfway
+            connector.shaft_x += connector.shaft_nudge
 
-            connector.to_y = [row.y for row in rows if connector.to_row == row.key][0]
+            half_row_height = self.row_height / 2
+            connector.from_y = [row.y for row in rows if connector.from_row == row.key][0] + half_row_height
+            connector.to_y = [row.y for row in rows if connector.to_row == row.key][0] + half_row_height
+
+
+def limit(number, minimum, maximum):
+    return max(min(number, maximum), minimum)

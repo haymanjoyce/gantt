@@ -107,10 +107,12 @@ class Connector:
     to_date = attrib(default=None)
     to_nudge = attrib(default=None)
     arrow_head = attrib(default=None)
+    shaft_nudge = attrib(default=None)
     from_x = attrib(default=None)
     from_y = attrib(default=None)
     to_x = attrib(default=None)
     to_y = attrib(default=None)
+    shaft_x = attrib(default=None)
     width = attrib(default=0.0)
     color = attrib(default="black")
 
