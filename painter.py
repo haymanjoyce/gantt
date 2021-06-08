@@ -106,8 +106,10 @@ class Painter(Canvas):
     def draw_rows(self):
         items = [item for item in self.items if item.type == 'row']
         for item in items:
-            self.draw_row(item)
-            self.draw_row_label(item)
+            if self.settings.show_rows:
+                self.draw_row(item)
+            if self.settings.show_row_nums:
+                self.draw_row_label(item)
 
     def draw_row(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
