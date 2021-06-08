@@ -15,15 +15,18 @@ class Processor:
     def __init__(self, data):
         self.items = data
         self.settings = Settings()
+
         self.time_delta = (self.settings.finish - self.settings.start)
         self.total_days = self.time_delta.days
         self.pixels_per_day = self.settings.width / self.total_days
         self.first_row = self.set_scales()
         self.row_height = self.get_row_height()
+
         self.set_intervals()
         self.set_rows()
         self.set_bars()
         self.set_labels()
+        self.set_connectors()
 
     def set_scales(self):
         scales = [item for item in self.items if item.type == 'scale']
@@ -191,3 +194,18 @@ class Processor:
 
             if label.y_nudge:
                 label.y += label.y_nudge
+
+    def set_connectors(self):
+        connectors = [item for item in self.items if item.type == 'connector']
+        rows = [item for item in self.items if item.type == 'row']
+        for connector in connectors:
+
+            from_x_delta = connector.from_date - self.settings.start
+            connector.from_x = from_x_delta.days * self.pixels_per_day
+
+            from_y_delta = connector.to_date - self.settings.start
+            connector.to_x = from_y_delta.days * self.pixels_per_day
+
+            connector.from_y = [row.y for row in rows if connector.from_row == row.key][0]
+
+            connector.to_y = [row.y for row in rows if connector.to_row == row.key][0]

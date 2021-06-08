@@ -45,7 +45,9 @@ TEMPLATE = {
     "Scales": ("Interval", "Height", "Fill", "Border Width", "Border Color"),
     "Bars": ("Key", "Row", "Start", "Finish", "Fill", "Border Width", "Border Color", "Layer", "Height", "Nudge"),
     "Labels": ("Row", "Date", "Text", "X Nudge", "Y Nudge", "Anchor", "Layer", "Rotation", "Width", "Justify", "Color", "Size", "Font", "Bold", "Italic", "Underline", "Strikethrough"),
+    "Connectors": ("From Row", "From Date", "From Nudge", "To Row", "To Date", "To Nudge", "Arrow Head", "Width", "Color", "Layer"),
 }
+
 
 SAMPLE = {
     "Scales": (['y', 40, 'red', 0.5, 'black'],
@@ -57,4 +59,7 @@ SAMPLE = {
     "Labels": ([1, to_date_object("21 Dec 20"), 'one', ],
                [2, to_date_object("5 Jan 21"), 'two', ],
                [3, to_date_object("1 Jan 21"), 'three', ]),
+    "Connectors": ([1, to_date_object("21 Dec 20"), 0, 3, to_date_object("1 Jan 21"), 0, 'No', 1, 'black', 1],
+                   [2, to_date_object("23 Dec 20"), 0, 2, to_date_object("3 Jan 21"), 0, 'Yes', 3, 'red', 1],
+                   [3, to_date_object("25 Dec 20"), 0, 1, to_date_object("6 Jan 21"), 0, 'No', 1, 'black', 1],),
 }

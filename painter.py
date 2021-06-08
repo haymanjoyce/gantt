@@ -24,6 +24,7 @@ class Painter(Canvas):
         self.draw_bars()
         self.draw_intervals()
         self.draw_labels()
+        self.draw_connectors()
 
     # SHAPES
 
@@ -142,3 +143,13 @@ class Painter(Canvas):
         self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
                        justify=item.justify, tag=item.type, font=item.font, bold=item.bold, italic=item.italic,
                        underline=item.underline, strikethrough=item.strikethrough)
+
+    # CONNECTORS
+
+    def draw_connectors(self):
+        items = [item for item in self.items if item.type == 'connector']
+        for item in items:
+            self.draw_connector(item)
+
+    def draw_connector(self, item):
+        self.create_line(item.from_x, item.from_y, item.to_x, item.to_y)

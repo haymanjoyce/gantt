@@ -4,7 +4,7 @@
 
 import logging
 
-from features import Scale, Bar, Label
+from features import Scale, Bar, Label, Connector
 
 
 class Loader:
@@ -14,6 +14,7 @@ class Loader:
         self.assignments = {'Scales': self.load_scale,
                             'Bars': self.load_bar,
                             'Labels': self.load_label,
+                            'Connectors': self.load_connector,
                             }
         self.load_items()
 
@@ -89,4 +90,20 @@ class Loader:
         item.weight = sheet_row[sheet_mapping.get('ITALIC')]
         item.weight = sheet_row[sheet_mapping.get('UNDERLINE')]
         item.weight = sheet_row[sheet_mapping.get('STRIKETHROUGH')]
+        return item
+
+    @staticmethod
+    def load_connector(sheet_row, sheet_mapping):
+        item = Connector()
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        item.from_row = sheet_row[sheet_mapping.get('FROM ROW')]
+        item.from_date = sheet_row[sheet_mapping.get('FROM DATE')]
+        item.from_nudge = sheet_row[sheet_mapping.get('FROM NUDGE')]
+        item.to_row = sheet_row[sheet_mapping.get('TO ROW')]
+        item.to_date = sheet_row[sheet_mapping.get('TO DATE')]
+        item.to_nudge = sheet_row[sheet_mapping.get('TO NUDGE')]
+        item.arrow_head = sheet_row[sheet_mapping.get('ARROW HEAD')]
+        item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
         return item
