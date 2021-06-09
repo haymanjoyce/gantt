@@ -95,7 +95,7 @@ class Painter(Canvas):
 
     def draw_interval(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tags=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.layer)
 
     def draw_interval_label(self, item):
         y = item.y + (item.height / 2)
@@ -114,7 +114,7 @@ class Painter(Canvas):
 
     def draw_row(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tags=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.layer)
 
     def draw_row_label(self, item):
         x = item.x + 20  # note, not proportional to width
@@ -130,7 +130,7 @@ class Painter(Canvas):
 
     def draw_bar(self, item):
         self.draw_rectangle(x=item.x, y=item.y, rect_width=item.width, rect_height=item.height, fill=item.fill,
-                            outline=item.border_color, width=item.border_width, tags=item.type)
+                            outline=item.border_color, width=item.border_width, tags=item.layer)
 
     # LABELS
 
@@ -141,7 +141,7 @@ class Painter(Canvas):
 
     def draw_label(self, item):
         self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
-                       justify=item.justify, tags=item.type, font=item.font, bold=item.bold, italic=item.italic,
+                       justify=item.justify, tags=item.layer, font=item.font, bold=item.bold, italic=item.italic,
                        underline=item.underline, strikethrough=item.strikethrough)
 
     # CONNECTORS
@@ -159,4 +159,24 @@ class Painter(Canvas):
 
         points = point_1 + point_2 + point_3 + point_4
 
-        self.draw_line(points, color=item.color, width=item.width)
+        self.draw_line(points, tags=item.layer,
+                       color=item.color, width=item.width)
+
+
+    # type = attrib(default="connector")
+    # layer = attrib(default=None)
+    # from_row = attrib(default=None)
+    # from_date = attrib(default=None)
+    # from_nudge = attrib(default=None)
+    # to_row = attrib(default=None)
+    # to_date = attrib(default=None)
+    # to_nudge = attrib(default=None)
+    # arrow_head = attrib(default=None)
+    # shaft_nudge = attrib(default=None)
+    # from_x = attrib(default=None)
+    # from_y = attrib(default=None)
+    # to_x = attrib(default=None)
+    # to_y = attrib(default=None)
+    # shaft_x = attrib(default=None)
+    # width = attrib(default=0.0)
+    # color = attrib(default="black")

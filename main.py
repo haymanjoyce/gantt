@@ -24,7 +24,8 @@
 # TODO check for and clean blank cells (to avoid type errors)
 # TODO check for and clean references to rows that do no exist
 # TODO finish connectors, passing all args to draw_line
-
+# TODO pipes
+# TODO item layer
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
