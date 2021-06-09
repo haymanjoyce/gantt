@@ -4,7 +4,7 @@
 
 import logging
 
-from features import Scale, Bar, Label, Connector
+from features import Scale, Bar, Label, Connector, Pipe
 
 
 class Loader:
@@ -15,6 +15,7 @@ class Loader:
                             'Bars': self.load_bar,
                             'Labels': self.load_label,
                             'Connectors': self.load_connector,
+                            'Pipes': self.load_pipe,
                             }
         self.load_items()
 
@@ -107,4 +108,13 @@ class Loader:
         item.color = sheet_row[sheet_mapping.get('COLOR')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]
         item.shaft_nudge = sheet_row[sheet_mapping.get('SHAFT NUDGE')]
+        return item
+
+    @staticmethod
+    def load_pipe(sheet_row, sheet_mapping):
+        item = Pipe()
+        item.date = sheet_row[sheet_mapping.get('DATE')]
+        item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
         return item

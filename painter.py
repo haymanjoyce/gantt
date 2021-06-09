@@ -25,6 +25,7 @@ class Painter(Canvas):
         self.draw_intervals()
         self.draw_labels()
         self.draw_connectors()
+        self.draw_pipes()
 
     # SHAPES
 
@@ -41,7 +42,7 @@ class Painter(Canvas):
     def draw_circle(self):
         pass
 
-    def draw_line(self, *points, arrow=LAST, arrow_shape=(8, 10, 3), capstyle=BUTT, dash=(), color='black',
+    def draw_line(self, *points, arrow=NONE, arrow_shape=(8, 10, 3), capstyle=BUTT, dash=(), color='black',
                   joinstyle=ROUND, smooth=FALSE, tags='', width=1):
         options = {'arrow': arrow, 'arrowshape': arrow_shape, 'capstyle': capstyle, 'dash': dash, 'fill': color,
                    'joinstyle': joinstyle, 'smooth': smooth, 'tags': tags, 'width': width}
@@ -159,24 +160,14 @@ class Painter(Canvas):
 
         points = point_1 + point_2 + point_3 + point_4
 
-        self.draw_line(points, tags=item.layer,
-                       color=item.color, width=item.width)
+        self.draw_line(points, tags=item.layer, color=item.color, width=item.width, arrow=LAST)
 
+    # PIPES
 
-    # type = attrib(default="connector")
-    # layer = attrib(default=None)
-    # from_row = attrib(default=None)
-    # from_date = attrib(default=None)
-    # from_nudge = attrib(default=None)
-    # to_row = attrib(default=None)
-    # to_date = attrib(default=None)
-    # to_nudge = attrib(default=None)
-    # arrow_head = attrib(default=None)
-    # shaft_nudge = attrib(default=None)
-    # from_x = attrib(default=None)
-    # from_y = attrib(default=None)
-    # to_x = attrib(default=None)
-    # to_y = attrib(default=None)
-    # shaft_x = attrib(default=None)
-    # width = attrib(default=0.0)
-    # color = attrib(default="black")
+    def draw_pipes(self):
+        items = [item for item in self.items if item.type == 'pipe']
+        for item in items:
+            self.draw_pipe(item)
+
+    def draw_pipe(self, item):
+        self.draw_line(item.x0, item.y0, item.x1, item.y1, width=item.width, color=item.color, tags=item.layer)

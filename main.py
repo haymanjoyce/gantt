@@ -23,9 +23,10 @@
 # TODO check for and clean blank rows
 # TODO check for and clean blank cells (to avoid type errors)
 # TODO check for and clean references to rows that do no exist
-# TODO finish connectors, passing all args to draw_line
-# TODO pipes
-# TODO item layer
+# TODO calibrate task baseline to be middle of row
+# TODO remove option of row height
+# TODO rename settings to chart and Chart
+# TODO rename tags as layer in shapes parameters
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

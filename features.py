@@ -25,6 +25,7 @@ class Scale:
 class Interval:
 
     type = attrib(default="interval")
+    layer = attrib(default=None)
     date = attrib(default=None)
     x = attrib(default=0)
     y = attrib(default=0)
@@ -120,12 +121,15 @@ class Connector:
 @attrs
 class Pipe:
 
-    type = attrib(default="bar")
-    layer = attrib(default=None)
-    key = attrib(default=None)
-    date = attrib(default="")
-    width = attrib(default="")
-    color = attrib(default="")
+    type = attrib(default="pipe")
+    layer = attrib(default=1)
+    date = attrib(default=None)
+    width = attrib(default=1)
+    color = attrib(default='black')
+    x0 = attrib(default=0)
+    y0 = attrib(default=0)
+    x1 = attrib(default=0)
+    y1 = attrib(default=0)
 
 
 @attrs

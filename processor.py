@@ -20,13 +20,23 @@ class Processor:
         self.total_days = self.time_delta.days
         self.pixels_per_day = self.settings.width / self.total_days
         self.first_row = self.set_scales()
+        self.total_row_space = self.settings.height - self.first_row
+        self.max_row_height = self.total_row_space / self.settings.num_rows
         self.row_height = self.get_row_height()
+        self.bottom_line = (self.row_height * self.settings.num_rows) + self.first_row
 
         self.set_intervals()
         self.set_rows()
         self.set_bars()
         self.set_labels()
         self.set_connectors()
+        self.set_pipes()
+
+    def get_row_height(self):
+        if self.settings.row_height > self.max_row_height:
+            return self.max_row_height
+        else:
+            return self.settings.row_height
 
     def set_scales(self):
         scales = [item for item in self.items if item.type == 'scale']
@@ -131,14 +141,6 @@ class Processor:
                 current_interval_x += interval.width
             current_date += timedelta(days=1)
 
-    def get_row_height(self):
-        row_space = self.settings.height - self.first_row
-        max_height = row_space / self.settings.num_rows
-        if self.settings.row_height > max_height:
-            return max_height
-        else:
-            return self.settings.row_height
-
     def set_rows(self):
         y = self.first_row
         for i in range(0, self.settings.num_rows):
@@ -216,6 +218,13 @@ class Processor:
             connector.from_y = [row.y for row in rows if connector.from_row == row.key][0] + half_row_height
             connector.to_y = [row.y for row in rows if connector.to_row == row.key][0] + half_row_height
 
-
-def limit(number, minimum, maximum):
-    return max(min(number, maximum), minimum)
+    def set_pipes(self):
+        pipes = [item for item in self.items if item.type == 'pipe']
+        for pipe in pipes:
+            start_delta = pipe.date - self.settings.start
+            start_delta_days = start_delta.days
+            start_delta_pixels = start_delta_days * self.pixels_per_day
+            pipe.x0 = start_delta_pixels
+            pipe.y0 = self.first_row
+            pipe.x1 = start_delta_pixels
+            pipe.y1 = self.bottom_line
