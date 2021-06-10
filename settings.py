@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This module enables chart data (i.e. global values) to be stored as a dataclass object."""
+
 import datetime
 
 from attr import attrs, attrib, Factory

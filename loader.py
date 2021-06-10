@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-"""This module is for loading Excel (i.e. user) data into data classes."""
+"""This module is for loading Excel (i.e. user) data into dataclass objects."""
 
 import logging
 
-from features import Scale, Bar, Label, Connector, Pipe
+from features import Scale, Bar, Label, Connector, Pipe, Curtain
 
 
 class Loader:
@@ -16,6 +16,7 @@ class Loader:
                             'Labels': self.load_label,
                             'Connectors': self.load_connector,
                             'Pipes': self.load_pipe,
+                            'Curtains': self.load_curtain,
                             }
         self.load_items()
 
@@ -115,6 +116,15 @@ class Loader:
         item = Pipe()
         item.date = sheet_row[sheet_mapping.get('DATE')]
         item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        return item
+
+    @staticmethod
+    def load_curtain(sheet_row, sheet_mapping):
+        item = Curtain()
+        item.start = sheet_row[sheet_mapping.get('START')]
+        item.finish = sheet_row[sheet_mapping.get('FINISH')]
         item.color = sheet_row[sheet_mapping.get('COLOR')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]
         return item

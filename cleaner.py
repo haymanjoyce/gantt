@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This module is for cleaning data class fields."""
+"""This module is for cleaning dataclass object values."""
 
 import logging
 from datetime import datetime

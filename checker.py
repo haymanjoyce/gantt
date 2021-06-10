@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This module is for running basic checks on the spreadsheet."""
+
 import logging
 
 

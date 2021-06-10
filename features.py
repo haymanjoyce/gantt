@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+"""
+This module enables feature data to be stored as dataclass objects.
+Attributes should be vector graphic language agnostic.
+"""
+
 import logging
 
 from attr import attrs, attrib
@@ -133,19 +138,22 @@ class Pipe:
 
 
 @attrs
-class Line:
-    pass
-
-
-@attrs
 class Curtain:
 
     type = attrib(default="curtain")
     layer = attrib(default=None)
-    key = attrib(default=None)
     start = attrib(default="")
     finish = attrib(default="")
-    fill = attrib(default="")
+    color = attrib(default="")
+    x = attrib(default=None)
+    y = attrib(default=None)
+    width = attrib(default=None)
+    height = attrib(default=None)
+
+
+@attrs
+class Line:
+    pass
 
 
 @attrs

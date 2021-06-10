@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""""This module is for, where required, calculating and/or adding data class attribute values."""
+""""This module is for, where required, configuring dataclass object values."""
 
 import logging
 
@@ -31,6 +31,7 @@ class Processor:
         self.set_labels()
         self.set_connectors()
         self.set_pipes()
+        self.set_curtains()
 
     def get_row_height(self):
         if self.settings.row_height > self.max_row_height:
@@ -228,3 +229,17 @@ class Processor:
             pipe.y0 = self.first_row
             pipe.x1 = start_delta_pixels
             pipe.y1 = self.bottom_line
+
+    def set_curtains(self):
+        curtains = [item for item in self.items if item.type == 'curtain']
+        for curtain in curtains:
+            start_delta = curtain.start - self.settings.start
+            finish_delta = curtain.finish - self.settings.start
+            start_delta_days = start_delta.days
+            finish_delta_days = finish_delta.days
+            start_delta_pixels = start_delta_days * self.pixels_per_day
+            finish_delta_pixels = finish_delta_days * self.pixels_per_day
+            curtain.x = start_delta_pixels
+            curtain.y = self.first_row
+            curtain.width = finish_delta_pixels - start_delta_pixels
+            curtain.height = self.bottom_line - self.first_row

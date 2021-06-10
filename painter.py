@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This module is for parsing dataclass objects into tkinter.Canvas objects."""
+
 import logging
 import datetime
 
@@ -26,6 +28,7 @@ class Painter(Canvas):
         self.draw_labels()
         self.draw_connectors()
         self.draw_pipes()
+        self.draw_curtains()
 
     # SHAPES
 
@@ -171,3 +174,14 @@ class Painter(Canvas):
 
     def draw_pipe(self, item):
         self.draw_line(item.x0, item.y0, item.x1, item.y1, width=item.width, color=item.color, tags=item.layer)
+
+    # CURTAINS
+
+    def draw_curtains(self):
+        items = [item for item in self.items if item.type == 'curtain']
+        for item in items:
+            self.draw_curtain(item)
+
+    def draw_curtain(self, item):
+        self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.color, tags=item.layer, width=0)
+        print(item)
