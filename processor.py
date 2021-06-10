@@ -32,6 +32,8 @@ class Processor:
         self.set_connectors()
         self.set_pipes()
         self.set_curtains()
+        self.set_separators()
+        self.set_sections()
 
     def get_row_height(self):
         if self.settings.row_height > self.max_row_height:
@@ -243,3 +245,26 @@ class Processor:
             curtain.y = self.first_row
             curtain.width = finish_delta_pixels - start_delta_pixels
             curtain.height = self.bottom_line - self.first_row
+
+    def set_separators(self):
+        separators = [item for item in self.items if item.type == 'separator']
+        rows = [item for item in self.items if item.type == 'row']
+        for separator in separators:
+            row_y = [row.y for row in rows if row.key == separator.row][0]
+            row_bottom = row_y + self.row_height
+            separator.x0 = self.settings.x
+            separator.y0 = row_bottom
+            separator.x1 = self.settings.width
+            separator.y1 = row_bottom
+
+    def set_sections(self):
+        sections = [item for item in self.items if item.type == 'section']
+        rows = [item for item in self.items if item.type == 'row']
+        for section in sections:
+            from_y = [row.y for row in rows if row.key == section.from_row][0]
+            to_y = [row.y for row in rows if row.key == section.to_row][0]
+            height = (to_y - from_y) + self.settings.row_height
+            section.x = self.settings.x
+            section.y = from_y
+            section.width = self.settings.width
+            section.height = height

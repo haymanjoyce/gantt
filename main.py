@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# TODO ditch Canvas, create SVG, save as image file (button) using Cairo, open file (option on save)
+# TODO log file is saved to user defined directory and option to open on run (check box); remove from interface
 # TODO option to download as SVG file
 # TODO option for user to email error message back to me
 # TODO better presentation on scroller text (i.e. line spaces and titles)
@@ -21,12 +23,15 @@
 # TODO make default text size proportional to scale and row height
 # TODO in Painter replace usage of create_text with draw_text
 # TODO check for and clean blank rows
+# TODO redraw rows as lines, like separators
 # TODO check for and clean blank cells (to avoid type errors)
 # TODO check for and clean references to rows that do no exist
 # TODO calibrate task baseline to be middle of row
 # TODO remove option of row height
+# TODO rename pipes (e.g. to lines)
 # TODO rename settings to chart and Chart
 # TODO rename tags as layer in shapes parameters
+# TODO prevent from_row being higher number than to_row in sections
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript

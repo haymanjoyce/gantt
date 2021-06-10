@@ -29,6 +29,8 @@ class Painter(Canvas):
         self.draw_connectors()
         self.draw_pipes()
         self.draw_curtains()
+        self.draw_separators()
+        self.draw_sections()
 
     # SHAPES
 
@@ -184,4 +186,23 @@ class Painter(Canvas):
 
     def draw_curtain(self, item):
         self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.color, tags=item.layer, width=0)
-        print(item)
+
+    # SEPARATORS
+
+    def draw_separators(self):
+        items = [item for item in self.items if item.type == 'separator']
+        for item in items:
+            self.draw_separator(item)
+
+    def draw_separator(self, item):
+        self.draw_line(item.x0, item.y0, item.x1, item.y1, color=item.color, width=item.width, tags=item.layer)
+
+    # SECTIONS
+
+    def draw_sections(self):
+        items = [item for item in self.items if item.type == 'section']
+        for item in items:
+            self.draw_section(item)
+
+    def draw_section(self, item):
+        self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.color, outline=item.border_color, width=item.border_width, tags=item.layer)

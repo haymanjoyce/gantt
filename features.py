@@ -5,8 +5,6 @@ This module enables feature data to be stored as dataclass objects.
 Attributes should be vector graphic language agnostic.
 """
 
-import logging
-
 from attr import attrs, attrib
 
 
@@ -152,21 +150,33 @@ class Curtain:
 
 
 @attrs
-class Line:
-    pass
+class Separator:
+
+    type = attrib(default="separator")
+    row = attrib(default=None)
+    layer = attrib(default=1)
+    width = attrib(default=1)
+    color = attrib(default='black')
+    x0 = attrib(default=0)
+    y0 = attrib(default=0)
+    x1 = attrib(default=0)
+    y1 = attrib(default=0)
 
 
 @attrs
-class Group:
+class Section:
 
-    type = attrib(default="group")
-    layer = attrib(default=None)
-    key = attrib(default=None)
-    from_row = attrib(default=None)
-    to_row = attrib(default=None)
-    fill = attrib(default="")
-    border_color = attrib(default="black")
-    border_width = attrib(default=0.0)
+    type = attrib(default="section")
+    layer = attrib(default=1)
+    from_row = attrib(default=1)
+    to_row = attrib(default=1)
+    color = attrib(default='')
+    border_color = attrib(default='')
+    border_width = attrib(default=0)
+    x = attrib(default=None)
+    y = attrib(default=None)
+    width = attrib(default=None)
+    height = attrib(default=None)
 
 
 @attrs
@@ -182,6 +192,11 @@ class Box:
     fill = attrib(default="")
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
+
+
+@attrs
+class Text:
+    pass
 
 
 @attrs

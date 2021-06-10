@@ -4,7 +4,7 @@
 
 import logging
 
-from features import Scale, Bar, Label, Connector, Pipe, Curtain
+from features import Scale, Bar, Label, Connector, Pipe, Curtain, Separator, Section
 
 
 class Loader:
@@ -17,6 +17,8 @@ class Loader:
                             'Connectors': self.load_connector,
                             'Pipes': self.load_pipe,
                             'Curtains': self.load_curtain,
+                            'Separators': self.load_separator,
+                            'Sections': self.load_section,
                             }
         self.load_items()
 
@@ -126,5 +128,25 @@ class Loader:
         item.start = sheet_row[sheet_mapping.get('START')]
         item.finish = sheet_row[sheet_mapping.get('FINISH')]
         item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        return item
+
+    @staticmethod
+    def load_separator(sheet_row, sheet_mapping):
+        item = Separator()
+        item.row = sheet_row[sheet_mapping.get('ROW')]
+        item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        return item
+
+    @staticmethod
+    def load_section(sheet_row, sheet_mapping):
+        item = Section()
+        item.from_row = sheet_row[sheet_mapping.get('FROM ROW')]
+        item.to_row = sheet_row[sheet_mapping.get('TO ROW')]
+        item.color = sheet_row[sheet_mapping.get('FILL COLOR')]
+        item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
+        item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]
         return item
