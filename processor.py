@@ -34,6 +34,7 @@ class Processor:
         self.set_curtains()
         self.set_separators()
         self.set_sections()
+        self.set_notes()
 
     def get_row_height(self):
         if self.settings.row_height > self.max_row_height:
@@ -268,3 +269,9 @@ class Processor:
             section.y = from_y
             section.width = self.settings.width
             section.height = height
+
+    def set_notes(self):
+        notes = [item for item in self.items if item.type == 'note']
+        for note in notes:
+            if not note.anchor:
+                note.anchor = 'nw'

@@ -194,8 +194,24 @@ class Box:
 
 
 @attrs
-class Text:
-    pass
+class Note:
+
+    type = attrib(default="note")
+    layer = attrib(default=None)
+    text = attrib(default=None)
+    x = attrib(default=None)
+    y = attrib(default=None)
+    anchor = attrib(default=None)
+    width = attrib(default=None)
+    justify = attrib(default='')
+    rotation = attrib(default=None)
+    font = attrib(default=None)
+    color = attrib(default='black')
+    size = attrib(default=12)
+    bold = attrib(default=False)
+    italic = attrib(default=False)
+    underline = attrib(default=False)
+    strikethrough = attrib(default=False)
 
 
 @attrs

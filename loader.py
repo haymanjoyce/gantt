@@ -4,7 +4,7 @@
 
 import logging
 
-from features import Scale, Bar, Label, Connector, Pipe, Curtain, Separator, Section, Box
+from features import Scale, Bar, Label, Connector, Pipe, Curtain, Separator, Section, Box, Note
 
 
 class Loader:
@@ -20,6 +20,7 @@ class Loader:
                             'Separators': self.load_separator,
                             'Sections': self.load_section,
                             'Boxes': self.load_box,
+                            'Notes': self.load_note,
                             }
         self.load_items()
 
@@ -91,10 +92,10 @@ class Loader:
         item.rotation = sheet_row[sheet_mapping.get('ROTATION')]
         item.width = sheet_row[sheet_mapping.get('WIDTH')]
         item.justify = sheet_row[sheet_mapping.get('JUSTIFY')]
-        item.weight = sheet_row[sheet_mapping.get('BOLD')]
-        item.weight = sheet_row[sheet_mapping.get('ITALIC')]
-        item.weight = sheet_row[sheet_mapping.get('UNDERLINE')]
-        item.weight = sheet_row[sheet_mapping.get('STRIKETHROUGH')]
+        item.bold = sheet_row[sheet_mapping.get('BOLD')]
+        item.italic = sheet_row[sheet_mapping.get('ITALIC')]
+        item.underline = sheet_row[sheet_mapping.get('UNDERLINE')]
+        item.strikethrough = sheet_row[sheet_mapping.get('STRIKETHROUGH')]
         return item
 
     @staticmethod
@@ -163,4 +164,25 @@ class Loader:
         item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
         item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        return item
+
+
+    @staticmethod
+    def load_note(sheet_row, sheet_mapping):
+        item = Note()
+        item.text = sheet_row[sheet_mapping.get('TEXT')]
+        item.x = sheet_row[sheet_mapping.get('X')]
+        item.y = sheet_row[sheet_mapping.get('Y')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        item.color = sheet_row[sheet_mapping.get('COLOR')]
+        item.size = sheet_row[sheet_mapping.get('SIZE')]
+        item.font = sheet_row[sheet_mapping.get('FONT')]
+        item.anchor = sheet_row[sheet_mapping.get('ANCHOR')]
+        item.rotation = sheet_row[sheet_mapping.get('ROTATION')]
+        item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.justify = sheet_row[sheet_mapping.get('JUSTIFY')]
+        item.bold = sheet_row[sheet_mapping.get('BOLD')]
+        item.italic = sheet_row[sheet_mapping.get('ITALIC')]
+        item.underline = sheet_row[sheet_mapping.get('UNDERLINE')]
+        item.strikethrough = sheet_row[sheet_mapping.get('STRIKETHROUGH')]
         return item

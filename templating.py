@@ -53,6 +53,7 @@ TEMPLATE = {
     "Separators": ("Row", "Width", "Color", "Layer"),
     "Sections": ("From Row", "To Row", "Fill Color", "Border Color", "Border Width", "Layer"),
     "Boxes": ("X", "Y", "Width", "Height", "Fill Color", "Border Color", "Border Width", "Layer"),
+    "Notes": ("Text", "X", "Y", "Anchor", "Layer", "Rotation", "Width", "Justify", "Color", "Size", "Font", "Bold", "Italic", "Underline", "Strikethrough"),
 }
 
 SAMPLE = {
@@ -74,4 +75,5 @@ SAMPLE = {
     "Separators": ([4, 2, 'purple', 1],),
     "Sections": ([10, 12, 'yellow', 'black', 1, 1],),
     "Boxes": ([300, 300, 200, 200, 'pink', 'black', 1, 1],),
+    "Notes": (['Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem', 300, 300, '', 1, 0, 200],),
 }

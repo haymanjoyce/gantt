@@ -32,6 +32,7 @@ class Painter(Canvas):
         self.draw_separators()
         self.draw_sections()
         self.draw_boxes()
+        self.draw_notes()
 
     # SHAPES
 
@@ -63,8 +64,16 @@ class Painter(Canvas):
         family = font  # name change
         weight = bold
         slant = italic
-        underline = int(underline)  # int required as argument
-        overstrike = int(strikethrough)
+
+        if underline:
+            underline = 1
+        else:
+            underline = 0
+
+        if strikethrough:
+            overstrike = 1
+        else:
+            overstrike = 0
 
         if size:
             size = 0 - size  # negative denotes pixels
@@ -217,3 +226,15 @@ class Painter(Canvas):
 
     def draw_box(self, item):
         self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.fill_color, outline=item.border_color, width=item.border_width, tags=item.layer)
+
+    # TEXTS
+
+    def draw_notes(self):
+        items = [item for item in self.items if item.type == 'note']
+        for item in items:
+            self.draw_note(item)
+
+    def draw_note(self, item):
+        self.draw_text(item.x, item.y, text=item.text, anchor=item.anchor, color=item.color, width=item.width,
+                       justify=item.justify, tags=item.layer, font=item.font, bold=item.bold, italic=item.italic,
+                       underline=item.underline, strikethrough=item.strikethrough)
