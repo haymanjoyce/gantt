@@ -183,15 +183,14 @@ class Section:
 class Box:
 
     type = attrib(default="box")
-    layer = attrib(default=None)
-    key = attrib(default=None)
+    layer = attrib(default=1)
+    fill_color = attrib(default='')
+    border_color = attrib(default='black')
+    border_width = attrib(default=1)
     x = attrib(default=None)
     y = attrib(default=None)
     width = attrib(default=None)
     height = attrib(default=None)
-    fill = attrib(default="")
-    border_color = attrib(default="black")
-    border_width = attrib(default=0.0)
 
 
 @attrs

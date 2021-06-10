@@ -31,6 +31,7 @@ class Painter(Canvas):
         self.draw_curtains()
         self.draw_separators()
         self.draw_sections()
+        self.draw_boxes()
 
     # SHAPES
 
@@ -206,3 +207,13 @@ class Painter(Canvas):
 
     def draw_section(self, item):
         self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.color, outline=item.border_color, width=item.border_width, tags=item.layer)
+
+    # BOXES
+
+    def draw_boxes(self):
+        items = [item for item in self.items if item.type == 'box']
+        for item in items:
+            self.draw_box(item)
+
+    def draw_box(self, item):
+        self.draw_rectangle(item.x, item.y, item.width, item.height, fill=item.fill_color, outline=item.border_color, width=item.border_width, tags=item.layer)

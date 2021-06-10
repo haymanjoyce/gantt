@@ -4,7 +4,7 @@
 
 import logging
 
-from features import Scale, Bar, Label, Connector, Pipe, Curtain, Separator, Section
+from features import Scale, Bar, Label, Connector, Pipe, Curtain, Separator, Section, Box
 
 
 class Loader:
@@ -19,6 +19,7 @@ class Loader:
                             'Curtains': self.load_curtain,
                             'Separators': self.load_separator,
                             'Sections': self.load_section,
+                            'Boxes': self.load_box,
                             }
         self.load_items()
 
@@ -146,6 +147,19 @@ class Loader:
         item.from_row = sheet_row[sheet_mapping.get('FROM ROW')]
         item.to_row = sheet_row[sheet_mapping.get('TO ROW')]
         item.color = sheet_row[sheet_mapping.get('FILL COLOR')]
+        item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
+        item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
+        item.layer = sheet_row[sheet_mapping.get('LAYER')]
+        return item
+
+    @staticmethod
+    def load_box(sheet_row, sheet_mapping):
+        item = Box()
+        item.x = sheet_row[sheet_mapping.get('X')]
+        item.y = sheet_row[sheet_mapping.get('Y')]
+        item.width = sheet_row[sheet_mapping.get('WIDTH')]
+        item.height = sheet_row[sheet_mapping.get('HEIGHT')]
+        item.fill_color = sheet_row[sheet_mapping.get('FILL COLOR')]
         item.border_color = sheet_row[sheet_mapping.get('BORDER COLOR')]
         item.border_width = sheet_row[sheet_mapping.get('BORDER WIDTH')]
         item.layer = sheet_row[sheet_mapping.get('LAYER')]

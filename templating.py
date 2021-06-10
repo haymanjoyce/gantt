@@ -52,6 +52,7 @@ TEMPLATE = {
     "Curtains": ("Start", "Finish", "Color", "Layer"),
     "Separators": ("Row", "Width", "Color", "Layer"),
     "Sections": ("From Row", "To Row", "Fill Color", "Border Color", "Border Width", "Layer"),
+    "Boxes": ("X", "Y", "Width", "Height", "Fill Color", "Border Color", "Border Width", "Layer"),
 }
 
 SAMPLE = {
@@ -71,5 +72,6 @@ SAMPLE = {
               [to_date_object("30 Jan 21"), 1, 'blue', 2],),
     "Curtains": ([to_date_object("25 Jan 21"), to_date_object("30 Jan 21"), 'light grey', 1],),
     "Separators": ([4, 2, 'purple', 1],),
-    "Sections": ([3, 7, 'yellow', 'black', 1, 1], ),
+    "Sections": ([10, 12, 'yellow', 'black', 1, 1],),
+    "Boxes": ([300, 300, 200, 200, 'pink', 'black', 1, 1],),
 }

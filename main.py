@@ -27,11 +27,12 @@
 # TODO check for and clean blank cells (to avoid type errors)
 # TODO check for and clean references to rows that do no exist
 # TODO calibrate task baseline to be middle of row
-# TODO remove option of row height
+# TODO remove option of row height - don't do this as users may want margin underneath rows for notes
 # TODO rename pipes (e.g. to lines)
 # TODO rename settings to chart and Chart
 # TODO rename tags as layer in shapes parameters
 # TODO prevent from_row being higher number than to_row in sections
+# TODO interface option to show row y positions in pixels
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript
