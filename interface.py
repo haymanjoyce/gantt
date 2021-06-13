@@ -22,6 +22,8 @@ from cleaner import Cleaner
 from processor import Processor
 from painter import Painter
 
+from svg_test import save_image
+
 
 class App(Tk):
     def __init__(self):
@@ -294,6 +296,9 @@ class Controls(Frame):
         self.set_button_states([1, 1, 1, 1, 1, 1, 1])
         append_log(f'Run {self.run_count} complete.\n\n')
         self.refresh_scroller()
+
+        svg_filename = 'svg_sample.svg'
+        save_image(svg_filename)
 
     def on_copy(self):
         copy_to_clipboard(self.view.image)

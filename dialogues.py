@@ -6,6 +6,10 @@ from PIL import Image
 from io import BytesIO
 
 
+def save_svg_as_image(svg):
+    pass
+
+
 def save_image(chart):
     """Handles export of chart to various formats.  Requires Ghostscript on client machine."""
     file_types = [

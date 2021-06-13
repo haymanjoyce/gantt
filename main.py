@@ -44,6 +44,7 @@
 # Pillow (fork of PIL; better maintained)
 # tkcalendar (PyInstaller requires hidden import from Babel)
 # attrs
+# CairoSVG
 
 import logging
 import interface
