@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import io
 import logging
 import datetime
 
@@ -21,8 +21,6 @@ from loader import Loader
 from cleaner import Cleaner
 from processor import Processor
 from painter import Painter
-
-from svg_test import save_image
 
 
 class App(Tk):
@@ -96,6 +94,7 @@ class Controls(Frame):
         self.btn_copy = Button(self, text="Copy to clipboard", command=self.on_copy, relief="groove")
         self.btn_image = Button(self, text="Save as image file", command=self.on_save, relief="groove")
         self.btn_postscript = Button(self, text="Save as PostScript file", command=self.on_postscript, relief="groove")
+        self.btn_svg = Button(self, text="Save as SVG file", command=self.on_svg, relief="groove")
         self.btn_template = Button(self, text="Download template", command=self.on_template, relief="groove")
 
         self.scroller = scrolledtext.ScrolledText(self, width=45, height=10, wrap=WORD,
@@ -105,9 +104,9 @@ class Controls(Frame):
         self.bind_widgets()
         self.insert_form_data()
         self.wipe_scroller()
-        self.set_button_states([1, 0, 0, 0, 0, 0, 1])
+        self.set_button_states([1, 0, 0, 0, 0, 0, 0, 1])
 
-        self.set_select("c:/users/hayma/desktop/sample.xlsx")  # development only
+        # self.set_select("c:/users/hayma/desktop/sample.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
@@ -176,7 +175,8 @@ class Controls(Frame):
         self.btn_copy.grid(row=13, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_image.grid(row=14, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
         self.btn_postscript.grid(row=15, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
-        self.btn_template.grid(row=16, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
+        self.btn_svg.grid(row=16, column=0, columnspan=2, sticky="nsew", pady=(0, 5))
+        self.btn_template.grid(row=17, column=0, columnspan=2, sticky="nsew", pady=(0, 0))  # pady 0 for last line
 
     def bind_widgets(self):
         self.ent_finish.bind('<FocusIn>', self.check_start)
@@ -258,11 +258,11 @@ class Controls(Frame):
             self.file_source = file_source
             self.ent_filepath.delete(0, END)
             self.ent_filepath.insert(0, file_source)
-            self.set_button_states([1, 1, 1, 0, 0, 0, 1])
+            self.set_button_states([1, 1, 1, 0, 0, 0, 1, 1])
         else:
             self.file_source = None
             self.ent_filepath.delete(0, END)
-            self.set_button_states([1, 0, 0, 0, 0, 0, 1])
+            self.set_button_states([1, 0, 0, 0, 0, 0, 0, 1])
 
     def on_select(self):
         self.file_source = get_file_name(self.file_source)
@@ -293,12 +293,9 @@ class Controls(Frame):
         if self.view:
             self.view.destroy()
         self.view = View(parent=self.parent, data=items)  # App is the parent
-        self.set_button_states([1, 1, 1, 1, 1, 1, 1])
+        self.set_button_states([1, 1, 1, 1, 1, 1, 1, 1])
         append_log(f'Run {self.run_count} complete.\n\n')
         self.refresh_scroller()
-
-        svg_filename = 'svg_sample.svg'
-        save_image(svg_filename)
 
     def on_copy(self):
         copy_to_clipboard(self.view.image)
@@ -312,6 +309,9 @@ class Controls(Frame):
         save_postscript(self.view.image)
         self.refresh_scroller()
 
+    def on_svg(self):
+        print('test')
+
     def on_template(self):
         workbook = create_template(TEMPLATE)
         workbook = populate_template(workbook, SAMPLE)
@@ -320,9 +320,9 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def set_button_states(self, states=None):
-        buttons = [self.btn_select, self.btn_check, self.btn_run, self.btn_copy, self.btn_image, self.btn_postscript, self.btn_template]
+        buttons = [self.btn_select, self.btn_check, self.btn_run, self.btn_copy, self.btn_image, self.btn_postscript, self.btn_svg, self.btn_template]
         if not states:
-            states = [1, 0, 0, 0, 0, 0, 1]
+            states = [1, 0, 0, 0, 0, 0, 0, 1]
         states = [NORMAL if x == 1 else DISABLED for x in states]  # swaps values for variables
         for button, state in zip(buttons, states):
             button.config(state=state)
@@ -357,5 +357,5 @@ class View(Toplevel):
         self.image = Painter(self, data)  # View is the parent
 
     def on_close(self):
-        self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1])
+        self.parent.controls.set_button_states([1, 1, 1, 0, 0, 0, 1, 1])
         self.destroy()

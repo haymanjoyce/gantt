@@ -4,10 +4,8 @@ import logging
 from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
-
-
-def save_svg_as_image(svg):
-    pass
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
 
 
 def save_image(chart):
@@ -82,3 +80,24 @@ def export_workbook(workbook):
             logging.debug("Operation cancelled.")
     except PermissionError:
         logging.warning("Permission denied.  Destination file may be open.")
+
+
+def save_svg_as_image(svg_filename):
+    file_types = [
+        # ('PDF file', '*.pdf'),
+        # ('JPG file', '*.jpg'),
+        ('PNG file', '*.png'),
+        # ('BMP file', '*.bmp'),
+        # ('TIFF file', '*.tif'),
+    ]
+    file = filedialog.asksaveasfile(mode="w",
+                                    title="Save As",
+                                    filetypes=file_types,
+                                    defaultextension="*.png",
+                                    initialfile="*.png"
+                                    )
+    if file:
+        file_name = file.name.lower()
+        if file_name.endswith(('.png', )):
+            drawing = svg2rlg(svg_filename)
+            renderPM.drawToFile(drawing, file_name, fmt="PNG")

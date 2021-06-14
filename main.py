@@ -33,9 +33,11 @@
 # TODO rename tags as layer in shapes parameters
 # TODO prevent from_row being higher number than to_row in sections
 # TODO interface option to show row y positions in pixels
+# TODO save as svg button
+# TODO convert svg to image file button
 
 # MANUAL OS ENVIRONMENT INSTALLS
-# ghostscript
+# ghostscript (C:\Program Files (x86)\gs\gs9.53.3\) (C:\Program Files (x86)\gs\gs9.54.0\bin)
 
 # MANUAL PYTHON ENVIRONMENT INSTALLS
 # openpyxl (xlrd only does xls)
@@ -45,6 +47,8 @@
 # tkcalendar (PyInstaller requires hidden import from Babel)
 # attrs
 # CairoSVG
+# reportlab
+# svglib
 
 import logging
 import interface

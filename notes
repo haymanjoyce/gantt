@@ -17,6 +17,7 @@ GHOSTSCRIPT
 The other GUIs use postscript too
 PyQt may not use postscript but cannot sell under their license
 So got to add Ghostscript to the install
+Add "C:\Program Files (x86)\gs\gs9.54.0\bin" to Path in Environment Variables
 
 LOG FILES
 
