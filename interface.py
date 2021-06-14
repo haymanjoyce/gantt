@@ -21,6 +21,7 @@ from loader import Loader
 from cleaner import Cleaner
 from processor import Processor
 from painter import Painter
+from generator import Generator
 
 
 class App(Tk):
@@ -106,7 +107,7 @@ class Controls(Frame):
         self.wipe_scroller()
         self.set_button_states([1, 0, 0, 0, 0, 0, 0, 1])
 
-        # self.set_select("c:/users/hayma/desktop/sample.xlsx")  # development only
+        self.set_select("c:/users/hayma/desktop/sample.xlsx")  # development only
 
     @staticmethod
     def field_validation_1(*args):
@@ -310,7 +311,13 @@ class Controls(Frame):
         self.refresh_scroller()
 
     def on_svg(self):
-        print('test')
+        self.get_form_data()
+        save_config_data(self.settings)
+        workbook = load_workbook(self.file_source, data_only=True, keep_links=False)
+        items = Loader(workbook).items
+        items = Cleaner(items).items
+        items = Processor(items).items
+        svg = Generator(items).svg
 
     def on_template(self):
         workbook = create_template(TEMPLATE)

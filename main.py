@@ -35,6 +35,7 @@
 # TODO interface option to show row y positions in pixels
 # TODO save as svg button
 # TODO convert svg to image file button
+# TODO change type to tag in feature classes
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript (C:\Program Files (x86)\gs\gs9.53.3\) (C:\Program Files (x86)\gs\gs9.54.0\bin)

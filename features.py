@@ -28,7 +28,7 @@ class Scale:
 class Interval:
 
     type = attrib(default="interval")
-    layer = attrib(default=None)
+    layer = attrib(default=1)
     date = attrib(default=None)
     x = attrib(default=0)
     y = attrib(default=0)
