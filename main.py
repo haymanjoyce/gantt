@@ -36,6 +36,7 @@
 # TODO save as svg button
 # TODO convert svg to image file button
 # TODO change type to tag in feature classes
+# TODO store dataclass objects in list, not tuple, so can sort
 
 # MANUAL OS ENVIRONMENT INSTALLS
 # ghostscript (C:\Program Files (x86)\gs\gs9.53.3\) (C:\Program Files (x86)\gs\gs9.54.0\bin)

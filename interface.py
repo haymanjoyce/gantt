@@ -317,7 +317,7 @@ class Controls(Frame):
         items = Loader(workbook).items
         items = Cleaner(items).items
         items = Processor(items).items
-        svg = Generator(items).svg
+        items = Generator(items).items
 
     def on_template(self):
         workbook = create_template(TEMPLATE)

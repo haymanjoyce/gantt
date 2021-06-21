@@ -10,8 +10,8 @@ from attr import attrs, attrib
 
 @attrs
 class Scale:
-
     type = attrib(default="scale")
+    layer = attrib(default=None)
     start = attrib(default=None)
     finish = attrib(default=None)
     interval = attrib(default="days")
@@ -22,11 +22,11 @@ class Scale:
     fill = attrib(default="red")
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
+    element = attrib(default='')
 
 
 @attrs
 class Interval:
-
     type = attrib(default="interval")
     layer = attrib(default=1)
     date = attrib(default=None)
@@ -38,11 +38,11 @@ class Interval:
     border_color = attrib(default="black")
     border_width = attrib(default=0.0)
     format = attrib(default="")
+    element = attrib(default='')
 
 
 @attrs
 class Row:
-
     type = attrib(default="row")
     layer = attrib(default=None)
     key = attrib(default=0)
@@ -53,11 +53,11 @@ class Row:
     fill = attrib(default="")
     border_color = attrib(default="grey")
     border_width = attrib(default=0.5)
+    element = attrib(default='')
 
 
 @attrs
 class Bar:
-
     type = attrib(default="bar")
     layer = attrib(default=None)
     key = attrib(default=None)
@@ -72,11 +72,11 @@ class Bar:
     fill = attrib(default=None)
     border_color = attrib(default="black")
     border_width = attrib(default=0.5)
+    element = attrib(default='')
 
 
 @attrs
 class Label:
-
     type = attrib(default="label")
     layer = attrib(default=None)
     row = attrib(default=None)
@@ -97,11 +97,11 @@ class Label:
     italic = attrib(default=False)
     underline = attrib(default=False)
     strikethrough = attrib(default=False)
+    element = attrib(default='')
 
 
 @attrs
 class Connector:
-
     type = attrib(default="connector")
     layer = attrib(default=None)
     from_row = attrib(default=None)
@@ -119,11 +119,11 @@ class Connector:
     shaft_x = attrib(default=None)
     width = attrib(default=0.0)
     color = attrib(default="black")
+    element = attrib(default='')
 
 
 @attrs
 class Pipe:
-
     type = attrib(default="pipe")
     layer = attrib(default=1)
     date = attrib(default=None)
@@ -133,11 +133,11 @@ class Pipe:
     y0 = attrib(default=0)
     x1 = attrib(default=0)
     y1 = attrib(default=0)
+    element = attrib(default='')
 
 
 @attrs
 class Curtain:
-
     type = attrib(default="curtain")
     layer = attrib(default=None)
     start = attrib(default="")
@@ -147,11 +147,11 @@ class Curtain:
     y = attrib(default=None)
     width = attrib(default=None)
     height = attrib(default=None)
+    element = attrib(default='')
 
 
 @attrs
 class Separator:
-
     type = attrib(default="separator")
     row = attrib(default=None)
     layer = attrib(default=1)
@@ -161,11 +161,11 @@ class Separator:
     y0 = attrib(default=0)
     x1 = attrib(default=0)
     y1 = attrib(default=0)
+    element = attrib(default='')
 
 
 @attrs
 class Section:
-
     type = attrib(default="section")
     layer = attrib(default=1)
     from_row = attrib(default=1)
@@ -177,11 +177,11 @@ class Section:
     y = attrib(default=None)
     width = attrib(default=None)
     height = attrib(default=None)
+    element = attrib(default='')
 
 
 @attrs
 class Box:
-
     type = attrib(default="box")
     layer = attrib(default=1)
     fill_color = attrib(default='')
@@ -191,11 +191,11 @@ class Box:
     y = attrib(default=None)
     width = attrib(default=None)
     height = attrib(default=None)
+    element = attrib(default='')
 
 
 @attrs
 class Note:
-
     type = attrib(default="note")
     layer = attrib(default=None)
     text = attrib(default=None)
@@ -212,6 +212,7 @@ class Note:
     italic = attrib(default=False)
     underline = attrib(default=False)
     strikethrough = attrib(default=False)
+    element = attrib(default='')
 
 
 @attrs
@@ -221,7 +222,6 @@ class Task:
 
 @attrs
 class Relationship:
-
     type = attrib(default="relationship")
     layer = attrib(default=None)
     key = attrib(default=None)
@@ -229,3 +229,4 @@ class Relationship:
     destination = attrib(default="")
     width = attrib(default="")
     color = attrib(default="")
+    element = attrib(default='')

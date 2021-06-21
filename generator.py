@@ -5,7 +5,8 @@
 import logging
 import datetime
 
-from operator import itemgetter
+from operator import itemgetter, attrgetter
+from pprint import pprint as pp
 
 from settings import Settings
 from shapes import Rectangle
@@ -15,27 +16,17 @@ class Generator:
     def __init__(self, items):
         self.items = items
         self.settings = Settings()
-        self.elements = []
-        self.svg = ""
-        self.draw_elements()
-        print(self.elements)
+        self.generate_elements()
 
-    def draw_elements(self):
-        intervals = [item for item in self.items if item.type == 'interval']
-        for item in intervals:
-            self.draw_element(item)
-        self.elements.sort(key=itemgetter(0))
+    def generate_elements(self):
+        items = [item for item in self.items]
+        for item in items:
+            self.generate_element(item)
+        items.sort(key=attrgetter('layer'))
+        pp(items)
 
-    def draw_element(self, item):
+    def generate_element(self, item):
         if item.type == 'interval':
-            element = Rectangle(x=item.x, y=item.y, width=item.width, height=item.height)
+            item.element = Rectangle(x=item.x, y=item.y, width=item.width, height=item.height)
         else:
-            element = ''
-        if hasattr(item, 'layer'):
-            if item.layer:
-                layer = item.layer
-            else:
-                layer = 1
-        else:
-            layer = 1
-        self.elements += (layer, element),
+            item.element = ''
