@@ -23,10 +23,9 @@ class Generator:
         for item in items:
             self.generate_element(item)
         items.sort(key=attrgetter('layer'))
-        pp(items)
 
     def generate_element(self, item):
         if item.type == 'interval':
-            item.element = Rectangle(x=item.x, y=item.y, width=item.width, height=item.height)
+            item.element = Rectangle(x=item.x, y=item.y, width=item.width, height=item.height).svg
         else:
             item.element = ''

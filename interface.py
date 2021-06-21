@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-import io
+
 import logging
 import datetime
+import io
 
 from tkinter import NORMAL, DISABLED, END, BOTH, X, Y, TOP, BOTTOM, LEFT, RIGHT, ALL, WORD, FIRST, LAST, GROOVE
-
 from tkinter import Tk, Frame, Label, Button, Entry, Toplevel, scrolledtext, Checkbutton, IntVar
 from openpyxl import load_workbook
 from tkcalendar import DateEntry
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM, renderPDF, renderSVG
 
 from templating import TEMPLATE, SAMPLE
 
@@ -16,6 +18,7 @@ from filing import get_path, get_config_data, save_config_data, wipe_config_file
 from utils import copy_to_clipboard
 from templating import create_template, populate_template, to_date_object, reformat_dates
 from checker import check_date_field_formats, check_merged_cells, check_header_rows, check_header_rows_exist, check_sheets_exist, check_misspelled_headers
+from settings import Settings
 
 from loader import Loader
 from cleaner import Cleaner
@@ -318,6 +321,13 @@ class Controls(Frame):
         items = Cleaner(items).items
         items = Processor(items).items
         items = Generator(items).items
+        settings = Settings()
+        elements = ''.join([item.element for item in items])
+        svg = f'<svg width="{settings.width}" height="{settings.height}" id="chart" overflow="auto">{elements}</svg>'.encode(encoding='utf-8')
+        file = io.BytesIO(svg)
+        file.name = 'chart.svg'
+        rlg = svg2rlg(file)
+        renderPM.drawToFile(rlg, "chart.png", fmt="PNG")
 
     def on_template(self):
         workbook = create_template(TEMPLATE)

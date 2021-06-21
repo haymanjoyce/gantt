@@ -1,12 +1,432 @@
-RUN #1
-Run 1 complete.
-
-RUN #1
-Run 1 complete.
-
-RUN #2
-Run 2 complete.
-
-RUN #1
-Run 1 complete.
-
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Exception during applyStyleOnShape
+DEBUG - Unused attrs: rect ['stroke', 'stroke-width', 'fill', 'visibility']

@@ -5,7 +5,7 @@ from tkinter import filedialog
 from PIL import Image
 from io import BytesIO
 from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPM
+from reportlab.graphics import renderPM, renderPDF
 
 
 def save_image(chart):
