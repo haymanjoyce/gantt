@@ -3,7 +3,7 @@
 import logging
 from PIL import Image
 from io import BytesIO
-import win32clipboard as clipboard
+# import win32clipboard as clipboard
 
 
 def copy_to_clipboard(chart):
@@ -14,10 +14,10 @@ def copy_to_clipboard(chart):
     chart_as_bitmap = BytesIO()
     Image.open(chart_as_bytecode).save(chart_as_bitmap, "BMP")
 
-    clipboard.OpenClipboard()
-    clipboard.EmptyClipboard()
-    clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap.getvalue()[14:])  # [14:] removes header
-    clipboard.CloseClipboard()
+    # clipboard.OpenClipboard()
+    # clipboard.EmptyClipboard()
+    # clipboard.SetClipboardData(clipboard.CF_DIB, chart_as_bitmap.getvalue()[14:])  # [14:] removes header
+    # clipboard.CloseClipboard()
 
     chart_as_bytecode.close()
     chart_as_bitmap.close()
